@@ -27,19 +27,24 @@ class MinimalPipeline
   class Keystore
     # Initializes a `Keystore` client
     # Requires environment variables `AWS_REGION` or `region` to be set.
-    # Also requires `keystore_kms_id` and `keystore_table`
+    # Also requires `keystore_table` and `keystore_kms_id`
     def initialize
-      raise 'You must set env variable AWS_REGION.' if ENV['AWS_REGION'].nil?
-      raise 'Missing `keystore_table` or `keystore_kms_id` in environment!' \
-        if ENV['keystore_table'].nil? || ENV['keystore_kms_id'].nil?
+      raise 'You must set env variable AWS_REGION or region.' \
+        if ENV['AWS_REGION'].nil? && ENV['region'].nil?
+      raise 'Missing keystore_table in environment!' \
+        if ENV['inventory_store'].nil? || ENV['keystore_table'].nil?
+      raise 'Missing keystore_kms_id in environment!' \
+        if ENV['inventory_store_key'].nil? || ENV['keystore_kms_id'].nil?
 
-      region = ENV['AWS_REGION']
+      region = ENV['AWS_REGION'] || ENV['region']
+      keystore_table = ENV['keystore_table'] || ENV['inventory_store']
+      keystore_kms_id = ENV['keystore_kms_id'] || ENV['inventory_store_key']
       kms = Aws::KMS::Client.new(region: region)
       dynamo = Aws::DynamoDB::Client.new(region: region)
       @keystore = ::Keystore.new(dynamo: dynamo,
-                               table_name: ENV['keystore_table'],
+                               table_name: keystore_table,
                                kms: kms,
-                               key_id: ENV['keystore_kms_id'])
+                               key_id: keystore_kms_id)
     end
 
     # Retrieves a value from the Keystore
