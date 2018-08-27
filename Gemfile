@@ -6,6 +6,7 @@ source 'https://rubygems.org' do
   gem 'keystore'
   gem 'rake'
   gem 'redcarpet'
+  gem 'rspec'
   gem 'rubocop'
   gem 'yard'
 end

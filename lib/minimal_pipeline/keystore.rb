@@ -31,10 +31,10 @@ class MinimalPipeline
     def initialize
       raise 'You must set env variable AWS_REGION or region.' \
         if ENV['AWS_REGION'].nil? && ENV['region'].nil?
-      raise 'Missing keystore_table in environment!' \
-        if ENV['inventory_store'].nil? || ENV['keystore_table'].nil?
-      raise 'Missing keystore_kms_id in environment!' \
-        if ENV['inventory_store_key'].nil? || ENV['keystore_kms_id'].nil?
+      raise 'You must set env variable keystore_table.' \
+        if ENV['inventory_store'].nil? && ENV['keystore_table'].nil?
+      raise 'You must set env variable keystore_kms_id.' \
+        if ENV['inventory_store_key'].nil? && ENV['keystore_kms_id'].nil?
 
       region = ENV['AWS_REGION'] || ENV['region']
       keystore_table = ENV['keystore_table'] || ENV['inventory_store']

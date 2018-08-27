@@ -19,8 +19,6 @@ class MinimalPipeline
   # docker.push_docker_image(docker_image)
   # ```
   class Docker
-    include Rake::DSL
-
     def initialize
     end
 
