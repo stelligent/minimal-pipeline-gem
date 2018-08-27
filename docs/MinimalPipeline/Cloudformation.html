@@ -313,15 +313,17 @@ Requires environment variable <code>AWS_REGION</code> or <code>region</code> to 
 39
 40
 41
-42</pre>
+42
+43</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'lib/minimal_pipeline/cloudformation.rb', line 37</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span>
-  <span class='id identifier rubyid_raise'>raise</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>You must set env variable AWS_REGION.</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>if</span> <span class='const'>ENV</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>AWS_REGION</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
+  <span class='id identifier rubyid_raise'>raise</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>You must set env variable AWS_REGION or region.</span><span class='tstring_end'>&#39;</span></span> \
+    <span class='kw'>if</span> <span class='const'>ENV</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>AWS_REGION</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span> <span class='op'>&amp;&amp;</span> <span class='const'>ENV</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>region</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
 
-  <span class='id identifier rubyid_region'>region</span> <span class='op'>=</span> <span class='const'>ENV</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>AWS_REGION</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span>
+  <span class='id identifier rubyid_region'>region</span> <span class='op'>=</span> <span class='const'>ENV</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>AWS_REGION</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span> <span class='op'>||</span> <span class='const'>ENV</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>region</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span>
   <span class='ivar'>@client</span> <span class='op'>=</span> <span class='const'>Aws</span><span class='op'>::</span><span class='const'>CloudFormation</span><span class='op'>::</span><span class='const'>Client</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='label'>region:</span> <span class='id identifier rubyid_region'>region</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -441,7 +443,6 @@ Requires environment variable <code>AWS_REGION</code> or <code>region</code> to 
       <pre class="lines">
 
 
-80
 81
 82
 83
@@ -457,10 +458,11 @@ Requires environment variable <code>AWS_REGION</code> or <code>region</code> to 
 93
 94
 95
-96</pre>
+96
+97</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/minimal_pipeline/cloudformation.rb', line 80</span>
+      <pre class="code"><span class="info file"># File 'lib/minimal_pipeline/cloudformation.rb', line 81</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_deploy_stack'>deploy_stack</span><span class='lparen'>(</span><span class='id identifier rubyid_stack_name'>stack_name</span><span class='comma'>,</span> <span class='id identifier rubyid_stack_parameters'>stack_parameters</span><span class='rparen'>)</span>
   <span class='kw'>unless</span> <span class='ivar'>@client</span><span class='period'>.</span><span class='id identifier rubyid_describe_stacks'>describe_stacks</span><span class='lparen'>(</span><span class='label'>stack_name:</span> <span class='id identifier rubyid_stack_name'>stack_name</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_stacks'>stacks</span><span class='period'>.</span><span class='id identifier rubyid_empty?'>empty?</span>
@@ -545,16 +547,16 @@ Requires environment variable <code>AWS_REGION</code> or <code>region</code> to 
       <pre class="lines">
 
 
-48
 49
 50
 51
 52
 53
-54</pre>
+54
+55</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/minimal_pipeline/cloudformation.rb', line 48</span>
+      <pre class="code"><span class="info file"># File 'lib/minimal_pipeline/cloudformation.rb', line 49</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_params'>params</span><span class='lparen'>(</span><span class='id identifier rubyid_parameters'>parameters</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_parameter_list'>parameter_list</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span>
@@ -644,7 +646,6 @@ Requires environment variable <code>AWS_REGION</code> or <code>region</code> to 
       <pre class="lines">
 
 
-61
 62
 63
 64
@@ -655,10 +656,11 @@ Requires environment variable <code>AWS_REGION</code> or <code>region</code> to 
 69
 70
 71
-72</pre>
+72
+73</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/minimal_pipeline/cloudformation.rb', line 61</span>
+      <pre class="code"><span class="info file"># File 'lib/minimal_pipeline/cloudformation.rb', line 62</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_stack_output'>stack_output</span><span class='lparen'>(</span><span class='id identifier rubyid_stack'>stack</span><span class='comma'>,</span> <span class='id identifier rubyid_output'>output</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_resp'>resp</span> <span class='op'>=</span> <span class='ivar'>@client</span><span class='period'>.</span><span class='id identifier rubyid_describe_stacks'>describe_stacks</span><span class='lparen'>(</span><span class='label'>stack_name:</span> <span class='id identifier rubyid_stack'>stack</span><span class='rparen'>)</span>
@@ -682,7 +684,7 @@ Requires environment variable <code>AWS_REGION</code> or <code>region</code> to 
 </div>
 
       <div id="footer">
-  Generated on Mon Aug 27 09:44:43 2018 by
+  Generated on Mon Aug 27 11:31:20 2018 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.14 (ruby-2.5.1).
 </div>

@@ -35,9 +35,10 @@ class MinimalPipeline
     # Sets up `Aws::CloudFormation::Client`
     # Requires environment variable `AWS_REGION` or `region` to be set.
     def initialize
-      raise 'You must set env variable AWS_REGION.' if ENV['AWS_REGION'].nil?
+      raise 'You must set env variable AWS_REGION or region.' \
+        if ENV['AWS_REGION'].nil? && ENV['region'].nil?
 
-      region = ENV['AWS_REGION']
+      region = ENV['AWS_REGION'] || ENV['region']
       @client = Aws::CloudFormation::Client.new(region: region)
     end
 
