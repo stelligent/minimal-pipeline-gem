@@ -8,5 +8,6 @@ source 'https://rubygems.org' do
   gem 'redcarpet'
   gem 'rspec'
   gem 'rubocop'
+  gem 'simplecov'
   gem 'yard'
 end
