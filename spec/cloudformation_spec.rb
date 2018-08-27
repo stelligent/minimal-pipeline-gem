@@ -1,5 +1,4 @@
-require 'rspec'
-require 'minimal_pipeline'
+require './spec/spec_helper'
 
 describe MinimalPipeline::Cloudformation do
   describe 'without AWS_REGION' do

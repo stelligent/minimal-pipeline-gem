@@ -1,5 +1,4 @@
-require 'minimal_pipeline'
-require 'rspec'
+require './spec/spec_helper'
 
 describe MinimalPipeline::Docker do
   it 'cleans up docker images' do
