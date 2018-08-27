@@ -5,22 +5,13 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
 Gem::Specification.new do |spec|
   spec.name          = 'minimal_pipeline'
-  spec.authors       = ['Mayowa Aladeojebi']
-  spec.email         = ['mayowa.aladeojebi@stelligent.com']
-  spec.version       = '0.0.1'
+  spec.authors       = ['Mayowa Aladeojebi', 'Jesse Adams']
+  spec.email         = ['mayowa.aladeojebi@stelligent.com', 'jesse.adams@stelligent.com']
+  spec.version       = '0.0.2'
   spec.summary       = 'Helper gem to manage pipeline tasks'
   spec.description   = 'Helper gem to orchestrate pipeline tasks'
   spec.homepage      = 'https://github.com/stelligent/minimal-pipeline-gem'
-
-  # Prevent pushing this gem to RubyGems.org. To allow pushes either set the
-  # 'allowed_push_host' to allow pushing to a single host or delete this
-  # section to allow pushing to any host.
-  if spec.respond_to?(:metadata)
-    spec.metadata['allowed_push_host'] = 'Push disabled'
-  else
-    raise 'RubyGems 2.0 or newer is required to protect against public ' \
-          'gem pushes.'
-  end
+  spec.license       = '0BSD'
 
   # spec.files = `git ls-files -z`.split("\x0").reject do |f|
   #   f.match(%r{^(test|spec|features)/})
