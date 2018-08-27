@@ -24,8 +24,9 @@ class MinimalPipeline
   # For more information on Crossing see https://github.com/stelligent/crossing
   class Crossing
     def initialize
-      raise 'You must set env variable AWS_REGION.' if ENV['AWS_REGION'].nil?
-      raise '`keystore_kms_id` in environment!' \
+      raise 'You must set env variable AWS_REGION or region.' \
+        if ENV['AWS_REGION'].nil?
+      raise 'You must set env variable keystore_kms_id.' \
         if ENV['keystore_kms_id'].nil?
 
       region = ENV['AWS_REGION']
