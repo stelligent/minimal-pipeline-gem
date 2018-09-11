@@ -20,6 +20,10 @@ $ gem install ./minimal_pipeline-VERSION.gem
 
 Full documentation is available at https://stelligent.github.io/minimal-pipeline-gem/.
 
+## License
+
+MIT
+
 ## Maintainers
 
 * [@obaladeo](https://git.uscis.dhs.gov/obaladeo).
