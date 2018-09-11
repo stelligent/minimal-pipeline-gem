@@ -58,9 +58,11 @@ describe MinimalPipeline::Docker do
   end
 
   it 'pushes built images' do
+    docker_path = `which docker`.chomp
+
     status = double(Object)
     expect(status).to receive(:exitstatus).and_return(0)
-    expect(Open3).to receive(:capture3).with('/usr/local/bin/docker', 'push', 'foo').and_return(['', '', status])
+    expect(Open3).to receive(:capture3).with(docker_path, 'push', 'foo').and_return(['', '', status])
 
     docker = MinimalPipeline::Docker.new
     expect(docker).to receive(:clean_up_image)
