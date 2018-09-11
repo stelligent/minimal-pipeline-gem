@@ -6,6 +6,12 @@
 
 A Simple gem to help orchestrate pipeline tasks in ruby.
 
+## Tools Used
+* Docker
+* CloudFormation
+* https://github.com/stelligent/crossing - Encrypt files and store them in S3
+* https://github.com/stelligent/keystore - Encrypted key value store on top of DynamoDB
+
 ## Install
 
 > Clone source repo
