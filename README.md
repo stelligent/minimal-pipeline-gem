@@ -1,3 +1,5 @@
+[![CircleCI](https://circleci.com/gh/stelligent/minimal-pipeline-gem.svg?style=svg)](https://circleci.com/gh/stelligent/minimal-pipeline-gem)
+
 # Minimal Pipeline Gem
 
 > Helper gem to manage pipeline deploy tasks
