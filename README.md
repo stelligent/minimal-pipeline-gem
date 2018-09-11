@@ -4,7 +4,7 @@
 
 > Helper gem to manage pipeline deploy tasks
 
-A Simple gem to help orchestrate pipeline tasks in ruby. It currently supports deploying containers to ECS via CloudFormation. 
+A Simple gem to help orchestrate pipeline tasks in ruby. It currently supports deploying containers to ECS via CloudFormation.
 
 ## Tools Used
 * Docker
@@ -34,5 +34,5 @@ MIT
 
 ## Maintainers
 
-* [@obaladeo](https://git.uscis.dhs.gov/obaladeo).
-* [@jesseadams](https://git.uscis.dhs.gov/jesseadams).
+* [@mayoralade](https://github.com/mayoralade).
+* [@jesseadams](https://github.com/jesseadams).
