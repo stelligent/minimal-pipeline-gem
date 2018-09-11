@@ -16,7 +16,7 @@ describe MinimalPipeline::Docker do
       "nocache"=>"true",
       "pull"=>"true",
       "t"=>"foo",
-      "buildargs"=>"{}"
+      "buildargs"=>"{\"NO_PROXY\":\"127.0.0.1,localhost,circleci-internal-outer-build-agent\"}"
     }
     expect(Docker::Image).to receive(:build_from_dir).with('.', expected_args)
 
@@ -31,7 +31,7 @@ describe MinimalPipeline::Docker do
       "nocache"=>"true",
       "pull"=>"true",
       "t"=>"foo",
-      "buildargs"=>"{\"HTTP_PROXY\":\"foo:443\"}"
+      "buildargs"=>"{\"HTTP_PROXY\":\"foo:443\",\"NO_PROXY\":\"127.0.0.1,localhost,circleci-internal-outer-build-agent\"}"
     }
     expect(Docker::Image).to receive(:build_from_dir).with('.', expected_args)
 
@@ -49,7 +49,7 @@ describe MinimalPipeline::Docker do
       "nocache"=>"true",
       "pull"=>"true",
       "t"=>"foo",
-      "buildargs"=>"{\"DEPLOYABLE_VERSION\":\"1.0.0\"}"
+      "buildargs"=>"{\"DEPLOYABLE_VERSION\":\"1.0.0\",\"NO_PROXY\":\"127.0.0.1,localhost,circleci-internal-outer-build-agent\"}"
     }
     expect(Docker::Image).to receive(:build_from_dir).with('.', expected_args)
 
