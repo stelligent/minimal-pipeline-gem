@@ -46,6 +46,9 @@ describe MinimalPipeline::Crossing do
       end
 
       it 'uploads content to S3' do
+        s3 = double(Aws::S3::Encryption::Client)
+        expect(Aws::S3::Encryption::Client).to receive(:new).and_return(s3)
+
         crossing_mock = double(Crossing)
         expect(Crossing).to receive(:new).and_return(crossing_mock)
 
@@ -57,7 +60,10 @@ describe MinimalPipeline::Crossing do
         crossing.upload_content('bucket_name', 'file_name', 'foo')
       end
 
-      it 'downloads content form S3' do
+      it 'downloads content from S3' do
+        s3 = double(Aws::S3::Encryption::Client)
+        expect(Aws::S3::Encryption::Client).to receive(:new).and_return(s3)
+
         crossing_mock = double(Crossing)
         expect(Crossing).to receive(:new).and_return(crossing_mock)
 
