@@ -19,8 +19,7 @@ class MinimalPipeline
   # docker.push_docker_image(docker_image)
   # ```
   class Docker
-    def initialize
-    end
+    def initialize; end
 
     # Finds the absolute path to a given executable
     #
@@ -94,7 +93,6 @@ class MinimalPipeline
     #
     # @param image_id [String] The name of the docker image
     def push_docker_image(image_id)
-      ecr_login
       docker_bin = which('docker')
       raise "docker_push: no docker binary: #{image_id}" unless docker_bin
       stdout, stderr, status = Open3.capture3(docker_bin, 'push', image_id)
@@ -108,7 +106,7 @@ class MinimalPipeline
     def list_containers
       containers = Dir.glob('containers/*')
       # Grab container name from containers/name/Dockerfile
-      containers.map{ |container| container.split('/')[1] }
+      containers.map { |container| container.split('/')[1] }
     end
   end
 end
