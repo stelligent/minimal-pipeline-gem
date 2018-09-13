@@ -51,12 +51,6 @@ class MinimalPipeline
       $stdout.puts build_output
     end
 
-    # Logs in to AWS ECR
-    def ecr_login
-      region = ENV['AWS_REGION'] || ENV['region']
-      `$(aws ecr get-login --region #{region})`
-    end
-
     # Cleans up docker images
     #
     # @param image_id [String] The Docker container ID to delete
@@ -99,14 +93,6 @@ class MinimalPipeline
       raise "stdout: #{stdout}\nstderr: #{stderr}\nstatus: #{status}" \
         unless status.exitstatus.zero?
       clean_up_image(image_id)
-    end
-
-    # List all containers in the `containers` directory
-    # @return [Array] List of container names
-    def list_containers
-      containers = Dir.glob('containers/*')
-      # Grab container name from containers/name/Dockerfile
-      containers.map { |container| container.split('/')[1] }
     end
   end
 end

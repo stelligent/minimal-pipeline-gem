@@ -70,6 +70,33 @@ describe MinimalPipeline::Cloudformation do
       expect(output).to eq 'Foo'
     end
 
+    it 'throws an error if the expected stack output does not exist' do
+      outputs = [
+        Aws::CloudFormation::Types::Output.new(
+          description: 'Description',
+          export_name: 'Export Name',
+          output_key: 'OutputName',
+          output_value: 'Foo'
+        )
+      ]
+
+      stacks = [
+        Aws::CloudFormation::Types::Stack.new(outputs: outputs)
+      ]
+
+      client = double(Aws::CloudFormation::Client)
+      response = double(Aws::CloudFormation::Types::DescribeStacksOutput)
+
+      expect(client).to receive(:describe_stacks).with(stack_name: 'STACK-NAME').and_return(response)
+      expect(response).to receive(:stacks).and_return(stacks).at_least(:once)
+      expect(Aws::CloudFormation::Client).to receive(:new).with(region: 'us-east-1').and_return(client)
+
+      cloudformation = MinimalPipeline::Cloudformation.new
+      expect do
+        cloudformation.stack_output('STACK-NAME', 'AnotherOutputName')
+      end.to raise_error
+    end
+
     it 'creates a new stack if one does not already exist' do
       stack_parameters = {
         foo: 'bar'
@@ -118,7 +145,7 @@ describe MinimalPipeline::Cloudformation do
       cloudformation.deploy_stack('STACK-NAME', stack_parameters)
     end
 
-    it 'to be idempotent if no changes are to be made' do
+    it 'is idempotent if no changes are to be made' do
       stack_parameters = {
         foo: 'bar'
       }
@@ -156,16 +183,17 @@ describe MinimalPipeline::Cloudformation do
       }
 
       client = double(Aws::CloudFormation::Client)
+      error = Aws::CloudFormation::Errors::ValidationError.new('foo', 'Template error')
 
       expect(client).to receive(:describe_stacks).and_raise(Aws::CloudFormation::Errors::ValidationError.new('foo', 'bar'))
-      expect(client).to receive(:create_stack).with(stack_parameters).and_raise(Aws::CloudFormation::Errors::ValidationError.new('foo', 'Template error'))
+      expect(client).to receive(:create_stack).with(stack_parameters).and_raise(error)
       expect(Aws::CloudFormation::Client).to receive(:new).with(region: 'us-east-1').and_return(client)
 
       cloudformation = MinimalPipeline::Cloudformation.new
 
       expect do
         cloudformation.deploy_stack('STACK-NAME', stack_parameters)
-      end.to raise_error
+      end.to raise_error(error)
     end
   end
 end

@@ -69,5 +69,24 @@ describe MinimalPipeline::Docker do
     expect(docker).to receive(:clean_up_image)
     docker.push_docker_image('foo')
   end
+
+  it 'outputs JSON build output lines as human readible text' do
+    example_output = %q{{"foo": "bar","stream": "baz"}}
+
+    expect($stdout).to receive(:puts).with('baz')
+
+    docker = MinimalPipeline::Docker.new
+    docker.build_output(example_output)
+  end
+
+  it 'detects bad JSON' do
+    example_output = %q{{"foo": "bar" "stream": "baz"}}
+
+    expect($stdout).to receive(:puts).with("Bad JSON parse\n")
+    expect($stdout).to receive(:puts).with(example_output)
+
+    docker = MinimalPipeline::Docker.new
+    docker.build_output(example_output)
+  end
 end
 # rubocop:enable Metrics/BlockLength, Metrics/LineLength
