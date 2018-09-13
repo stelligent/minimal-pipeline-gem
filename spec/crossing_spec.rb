@@ -3,9 +3,9 @@ require './spec/spec_helper'
 describe MinimalPipeline::Crossing do
   describe 'without AWS_REGION' do
     it 'requires AWS_REGION to be set' do
-      expect {
+      expect do
         crossing = MinimalPipeline::Crossing.new
-      }.to raise_error 'You must set env variable AWS_REGION or region.'
+      end.to raise_error 'You must set env variable AWS_REGION or region.'
     end
   end
 
@@ -19,9 +19,9 @@ describe MinimalPipeline::Crossing do
     end
 
     it 'requires keystore_kms_id' do
-      expect {
+      expect do
         crossing = MinimalPipeline::Crossing.new
-      }.to raise_error 'You must set env variable keystore_kms_id.'
+      end.to raise_error 'You must set env variable keystore_kms_id.'
     end
 
     describe 'with keystore_kms_id' do

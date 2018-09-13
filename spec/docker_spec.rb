@@ -13,10 +13,10 @@ describe MinimalPipeline::Docker do
 
   it 'builds a docker image' do
     expected_args = {
-      "nocache"=>"true",
-      "pull"=>"true",
-      "t"=>"foo",
-      "buildargs"=>"{\"NO_PROXY\":\"127.0.0.1,localhost,circleci-internal-outer-build-agent\"}"
+      'nocache' => 'true',
+      'pull' => 'true',
+      't' => 'foo',
+      'buildargs' => '{"NO_PROXY":"127.0.0.1,localhost,circleci-internal-outer-build-agent"}'
     }
     expect(Docker::Image).to receive(:build_from_dir).with('.', expected_args)
 
@@ -28,10 +28,10 @@ describe MinimalPipeline::Docker do
     ENV['HTTP_PROXY'] = 'foo:443'
 
     expected_args = {
-      "nocache"=>"true",
-      "pull"=>"true",
-      "t"=>"foo",
-      "buildargs"=>"{\"HTTP_PROXY\":\"foo:443\",\"NO_PROXY\":\"127.0.0.1,localhost,circleci-internal-outer-build-agent\"}"
+      'nocache' => 'true',
+      'pull' => 'true',
+      't' => 'foo',
+      'buildargs' => '{"HTTP_PROXY":"foo:443","NO_PROXY":"127.0.0.1,localhost,circleci-internal-outer-build-agent"}'
     }
     expect(Docker::Image).to receive(:build_from_dir).with('.', expected_args)
 
@@ -43,13 +43,13 @@ describe MinimalPipeline::Docker do
 
   it 'supports custom build args' do
     passed_args = {
-      "DEPLOYABLE_VERSION" => "1.0.0"
+      'DEPLOYABLE_VERSION' => '1.0.0'
     }
     expected_args = {
-      "nocache"=>"true",
-      "pull"=>"true",
-      "t"=>"foo",
-      "buildargs"=>"{\"DEPLOYABLE_VERSION\":\"1.0.0\",\"NO_PROXY\":\"127.0.0.1,localhost,circleci-internal-outer-build-agent\"}"
+      'nocache' => 'true',
+      'pull' => 'true',
+      't' => 'foo',
+      'buildargs' => '{"DEPLOYABLE_VERSION":"1.0.0","NO_PROXY":"127.0.0.1,localhost,circleci-internal-outer-build-agent"}'
     }
     expect(Docker::Image).to receive(:build_from_dir).with('.', expected_args)
 
@@ -66,7 +66,6 @@ describe MinimalPipeline::Docker do
 
     docker = MinimalPipeline::Docker.new
     expect(docker).to receive(:clean_up_image)
-    expect(docker).to receive(:ecr_login)
     docker.push_docker_image('foo')
   end
 end

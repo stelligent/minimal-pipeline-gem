@@ -3,9 +3,9 @@ require './spec/spec_helper'
 describe MinimalPipeline::Cloudformation do
   describe 'without AWS_REGION' do
     it 'requires AWS_REGION to be set' do
-      expect {
+      expect do
         cloudformation = MinimalPipeline::Cloudformation.new
-      }.to raise_error "You must set env variable AWS_REGION or region."
+      end.to raise_error 'You must set env variable AWS_REGION or region.'
     end
   end
 
@@ -21,9 +21,9 @@ describe MinimalPipeline::Cloudformation do
     it 'does not throw an error if AWS_REGION is set' do
       expect(Aws::CloudFormation::Client).to receive(:new).with(region: 'us-east-1')
 
-      expect {
+      expect do
         cloudformation = MinimalPipeline::Cloudformation.new
-      }.to_not raise_error
+      end.to_not raise_error
     end
 
     it 'creates a CFN friendly parameter data structure' do
@@ -33,8 +33,8 @@ describe MinimalPipeline::Cloudformation do
         'beep': 'boop'
       }
       expected_params = [
-        {:parameter_key=>:foo, :parameter_value=>"bar"},
-        {:parameter_key=>:beep, :parameter_value=>"boop"}
+        { parameter_key: :foo, parameter_value: 'bar' },
+        { parameter_key: :beep, parameter_value: 'boop' }
       ]
 
       resulting_params = cloudformation.params(original_params)
@@ -77,8 +77,8 @@ describe MinimalPipeline::Cloudformation do
       client = double(Aws::CloudFormation::Client)
       response = double(Aws::CloudFormation::Types::DescribeStacksOutput)
 
-      expect(client).to receive(:describe_stacks).and_raise(Aws::CloudFormation::Errors::ValidationError.new("foo", "bar"))
-      expect(client).to receive(:wait_until).with(:stack_create_complete, {:stack_name=>"STACK-NAME"}).and_return(true)
+      expect(client).to receive(:describe_stacks).and_raise(Aws::CloudFormation::Errors::ValidationError.new('foo', 'bar'))
+      expect(client).to receive(:wait_until).with(:stack_create_complete, stack_name: 'STACK-NAME').and_return(true)
       expect(client).to receive(:create_stack).with(stack_parameters)
       expect(Aws::CloudFormation::Client).to receive(:new).with(region: 'us-east-1').and_return(client)
 
@@ -109,7 +109,7 @@ describe MinimalPipeline::Cloudformation do
 
       expect(client).to receive(:describe_stacks).with(stack_name: 'STACK-NAME').and_return(response)
       expect(response).to receive(:stacks).and_return(stacks).at_least(:once)
-      expect(client).to receive(:wait_until).with(:stack_update_complete, {:stack_name=>"STACK-NAME"}).and_return(true)
+      expect(client).to receive(:wait_until).with(:stack_update_complete, stack_name: 'STACK-NAME').and_return(true)
       expect(client).to receive(:update_stack).with(stack_parameters)
 
       expect(Aws::CloudFormation::Client).to receive(:new).with(region: 'us-east-1').and_return(client)
@@ -141,8 +141,8 @@ describe MinimalPipeline::Cloudformation do
 
       expect(client).to receive(:describe_stacks).with(stack_name: 'STACK-NAME').and_return(response)
       expect(response).to receive(:stacks).and_return(stacks).at_least(:once)
-      expect(client).to_not receive(:wait_until).with(:stack_update_complete, {:stack_name=>"STACK-NAME"})
-      expect(client).to receive(:update_stack).with(stack_parameters).and_raise(Aws::CloudFormation::Errors::ValidationError.new("foo", 'No updates are to be performed.'))
+      expect(client).to_not receive(:wait_until).with(:stack_update_complete, stack_name: 'STACK-NAME')
+      expect(client).to receive(:update_stack).with(stack_parameters).and_raise(Aws::CloudFormation::Errors::ValidationError.new('foo', 'No updates are to be performed.'))
 
       expect(Aws::CloudFormation::Client).to receive(:new).with(region: 'us-east-1').and_return(client)
 
@@ -158,15 +158,15 @@ describe MinimalPipeline::Cloudformation do
       client = double(Aws::CloudFormation::Client)
       response = double(Aws::CloudFormation::Types::DescribeStacksOutput)
 
-      expect(client).to receive(:describe_stacks).and_raise(Aws::CloudFormation::Errors::ValidationError.new("foo", "bar"))
-      expect(client).to receive(:create_stack).with(stack_parameters).and_raise(Aws::CloudFormation::Errors::ValidationError.new("foo", 'Template error'))
+      expect(client).to receive(:describe_stacks).and_raise(Aws::CloudFormation::Errors::ValidationError.new('foo', 'bar'))
+      expect(client).to receive(:create_stack).with(stack_parameters).and_raise(Aws::CloudFormation::Errors::ValidationError.new('foo', 'Template error'))
       expect(Aws::CloudFormation::Client).to receive(:new).with(region: 'us-east-1').and_return(client)
 
       cloudformation = MinimalPipeline::Cloudformation.new
 
-      expect {
+      expect do
         cloudformation.deploy_stack('STACK-NAME', stack_parameters)
-      }.to raise_error
+      end.to raise_error
     end
   end
 end
