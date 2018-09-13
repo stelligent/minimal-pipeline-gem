@@ -12,3 +12,6 @@ Metrics/CyclomaticComplexity:
 
 Metrics/PerceivedComplexity:
   Max: 10
+
+Layout/EmptyLineAfterGuardClause:
+  Enabled: false
