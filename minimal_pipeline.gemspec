@@ -6,8 +6,9 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 Gem::Specification.new do |spec|
   spec.name          = 'minimal_pipeline'
   spec.authors       = ['Mayowa Aladeojebi', 'Jesse Adams']
-  spec.email         = ['mayowa.aladeojebi@stelligent.com', 'jesse.adams@stelligent.com']
-  spec.version       = '0.0.5'
+  spec.email         = ['mayowa.aladeojebi@stelligent.com',
+                        'jesse.adams@stelligent.com']
+  spec.version       = '0.0.6'
   spec.summary       = 'Helper gem to manage pipeline tasks'
   spec.description   = 'Helper gem to orchestrate pipeline tasks'
   spec.homepage      = 'https://github.com/stelligent/minimal-pipeline-gem'

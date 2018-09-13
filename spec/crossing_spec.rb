@@ -1,10 +1,11 @@
 require './spec/spec_helper'
 
+# rubocop:disable Metrics/BlockLength
 describe MinimalPipeline::Crossing do
   describe 'without AWS_REGION' do
     it 'requires AWS_REGION to be set' do
       expect do
-        crossing = MinimalPipeline::Crossing.new
+        MinimalPipeline::Crossing.new
       end.to raise_error 'You must set env variable AWS_REGION or region.'
     end
   end
@@ -20,7 +21,7 @@ describe MinimalPipeline::Crossing do
 
     it 'requires keystore_kms_id' do
       expect do
-        crossing = MinimalPipeline::Crossing.new
+        MinimalPipeline::Crossing.new
       end.to raise_error 'You must set env variable keystore_kms_id.'
     end
 
@@ -42,7 +43,7 @@ describe MinimalPipeline::Crossing do
 
         expect(Crossing).to receive(:new).with(s3)
 
-        crossing = MinimalPipeline::Crossing.new
+        MinimalPipeline::Crossing.new
       end
 
       it 'uploads content to S3' do
@@ -76,3 +77,4 @@ describe MinimalPipeline::Crossing do
     end
   end
 end
+# rubocop:enable Metrics/BlockLength

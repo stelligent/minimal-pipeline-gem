@@ -1,10 +1,11 @@
 require './spec/spec_helper'
 
+# rubocop:disable Metrics/BlockLength, Metrics/LineLength
 describe MinimalPipeline::Cloudformation do
   describe 'without AWS_REGION' do
     it 'requires AWS_REGION to be set' do
       expect do
-        cloudformation = MinimalPipeline::Cloudformation.new
+        MinimalPipeline::Cloudformation.new
       end.to raise_error 'You must set env variable AWS_REGION or region.'
     end
   end
@@ -22,7 +23,7 @@ describe MinimalPipeline::Cloudformation do
       expect(Aws::CloudFormation::Client).to receive(:new).with(region: 'us-east-1')
 
       expect do
-        cloudformation = MinimalPipeline::Cloudformation.new
+        MinimalPipeline::Cloudformation.new
       end.to_not raise_error
     end
 
@@ -75,7 +76,6 @@ describe MinimalPipeline::Cloudformation do
       }
 
       client = double(Aws::CloudFormation::Client)
-      response = double(Aws::CloudFormation::Types::DescribeStacksOutput)
 
       expect(client).to receive(:describe_stacks).and_raise(Aws::CloudFormation::Errors::ValidationError.new('foo', 'bar'))
       expect(client).to receive(:wait_until).with(:stack_create_complete, stack_name: 'STACK-NAME').and_return(true)
@@ -156,7 +156,6 @@ describe MinimalPipeline::Cloudformation do
       }
 
       client = double(Aws::CloudFormation::Client)
-      response = double(Aws::CloudFormation::Types::DescribeStacksOutput)
 
       expect(client).to receive(:describe_stacks).and_raise(Aws::CloudFormation::Errors::ValidationError.new('foo', 'bar'))
       expect(client).to receive(:create_stack).with(stack_parameters).and_raise(Aws::CloudFormation::Errors::ValidationError.new('foo', 'Template error'))
@@ -170,3 +169,4 @@ describe MinimalPipeline::Cloudformation do
     end
   end
 end
+# rubocop:enable Metrics/BlockLength, Metrics/LineLength

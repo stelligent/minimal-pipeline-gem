@@ -1,5 +1,6 @@
 require './spec/spec_helper'
 
+# rubocop:disable Metrics/BlockLength, Metrics/LineLength
 describe MinimalPipeline::Docker do
   it 'cleans up docker images' do
     image = double(Docker::Image)
@@ -69,3 +70,4 @@ describe MinimalPipeline::Docker do
     docker.push_docker_image('foo')
   end
 end
+# rubocop:enable Metrics/BlockLength, Metrics/LineLength

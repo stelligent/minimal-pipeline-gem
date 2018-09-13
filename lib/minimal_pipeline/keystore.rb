@@ -42,9 +42,9 @@ class MinimalPipeline
       kms = Aws::KMS::Client.new(region: region)
       dynamo = Aws::DynamoDB::Client.new(region: region)
       @keystore = ::Keystore.new(dynamo: dynamo,
-                               table_name: keystore_table,
-                               kms: kms,
-                               key_id: keystore_kms_id)
+                                 table_name: keystore_table,
+                                 kms: kms,
+                                 key_id: keystore_kms_id)
     end
 
     # Retrieves a value from the Keystore

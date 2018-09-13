@@ -1,10 +1,11 @@
 require './spec/spec_helper'
 
+# rubocop:disable Metrics/BlockLength
 describe MinimalPipeline::Keystore do
   describe 'without AWS_REGION' do
     it 'requires AWS_REGION to be set' do
       expect do
-        keystore = MinimalPipeline::Keystore.new
+        MinimalPipeline::Keystore.new
       end.to raise_error 'You must set env variable AWS_REGION or region.'
     end
   end
@@ -20,7 +21,7 @@ describe MinimalPipeline::Keystore do
 
     it 'requires keystore_table' do
       expect do
-        keystore = MinimalPipeline::Keystore.new
+        MinimalPipeline::Keystore.new
       end.to raise_error 'You must set env variable keystore_table.'
     end
 
@@ -35,7 +36,7 @@ describe MinimalPipeline::Keystore do
 
       it 'also requires keystore_kms_id' do
         expect do
-          keystore = MinimalPipeline::Keystore.new
+          MinimalPipeline::Keystore.new
         end.to raise_error 'You must set env variable keystore_kms_id.'
       end
 
@@ -62,7 +63,7 @@ describe MinimalPipeline::Keystore do
             key_id: '12345'
           )
 
-          keystore = MinimalPipeline::Keystore.new
+          MinimalPipeline::Keystore.new
         end
 
         it 'retrieves data from the keystore' do
@@ -89,3 +90,4 @@ describe MinimalPipeline::Keystore do
     end
   end
 end
+# rubocop:enable Metrics/BlockLength

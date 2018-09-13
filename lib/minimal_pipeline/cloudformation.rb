@@ -86,7 +86,7 @@ class MinimalPipeline
       end
     rescue Aws::CloudFormation::Errors::ValidationError => error
       if error.to_s.include? 'No updates are to be performed.'
-        puts "Nothing to do."
+        puts 'Nothing to do.'
       elsif error.to_s.include? 'Template error'
         raise error
       else
