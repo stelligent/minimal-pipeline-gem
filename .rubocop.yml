@@ -15,3 +15,6 @@ Metrics/PerceivedComplexity:
 
 Layout/EmptyLineAfterGuardClause:
   Enabled: false
+
+Style/UnneededPercentQ:
+  Enabled: false

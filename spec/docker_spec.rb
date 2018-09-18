@@ -71,7 +71,7 @@ describe MinimalPipeline::Docker do
   end
 
   it 'outputs JSON build output lines as human readible text' do
-    example_output = %q{{"foo": "bar","stream": "baz"}}
+    example_output = %q({"foo": "bar","stream": "baz"})
 
     expect($stdout).to receive(:puts).with('baz')
 
@@ -80,7 +80,7 @@ describe MinimalPipeline::Docker do
   end
 
   it 'detects bad JSON' do
-    example_output = %q{{"foo": "bar" "stream": "baz"}}
+    example_output = %q({"foo": "bar" "stream": "baz"})
 
     expect($stdout).to receive(:puts).with("Bad JSON parse\n")
     expect($stdout).to receive(:puts).with(example_output)
