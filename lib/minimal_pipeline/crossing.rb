@@ -25,13 +25,14 @@ class MinimalPipeline
   class Crossing
     def initialize
       raise 'You must set env variable AWS_REGION or region.' \
-        if ENV['AWS_REGION'].nil?
+        if ENV['AWS_REGION'].nil? && ENV['region'].nil?
       raise 'You must set env variable keystore_kms_id.' \
-        if ENV['keystore_kms_id'].nil?
+        if ENV['inventory_store_key'].nil? && ENV['keystore_kms_id'].nil?
 
-      region = ENV['AWS_REGION']
+      region = ENV['AWS_REGION'] || ENV['region']
+      keystore_kms_id = ENV['keystore_kms_id'] || ENV['inventory_store_key']
       kms = Aws::KMS::Client.new(region: region)
-      s3 = Aws::S3::Encryption::Client.new(kms_key_id: ENV['keystore_kms_id'],
+      s3 = Aws::S3::Encryption::Client.new(kms_key_id: keystore_kms_id,
                                            kms_client: kms,
                                            region: region)
       @crossing = ::Crossing.new(s3)
