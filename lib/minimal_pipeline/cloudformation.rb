@@ -80,17 +80,17 @@ class MinimalPipeline
     # @param stack_parameters [Hash] Parameters to be passed into the stack
     def deploy_stack(stack_name, stack_parameters)
       unless @client.describe_stacks(stack_name: stack_name).stacks.empty?
-        puts 'Updating the existing stack'
+        puts 'Updating the existing stack' if ENV['DEBUG']
         @client.update_stack(stack_parameters)
         @client.wait_until(:stack_update_complete, stack_name: stack_name)
       end
     rescue Aws::CloudFormation::Errors::ValidationError => error
       if error.to_s.include? 'No updates are to be performed.'
-        puts 'Nothing to do.'
+        puts 'Nothing to do.' if ENV['DEBUG']
       elsif error.to_s.include? 'Template error'
         raise error
       else
-        puts 'Creating a new stack'
+        puts 'Creating a new stack' if ENV['DEBUG']
         @client.create_stack(stack_parameters)
         @client.wait_until(:stack_create_complete, stack_name: stack_name)
       end

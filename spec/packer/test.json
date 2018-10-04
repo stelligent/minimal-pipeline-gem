@@ -1,0 +1,15 @@
+{
+  "variables": {
+    "ami_id": ""
+  },
+  "builders": [{
+    "type": "amazon-ebs",
+    "access_key": "",
+    "secret_key": "",
+    "region": "us-east-1",
+    "source_ami": "{{user `ami_id`}}",
+    "instance_type": "t2.micro",
+    "ssh_username": "ubuntu",
+    "ami_name": "minimal-pipeline-packer-test-{{timestamp}}"
+  }]
+}

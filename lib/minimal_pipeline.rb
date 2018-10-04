@@ -14,4 +14,5 @@ class MinimalPipeline
   autoload(:Crossing, 'minimal_pipeline/crossing')
   autoload(:Docker, 'minimal_pipeline/docker')
   autoload(:Keystore, 'minimal_pipeline/keystore')
+  autoload(:Packer, 'minimal_pipeline/packer')
 end
