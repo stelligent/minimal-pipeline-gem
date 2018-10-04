@@ -57,13 +57,24 @@
         <div class="clear"></div>
       </div>
 
-      <div id="content"><div id='filecontents'><h1>Minimal Pipeline Gem</h1>
+      <div id="content"><div id='filecontents'><p><a href="https://circleci.com/gh/stelligent/minimal-pipeline-gem"><img src="https://circleci.com/gh/stelligent/minimal-pipeline-gem.svg?style=svg" alt="CircleCI"></a></p>
+
+<h1>Minimal Pipeline Gem</h1>
 
 <blockquote>
 <p>Helper gem to manage pipeline deploy tasks</p>
 </blockquote>
 
-<p>A Simple gem to help orchestrate pipeline tasks in ruby.</p>
+<p>A Simple gem to help orchestrate pipeline tasks in ruby. It currently supports deploying containers to ECS via CloudFormation.</p>
+
+<h2>Tools Used</h2>
+
+<ul>
+<li>Docker</li>
+<li>CloudFormation</li>
+<li><a href="https://github.com/stelligent/crossing">https://github.com/stelligent/crossing</a> - Encrypt files and store them in S3</li>
+<li><a href="https://github.com/stelligent/keystore">https://github.com/stelligent/keystore</a> - Encrypted key value store on top of DynamoDB</li>
+</ul>
 
 <h2>Install</h2>
 
@@ -82,16 +93,33 @@ $ gem install ./minimal_pipeline-VERSION.gem
 
 <p>Full documentation is available at <a href="https://stelligent.github.io/minimal-pipeline-gem/">https://stelligent.github.io/minimal-pipeline-gem/</a>.</p>
 
+<h2>Contributing</h2>
+
+<ol>
+<li>Checkout the code and run bundler: <code>bundle install</code></li>
+<li>Create a feature branch: <code>git checkout -b feature-name</code></li>
+<li>Make your changes</li>
+<li>Run rubocop: <code>bundle exec rubocop</code></li>
+<li>Fix violations, if any</li>
+<li>Run unit tests: <code>bundle exec rspec</code></li>
+<li>Ensure tests pass and 100% test coverage in maintained</li>
+<li>Commit changes, push, and open a pull request with a detailed description.</li>
+</ol>
+
+<h2>License</h2>
+
+<p>MIT</p>
+
 <h2>Maintainers</h2>
 
 <ul>
-<li><a href="https://git.uscis.dhs.gov/obaladeo">@obaladeo</a>.</li>
-<li><a href="https://git.uscis.dhs.gov/jesseadams">@jesseadams</a>.</li>
+<li><a href="https://github.com/mayoralade">@mayoralade</a>.</li>
+<li><a href="https://github.com/jesseadams">@jesseadams</a>.</li>
 </ul>
 </div></div>
 
       <div id="footer">
-  Generated on Mon Aug 27 11:48:23 2018 by
+  Generated on Thu Oct  4 14:29:07 2018 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.14 (ruby-2.5.1).
 </div>

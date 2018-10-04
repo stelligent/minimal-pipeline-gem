@@ -77,7 +77,7 @@ class MinimalPipeline
         't' => image_id,
         'buildargs' => JSON.dump(build_args)
       }
-      puts "Build args: #{args.inspect}"
+      puts "Build args: #{args.inspect}" if ENV['DEBUG']
       ::Docker.options[:read_timeout] = timeout
       ::Docker::Image.build_from_dir(dir, args) { |v| build_output(v) }
     end
