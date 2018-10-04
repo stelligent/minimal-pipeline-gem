@@ -6,7 +6,7 @@ class MinimalPipeline
   # Here is an example of how to use this class to build AMIs from Packer YAML
   #
   # ```
-  # Pass in the path to the Packer JSON config file
+  # # Pass in the path to the Packer JSON config file
   # packer = MinimalPipeline::Packer.new('path/to/packer.json')
   #
   # variables = {
