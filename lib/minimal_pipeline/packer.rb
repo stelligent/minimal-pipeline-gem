@@ -32,7 +32,7 @@ class MinimalPipeline
     # @return [String]
     def get_ami_id(output)
       return if output.nil? || output.empty?
-      output.match(/AMIs were created:\\nus-east-1: (ami-.+)\\n/)[1]
+      output.match(/AMIs were created:.+ (ami-.{17})/)[1]
     end
 
     # Build and execute a packer build command
@@ -52,6 +52,7 @@ class MinimalPipeline
       puts command if ENV['DEBUG']
 
       output = `#{command}`
+      puts output if ENV['DEBUG']
       get_ami_id(output)
     end
   end
