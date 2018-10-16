@@ -31,15 +31,24 @@ class MinimalPipeline
   class Cloudformation
     # Instance of `Aws::CloudFormation::Client`
     attr_reader(:client)
+    attr_accessor(:wait_max_attempts)
+    attr_accessor(:wait_delay)
 
     # Sets up `Aws::CloudFormation::Client`
     # Requires environment variable `AWS_REGION` or `region` to be set.
-    def initialize
+    #
+    # @param wait_max_attempts [Fixnum] Number of attempts to wait until all
+    # stack create or update is complete.
+    # @param wait_delay [Fixnum] The sleep interval for checking the status of
+    # a stack's status
+    def initialize(wait_max_attempts = 120, wait_delay = 30)
       raise 'You must set env variable AWS_REGION or region.' \
         if ENV['AWS_REGION'].nil? && ENV['region'].nil?
 
       region = ENV['AWS_REGION'] || ENV['region']
       @client = Aws::CloudFormation::Client.new(region: region)
+      @wait_max_attempts = wait_max_attempts
+      @wait_delay = wait_delay
     end
 
     # Converts a parameter Hash into a CloudFormation friendly structure
@@ -79,10 +88,16 @@ class MinimalPipeline
     # @param stack_name [String] The name of the CloudFormation stack
     # @param stack_parameters [Hash] Parameters to be passed into the stack
     def deploy_stack(stack_name, stack_parameters)
+      wait_options = {
+        max_attempts: @wait_max_attempts,
+        delay: @wait_delay
+      }
+
       unless @client.describe_stacks(stack_name: stack_name).stacks.empty?
         puts 'Updating the existing stack' if ENV['DEBUG']
         @client.update_stack(stack_parameters)
-        @client.wait_until(:stack_update_complete, stack_name: stack_name)
+        @client.wait_until(:stack_update_complete, { stack_name: stack_name },
+                           wait_options)
       end
     rescue Aws::CloudFormation::Errors::ValidationError => error
       if error.to_s.include? 'No updates are to be performed.'
@@ -92,7 +107,8 @@ class MinimalPipeline
       else
         puts 'Creating a new stack' if ENV['DEBUG']
         @client.create_stack(stack_parameters)
-        @client.wait_until(:stack_create_complete, stack_name: stack_name)
+        @client.wait_until(:stack_create_complete, { stack_name: stack_name },
+                           wait_options)
       end
     end
   end

@@ -102,10 +102,15 @@ describe MinimalPipeline::Cloudformation do
         foo: 'bar'
       }
 
+      wait_options = {
+        delay: 30,
+        max_attempts: 120
+      }
+
       client = double(Aws::CloudFormation::Client)
 
       expect(client).to receive(:describe_stacks).and_raise(Aws::CloudFormation::Errors::ValidationError.new('foo', 'bar'))
-      expect(client).to receive(:wait_until).with(:stack_create_complete, stack_name: 'STACK-NAME').and_return(true)
+      expect(client).to receive(:wait_until).with(:stack_create_complete, { stack_name: 'STACK-NAME' }, wait_options).and_return(true)
       expect(client).to receive(:create_stack).with(stack_parameters)
       expect(Aws::CloudFormation::Client).to receive(:new).with(region: 'us-east-1').and_return(client)
 
@@ -116,6 +121,11 @@ describe MinimalPipeline::Cloudformation do
     it 'updates a new stack if it already exists' do
       stack_parameters = {
         foo: 'bar'
+      }
+
+      wait_options = {
+        delay: 30,
+        max_attempts: 120
       }
 
       outputs = [
@@ -136,7 +146,7 @@ describe MinimalPipeline::Cloudformation do
 
       expect(client).to receive(:describe_stacks).with(stack_name: 'STACK-NAME').and_return(response)
       expect(response).to receive(:stacks).and_return(stacks).at_least(:once)
-      expect(client).to receive(:wait_until).with(:stack_update_complete, stack_name: 'STACK-NAME').and_return(true)
+      expect(client).to receive(:wait_until).with(:stack_update_complete, { stack_name: 'STACK-NAME' }, wait_options).and_return(true)
       expect(client).to receive(:update_stack).with(stack_parameters)
 
       expect(Aws::CloudFormation::Client).to receive(:new).with(region: 'us-east-1').and_return(client)
