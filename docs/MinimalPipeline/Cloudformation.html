@@ -170,6 +170,58 @@
 </li>
 
     
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#wait_delay-instance_method" title="#wait_delay (instance method)">#<strong>wait_delay</strong>  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>Returns the value of attribute wait_delay.</p>
+</div></span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#wait_max_attempts-instance_method" title="#wait_max_attempts (instance method)">#<strong>wait_max_attempts</strong>  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>Returns the value of attribute wait_max_attempts.</p>
+</div></span>
+  
+</li>
+
+    
   </ul>
 
 
@@ -208,7 +260,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#initialize-instance_method" title="#initialize (instance method)">#<strong>initialize</strong>  &#x21d2; Cloudformation </a>
+      <a href="#initialize-instance_method" title="#initialize (instance method)">#<strong>initialize</strong>(wait_max_attempts = 120, wait_delay = 30)  &#x21d2; Cloudformation </a>
     
 
     
@@ -285,7 +337,7 @@
     <div class="method_details first">
   <h3 class="signature first" id="initialize-instance_method">
   
-    #<strong>initialize</strong>  &#x21d2; <tt><span class='object_link'><a href="" title="MinimalPipeline::Cloudformation (class)">Cloudformation</a></span></tt> 
+    #<strong>initialize</strong>(wait_max_attempts = 120, wait_delay = 30)  &#x21d2; <tt><span class='object_link'><a href="" title="MinimalPipeline::Cloudformation (class)">Cloudformation</a></span></tt> 
   
 
   
@@ -296,11 +348,52 @@
     <p>Sets up <code>Aws::CloudFormation::Client</code>
 Requires environment variable <code>AWS_REGION</code> or <code>region</code> to be set.</p>
 
+<p>stack create or update is complete.
+a stack&#39;s status</p>
+
 
   </div>
 </div>
 <div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
   
+    <li>
+      
+        <span class='name'>wait_max_attempts</span>
+      
+      
+        <span class='type'>(<tt>Fixnum</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>120</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'><p>Number of attempts to wait until all</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>wait_delay</span>
+      
+      
+        <span class='type'>(<tt>Fixnum</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>30</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'><p>The sleep interval for checking the status of</p>
+</div>
+      
+    </li>
+  
+</ul>
+
 
 </div><table class="source_code">
   <tr>
@@ -308,23 +401,27 @@ Requires environment variable <code>AWS_REGION</code> or <code>region</code> to 
       <pre class="lines">
 
 
-37
-38
-39
-40
-41
-42
-43</pre>
+44
+45
+46
+47
+48
+49
+50
+51
+52</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/minimal_pipeline/cloudformation.rb', line 37</span>
+      <pre class="code"><span class="info file"># File 'lib/minimal_pipeline/cloudformation.rb', line 44</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_wait_max_attempts'>wait_max_attempts</span> <span class='op'>=</span> <span class='int'>120</span><span class='comma'>,</span> <span class='id identifier rubyid_wait_delay'>wait_delay</span> <span class='op'>=</span> <span class='int'>30</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_raise'>raise</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>You must set env variable AWS_REGION or region.</span><span class='tstring_end'>&#39;</span></span> \
     <span class='kw'>if</span> <span class='const'>ENV</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>AWS_REGION</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span> <span class='op'>&amp;&amp;</span> <span class='const'>ENV</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>region</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
 
   <span class='id identifier rubyid_region'>region</span> <span class='op'>=</span> <span class='const'>ENV</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>AWS_REGION</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span> <span class='op'>||</span> <span class='const'>ENV</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>region</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span>
   <span class='ivar'>@client</span> <span class='op'>=</span> <span class='const'>Aws</span><span class='op'>::</span><span class='const'>CloudFormation</span><span class='op'>::</span><span class='const'>Client</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='label'>region:</span> <span class='id identifier rubyid_region'>region</span><span class='rparen'>)</span>
+  <span class='ivar'>@wait_max_attempts</span> <span class='op'>=</span> <span class='id identifier rubyid_wait_max_attempts'>wait_max_attempts</span>
+  <span class='ivar'>@wait_delay</span> <span class='op'>=</span> <span class='id identifier rubyid_wait_delay'>wait_delay</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -372,6 +469,90 @@ Requires environment variable <code>AWS_REGION</code> or <code>region</code> to 
 
 <span class='kw'>def</span> <span class='id identifier rubyid_client'>client</span>
   <span class='ivar'>@client</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      
+      <span id="wait_delay=-instance_method"></span>
+      <div class="method_details ">
+  <h3 class="signature " id="wait_delay-instance_method">
+  
+    #<strong>wait_delay</strong>  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    <p>Returns the value of attribute wait_delay</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+35
+36
+37</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/minimal_pipeline/cloudformation.rb', line 35</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_wait_delay'>wait_delay</span>
+  <span class='ivar'>@wait_delay</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      
+      <span id="wait_max_attempts=-instance_method"></span>
+      <div class="method_details ">
+  <h3 class="signature " id="wait_max_attempts-instance_method">
+  
+    #<strong>wait_max_attempts</strong>  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    <p>Returns the value of attribute wait_max_attempts</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+34
+35
+36</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/minimal_pipeline/cloudformation.rb', line 34</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_wait_max_attempts'>wait_max_attempts</span>
+  <span class='ivar'>@wait_max_attempts</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -443,15 +624,6 @@ Requires environment variable <code>AWS_REGION</code> or <code>region</code> to 
       <pre class="lines">
 
 
-81
-82
-83
-84
-85
-86
-87
-88
-89
 90
 91
 92
@@ -459,16 +631,38 @@ Requires environment variable <code>AWS_REGION</code> or <code>region</code> to 
 94
 95
 96
-97</pre>
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/minimal_pipeline/cloudformation.rb', line 81</span>
+      <pre class="code"><span class="info file"># File 'lib/minimal_pipeline/cloudformation.rb', line 90</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_deploy_stack'>deploy_stack</span><span class='lparen'>(</span><span class='id identifier rubyid_stack_name'>stack_name</span><span class='comma'>,</span> <span class='id identifier rubyid_stack_parameters'>stack_parameters</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_wait_options'>wait_options</span> <span class='op'>=</span> <span class='lbrace'>{</span>
+    <span class='label'>max_attempts:</span> <span class='ivar'>@wait_max_attempts</span><span class='comma'>,</span>
+    <span class='label'>delay:</span> <span class='ivar'>@wait_delay</span>
+  <span class='rbrace'>}</span>
+
   <span class='kw'>unless</span> <span class='ivar'>@client</span><span class='period'>.</span><span class='id identifier rubyid_describe_stacks'>describe_stacks</span><span class='lparen'>(</span><span class='label'>stack_name:</span> <span class='id identifier rubyid_stack_name'>stack_name</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_stacks'>stacks</span><span class='period'>.</span><span class='id identifier rubyid_empty?'>empty?</span>
     <span class='id identifier rubyid_puts'>puts</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Updating the existing stack</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>if</span> <span class='const'>ENV</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>DEBUG</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span>
     <span class='ivar'>@client</span><span class='period'>.</span><span class='id identifier rubyid_update_stack'>update_stack</span><span class='lparen'>(</span><span class='id identifier rubyid_stack_parameters'>stack_parameters</span><span class='rparen'>)</span>
-    <span class='ivar'>@client</span><span class='period'>.</span><span class='id identifier rubyid_wait_until'>wait_until</span><span class='lparen'>(</span><span class='symbol'>:stack_update_complete</span><span class='comma'>,</span> <span class='label'>stack_name:</span> <span class='id identifier rubyid_stack_name'>stack_name</span><span class='rparen'>)</span>
+    <span class='ivar'>@client</span><span class='period'>.</span><span class='id identifier rubyid_wait_until'>wait_until</span><span class='lparen'>(</span><span class='symbol'>:stack_update_complete</span><span class='comma'>,</span> <span class='lbrace'>{</span> <span class='label'>stack_name:</span> <span class='id identifier rubyid_stack_name'>stack_name</span> <span class='rbrace'>}</span><span class='comma'>,</span>
+                       <span class='id identifier rubyid_wait_options'>wait_options</span><span class='rparen'>)</span>
   <span class='kw'>end</span>
 <span class='kw'>rescue</span> <span class='const'>Aws</span><span class='op'>::</span><span class='const'>CloudFormation</span><span class='op'>::</span><span class='const'>Errors</span><span class='op'>::</span><span class='const'>ValidationError</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_error'>error</span>
   <span class='kw'>if</span> <span class='id identifier rubyid_error'>error</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>No updates are to be performed.</span><span class='tstring_end'>&#39;</span></span>
@@ -478,7 +672,8 @@ Requires environment variable <code>AWS_REGION</code> or <code>region</code> to 
   <span class='kw'>else</span>
     <span class='id identifier rubyid_puts'>puts</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Creating a new stack</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>if</span> <span class='const'>ENV</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>DEBUG</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span>
     <span class='ivar'>@client</span><span class='period'>.</span><span class='id identifier rubyid_create_stack'>create_stack</span><span class='lparen'>(</span><span class='id identifier rubyid_stack_parameters'>stack_parameters</span><span class='rparen'>)</span>
-    <span class='ivar'>@client</span><span class='period'>.</span><span class='id identifier rubyid_wait_until'>wait_until</span><span class='lparen'>(</span><span class='symbol'>:stack_create_complete</span><span class='comma'>,</span> <span class='label'>stack_name:</span> <span class='id identifier rubyid_stack_name'>stack_name</span><span class='rparen'>)</span>
+    <span class='ivar'>@client</span><span class='period'>.</span><span class='id identifier rubyid_wait_until'>wait_until</span><span class='lparen'>(</span><span class='symbol'>:stack_create_complete</span><span class='comma'>,</span> <span class='lbrace'>{</span> <span class='label'>stack_name:</span> <span class='id identifier rubyid_stack_name'>stack_name</span> <span class='rbrace'>}</span><span class='comma'>,</span>
+                       <span class='id identifier rubyid_wait_options'>wait_options</span><span class='rparen'>)</span>
   <span class='kw'>end</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -547,16 +742,16 @@ Requires environment variable <code>AWS_REGION</code> or <code>region</code> to 
       <pre class="lines">
 
 
-49
-50
-51
-52
-53
-54
-55</pre>
+58
+59
+60
+61
+62
+63
+64</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/minimal_pipeline/cloudformation.rb', line 49</span>
+      <pre class="code"><span class="info file"># File 'lib/minimal_pipeline/cloudformation.rb', line 58</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_params'>params</span><span class='lparen'>(</span><span class='id identifier rubyid_parameters'>parameters</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_parameter_list'>parameter_list</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span>
@@ -646,21 +841,21 @@ Requires environment variable <code>AWS_REGION</code> or <code>region</code> to 
       <pre class="lines">
 
 
-62
-63
-64
-65
-66
-67
-68
-69
-70
 71
 72
-73</pre>
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/minimal_pipeline/cloudformation.rb', line 62</span>
+      <pre class="code"><span class="info file"># File 'lib/minimal_pipeline/cloudformation.rb', line 71</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_stack_output'>stack_output</span><span class='lparen'>(</span><span class='id identifier rubyid_stack'>stack</span><span class='comma'>,</span> <span class='id identifier rubyid_output'>output</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_resp'>resp</span> <span class='op'>=</span> <span class='ivar'>@client</span><span class='period'>.</span><span class='id identifier rubyid_describe_stacks'>describe_stacks</span><span class='lparen'>(</span><span class='label'>stack_name:</span> <span class='id identifier rubyid_stack'>stack</span><span class='rparen'>)</span>
@@ -684,7 +879,7 @@ Requires environment variable <code>AWS_REGION</code> or <code>region</code> to 
 </div>
 
       <div id="footer">
-  Generated on Thu Oct  4 15:12:10 2018 by
+  Generated on Tue Oct 16 13:25:22 2018 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.14 (ruby-2.5.1).
 </div>
