@@ -49,6 +49,7 @@ class MinimalPipeline
       @client = Aws::CloudFormation::Client.new(region: region)
       @wait_max_attempts = wait_max_attempts
       @wait_delay = wait_delay
+      @outputs = {}
     end
 
     # Converts a parameter Hash into a CloudFormation friendly structure
@@ -84,12 +85,14 @@ class MinimalPipeline
       response = @client.describe_stacks(stack_name: stack)
       raise "#{stack.upcase} stack does not exist!" if response.stacks.empty?
 
-      outputs = {}
-      response.stacks.first.outputs.each do |output|
-        outputs[output.output_key] = output.output_value
+      @outputs[stack] ||= {}
+      if @outputs[stack].empty?
+        response.stacks.first.outputs.each do |output|
+          @outputs[stack][output.output_key] = output.output_value
+        end
       end
 
-      outputs
+      @outputs[stack]
     end
 
     # Creates or Updates a CloudFormation stack. Checks to see if the stack
