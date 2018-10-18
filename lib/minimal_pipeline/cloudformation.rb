@@ -49,6 +49,7 @@ class MinimalPipeline
       @client = Aws::CloudFormation::Client.new(region: region)
       @wait_max_attempts = wait_max_attempts
       @wait_delay = wait_delay
+      @outputs = {}
     end
 
     # Converts a parameter Hash into a CloudFormation friendly structure
@@ -69,16 +70,29 @@ class MinimalPipeline
     # @param output [String] The name of the output to fetch the value of
     # @return [String] The value of the output for the CloudFormation stack
     def stack_output(stack, output)
-      resp = @client.describe_stacks(stack_name: stack)
+      outputs = stack_outputs(stack)
+      message = "#{stack.upcase} stack does not have a(n) '#{output}' output!"
+      raise message unless outputs.key?(output)
 
-      raise "#{stack.upcase} stack does not exist!" if resp.stacks.empty?
+      outputs[output]
+    end
 
-      resp.stacks.first.outputs.each do |stack_output|
-        zero_output = stack_output.output_key.casecmp(output).zero?
-        return stack_output.output_value if zero_output
+    # Retrieves all CloudFormation stack outputs
+    #
+    # @param stack [String] The name of the CloudFormation stack
+    # @return [Hash] Key value pairs of stack outputs
+    def stack_outputs(stack)
+      response = @client.describe_stacks(stack_name: stack)
+      raise "#{stack.upcase} stack does not exist!" if response.stacks.empty?
+
+      @outputs[stack] ||= {}
+      if @outputs[stack].empty?
+        response.stacks.first.outputs.each do |output|
+          @outputs[stack][output.output_key] = output.output_value
+        end
       end
 
-      raise "#{stack.upcase} stack does not have a(n) '#{output}' output!"
+      @outputs[stack]
     end
 
     # Creates or Updates a CloudFormation stack. Checks to see if the stack
