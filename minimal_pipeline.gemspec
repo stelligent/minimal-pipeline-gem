@@ -8,27 +8,25 @@ Gem::Specification.new do |spec|
   spec.authors       = ['Mayowa Aladeojebi', 'Jesse Adams']
   spec.email         = ['mayowa.aladeojebi@stelligent.com',
                         'jesse.adams@stelligent.com']
-  spec.version       = '0.0.11'
+  spec.version       = '0.0.15'
   spec.summary       = 'Helper gem to manage pipeline tasks'
   spec.description   = 'Helper gem to orchestrate pipeline tasks'
   spec.homepage      = 'https://github.com/stelligent/minimal-pipeline-gem'
   spec.license       = '0BSD'
 
-  # spec.files = `git ls-files -z`.split("\x0").reject do |f|
-  #   f.match(%r{^(test|spec|features)/})
-  # end
   spec.files = ['lib/minimal_pipeline.rb',
                 'lib/minimal_pipeline/cloudformation.rb',
                 'lib/minimal_pipeline/keystore.rb',
                 'lib/minimal_pipeline/crossing.rb',
                 'lib/minimal_pipeline/docker.rb',
-                'lib/minimal_pipeline/packer.rb']
+                'lib/minimal_pipeline/packer.rb',
+                'lib/minimal_pipeline/s3.rb',
+                'lib/minimal_pipeline/lambda.rb']
   spec.require_paths = ['lib']
-  spec.add_runtime_dependency('aws-sdk', '~> 2')
-  spec.add_runtime_dependency('crossing', '0.1.8')
+  spec.add_runtime_dependency('aws-sdk', '~> 3')
+  spec.add_runtime_dependency('crossing', '0.1.9')
   spec.add_runtime_dependency('docker-api', '1.34.2')
-  spec.add_runtime_dependency('keystore', '0.1.7')
+  spec.add_runtime_dependency('keystore', '0.2.0')
   spec.add_runtime_dependency('packer-config', '1.6.3')
-  spec.add_runtime_dependency('rake')
-  spec.add_runtime_dependency('rubocop', '0.55.0')
+  spec.add_runtime_dependency('zip', '2.0.2')
 end

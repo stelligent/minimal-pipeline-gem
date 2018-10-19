@@ -11,4 +11,5 @@ source 'https://rubygems.org' do
   gem 'rubocop'
   gem 'simplecov'
   gem 'yard'
+  gem 'zip'
 end
