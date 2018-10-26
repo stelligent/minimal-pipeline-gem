@@ -197,8 +197,7 @@ describe MinimalPipeline::Cloudformation do
       client = double(Aws::CloudFormation::Client)
       error = Aws::CloudFormation::Errors::ValidationError.new('foo', 'Template error')
 
-      expect(client).to receive(:describe_stacks).and_raise(Aws::CloudFormation::Errors::ValidationError.new('foo', 'bar'))
-      expect(client).to receive(:create_stack).with(stack_parameters).and_raise(error)
+      expect(client).to receive(:describe_stacks).and_raise(error)
       expect(Aws::CloudFormation::Client).to receive(:new).with(region: 'us-east-1').and_return(client)
 
       cloudformation = MinimalPipeline::Cloudformation.new
