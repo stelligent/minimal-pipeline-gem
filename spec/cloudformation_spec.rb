@@ -4,6 +4,8 @@ require './spec/spec_helper'
 describe MinimalPipeline::Cloudformation do
   describe 'without AWS_REGION' do
     it 'requires AWS_REGION to be set' do
+      ENV.delete('AWS_REGION')
+
       expect do
         MinimalPipeline::Cloudformation.new
       end.to raise_error 'You must set env variable AWS_REGION or region.'
