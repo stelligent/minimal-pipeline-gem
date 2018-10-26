@@ -8,7 +8,7 @@ Gem::Specification.new do |spec|
   spec.authors       = ['Mayowa Aladeojebi', 'Jesse Adams']
   spec.email         = ['mayowa.aladeojebi@stelligent.com',
                         'jesse.adams@stelligent.com']
-  spec.version       = '0.0.20'
+  spec.version       = '0.0.21'
   spec.summary       = 'Helper gem to manage pipeline tasks'
   spec.description   = 'Helper gem to orchestrate pipeline tasks'
   spec.homepage      = 'https://github.com/stelligent/minimal-pipeline-gem'
@@ -21,6 +21,7 @@ Gem::Specification.new do |spec|
                 'lib/minimal_pipeline/docker.rb',
                 'lib/minimal_pipeline/packer.rb',
                 'lib/minimal_pipeline/s3.rb',
+                'lib/minimal_pipeline/sqs.rb',
                 'lib/minimal_pipeline/lambda.rb']
   spec.require_paths = ['lib']
   spec.add_runtime_dependency('aws-sdk', '~> 3')

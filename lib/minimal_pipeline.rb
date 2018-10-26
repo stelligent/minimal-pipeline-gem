@@ -17,4 +17,5 @@ class MinimalPipeline
   autoload(:Lambda, 'minimal_pipeline/lambda')
   autoload(:Packer, 'minimal_pipeline/packer')
   autoload(:S3, 'minimal_pipeline/s3')
+  autoload(:Sqs, 'minimal_pipeline/sqs')
 end
