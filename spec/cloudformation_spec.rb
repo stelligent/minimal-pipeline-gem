@@ -225,8 +225,6 @@ describe MinimalPipeline::Cloudformation do
     end
 
     it 'detects that a stack does not exist' do
-      stacks = []
-
       client = double(Aws::CloudFormation::Client)
       error = Aws::CloudFormation::Errors::ValidationError.new('foo', 'Stack with id foo does not exist')
 
