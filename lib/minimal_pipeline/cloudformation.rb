@@ -125,5 +125,16 @@ class MinimalPipeline
                            wait_options)
       end
     end
+
+    # Checks to see if a stack exists
+    #
+    # @param stack_name [String] The name of the CloudFormation stack
+    # @return [Booean] true/false depending on whether or not the stack exists
+    def stack_exists?(stack_name)
+       stacks = @client.describe_stacks(stack_name: stack_name).stacks
+       !stacks.empty?
+     rescue ::Aws::CloudFormation::Errors::ValidationError
+       false
+     end
   end
 end
