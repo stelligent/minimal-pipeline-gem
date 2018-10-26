@@ -23,7 +23,7 @@ class MinimalPipeline
     # @param zipefile_name [String] The path to the resulting zip file
     def prepare_zipfile(input, zipfile_name)
       Zip::File.open(zipfile_name, Zip::File::CREATE) do |zipfile|
-        if File.directory?(zipfile)
+        if File.directory?(input)
           input_filenames = Dir.entries(input) - %w[. ..]
           input_filenames.each do |filename|
             zipfile.add(filename, File.join(input, filename))

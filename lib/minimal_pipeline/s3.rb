@@ -35,9 +35,9 @@ class MinimalPipeline
     # @param key [String] The name of the key of the object in S3
     # This defaults to the file param
     def download(bucket_name, file, key = nil)
-      key ||= file
-      object = @s3.bucket(bucket_name, key)
-      object.upload_file(file)
+      key ||= File.basename(file)
+      object = @s3.bucket(bucket_name).object(key)
+      object.download_file(file)
     end
 
     # Uploads a file from local disk to S3
@@ -47,9 +47,9 @@ class MinimalPipeline
     # @param key [String] The name of the key to store the file as in the bucket
     # This defaults to the file param
     def upload(bucket_name, file, key = nil)
-      key ||= file
-      object = @s3.bucket(bucket_name, key)
-      object.download_file(file)
+      key ||= File.basename(file)
+      object = @s3.bucket(bucket_name).object(key)
+      object.upload_file(file)
     end
   end
 end
