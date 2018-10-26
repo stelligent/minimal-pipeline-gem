@@ -205,6 +205,36 @@ describe MinimalPipeline::Cloudformation do
         cloudformation.deploy_stack('STACK-NAME', stack_parameters)
       end.to raise_error(error)
     end
+
+    it 'detects that a stack exists' do
+      stacks = [
+        Aws::CloudFormation::Types::Stack.new(stack_name: 'foo')
+      ]
+
+      client = double(Aws::CloudFormation::Client)
+      response = double(Aws::CloudFormation::Types::DescribeStacksOutput)
+
+      expect(client).to receive(:describe_stacks).with(stack_name: 'foo').and_return(response)
+      expect(response).to receive(:stacks).and_return(stacks).at_least(:once)
+
+      expect(Aws::CloudFormation::Client).to receive(:new).with(region: 'us-east-1').and_return(client)
+
+      cloudformation = MinimalPipeline::Cloudformation.new
+      response = cloudformation.stack_exists?('foo')
+      expect(response).to be true
+    end
+
+    it 'detects that a stack does not exist' do
+      client = double(Aws::CloudFormation::Client)
+      error = Aws::CloudFormation::Errors::ValidationError.new('foo', 'Stack with id foo does not exist')
+
+      expect(client).to receive(:describe_stacks).and_raise(error)
+      expect(Aws::CloudFormation::Client).to receive(:new).with(region: 'us-east-1').and_return(client)
+
+      cloudformation = MinimalPipeline::Cloudformation.new
+      response = cloudformation.stack_exists?('foo')
+      expect(response).to_not be true
+    end
   end
 end
 # rubocop:enable Metrics/BlockLength, Metrics/LineLength
