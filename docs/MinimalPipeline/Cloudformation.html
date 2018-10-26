@@ -308,6 +308,29 @@
         <li class="public ">
   <span class="summary_signature">
     
+      <a href="#stack_exists%3F-instance_method" title="#stack_exists? (instance method)">#<strong>stack_exists?</strong>(stack_name)  &#x21d2; Boolean </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>Checks to see if a stack exists.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
       <a href="#stack_output-instance_method" title="#stack_output (instance method)">#<strong>stack_output</strong>(stack, output)  &#x21d2; String </a>
     
 
@@ -791,6 +814,88 @@ a stack&#39;s status</p>
 </div>
     
       <div class="method_details ">
+  <h3 class="signature " id="stack_exists?-instance_method">
+  
+    #<strong>stack_exists?</strong>(stack_name)  &#x21d2; <tt>Boolean</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    <p>Checks to see if a stack exists</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>stack_name</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>The name of the CloudFormation stack</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>true/false depending on whether or not the stack exists</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+133
+134
+135
+136
+137
+138</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/minimal_pipeline/cloudformation.rb', line 133</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_stack_exists?'>stack_exists?</span><span class='lparen'>(</span><span class='id identifier rubyid_stack_name'>stack_name</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_stacks'>stacks</span> <span class='op'>=</span> <span class='ivar'>@client</span><span class='period'>.</span><span class='id identifier rubyid_describe_stacks'>describe_stacks</span><span class='lparen'>(</span><span class='label'>stack_name:</span> <span class='id identifier rubyid_stack_name'>stack_name</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_stacks'>stacks</span>
+  <span class='op'>!</span><span class='id identifier rubyid_stacks'>stacks</span><span class='period'>.</span><span class='id identifier rubyid_empty?'>empty?</span>
+<span class='kw'>rescue</span> <span class='op'>::</span><span class='const'>Aws</span><span class='op'>::</span><span class='const'>CloudFormation</span><span class='op'>::</span><span class='const'>Errors</span><span class='op'>::</span><span class='const'>ValidationError</span>
+  <span class='kw'>false</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
   <h3 class="signature " id="stack_output-instance_method">
   
     #<strong>stack_output</strong>(stack, output)  &#x21d2; <tt>String</tt> 
@@ -990,7 +1095,7 @@ a stack&#39;s status</p>
 </div>
 
       <div id="footer">
-  Generated on Fri Oct 19 10:44:04 2018 by
+  Generated on Fri Oct 26 08:23:40 2018 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.14 (ruby-2.5.1).
 </div>

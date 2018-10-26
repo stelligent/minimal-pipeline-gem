@@ -360,9 +360,9 @@ Requires environment variables <code>AWS_REGION</code> or <code>region</code> to
       <pre class="code"><span class="info file"># File 'lib/minimal_pipeline/s3.rb', line 37</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_download'>download</span><span class='lparen'>(</span><span class='id identifier rubyid_bucket_name'>bucket_name</span><span class='comma'>,</span> <span class='id identifier rubyid_file'>file</span><span class='comma'>,</span> <span class='id identifier rubyid_key'>key</span> <span class='op'>=</span> <span class='kw'>nil</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_key'>key</span> <span class='op'>||=</span> <span class='id identifier rubyid_file'>file</span>
-  <span class='id identifier rubyid_object'>object</span> <span class='op'>=</span> <span class='ivar'>@s3</span><span class='period'>.</span><span class='id identifier rubyid_bucket'>bucket</span><span class='lparen'>(</span><span class='id identifier rubyid_bucket_name'>bucket_name</span><span class='comma'>,</span> <span class='id identifier rubyid_key'>key</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_object'>object</span><span class='period'>.</span><span class='id identifier rubyid_upload_file'>upload_file</span><span class='lparen'>(</span><span class='id identifier rubyid_file'>file</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_key'>key</span> <span class='op'>||=</span> <span class='const'>File</span><span class='period'>.</span><span class='id identifier rubyid_basename'>basename</span><span class='lparen'>(</span><span class='id identifier rubyid_file'>file</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_object'>object</span> <span class='op'>=</span> <span class='ivar'>@s3</span><span class='period'>.</span><span class='id identifier rubyid_bucket'>bucket</span><span class='lparen'>(</span><span class='id identifier rubyid_bucket_name'>bucket_name</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_object'>object</span><span class='lparen'>(</span><span class='id identifier rubyid_key'>key</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_object'>object</span><span class='period'>.</span><span class='id identifier rubyid_download_file'>download_file</span><span class='lparen'>(</span><span class='id identifier rubyid_file'>file</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -457,9 +457,9 @@ Requires environment variables <code>AWS_REGION</code> or <code>region</code> to
       <pre class="code"><span class="info file"># File 'lib/minimal_pipeline/s3.rb', line 49</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_upload'>upload</span><span class='lparen'>(</span><span class='id identifier rubyid_bucket_name'>bucket_name</span><span class='comma'>,</span> <span class='id identifier rubyid_file'>file</span><span class='comma'>,</span> <span class='id identifier rubyid_key'>key</span> <span class='op'>=</span> <span class='kw'>nil</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_key'>key</span> <span class='op'>||=</span> <span class='id identifier rubyid_file'>file</span>
-  <span class='id identifier rubyid_object'>object</span> <span class='op'>=</span> <span class='ivar'>@s3</span><span class='period'>.</span><span class='id identifier rubyid_bucket'>bucket</span><span class='lparen'>(</span><span class='id identifier rubyid_bucket_name'>bucket_name</span><span class='comma'>,</span> <span class='id identifier rubyid_key'>key</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_object'>object</span><span class='period'>.</span><span class='id identifier rubyid_download_file'>download_file</span><span class='lparen'>(</span><span class='id identifier rubyid_file'>file</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_key'>key</span> <span class='op'>||=</span> <span class='const'>File</span><span class='period'>.</span><span class='id identifier rubyid_basename'>basename</span><span class='lparen'>(</span><span class='id identifier rubyid_file'>file</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_object'>object</span> <span class='op'>=</span> <span class='ivar'>@s3</span><span class='period'>.</span><span class='id identifier rubyid_bucket'>bucket</span><span class='lparen'>(</span><span class='id identifier rubyid_bucket_name'>bucket_name</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_object'>object</span><span class='lparen'>(</span><span class='id identifier rubyid_key'>key</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_object'>object</span><span class='period'>.</span><span class='id identifier rubyid_upload_file'>upload_file</span><span class='lparen'>(</span><span class='id identifier rubyid_file'>file</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -471,7 +471,7 @@ Requires environment variables <code>AWS_REGION</code> or <code>region</code> to
 </div>
 
       <div id="footer">
-  Generated on Fri Oct 19 10:44:04 2018 by
+  Generated on Fri Oct 26 08:23:40 2018 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.14 (ruby-2.5.1).
 </div>
