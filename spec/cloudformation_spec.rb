@@ -100,7 +100,19 @@ describe MinimalPipeline::Cloudformation do
     end
 
     it 'creates a new stack if one does not already exist' do
-      stack_parameters = {
+      expected_stack_parameters = {
+        capabilities: ['CAPABILITY_IAM'],
+        parameters: [
+          {
+            parameter_key: :foo,
+            parameter_value: 'bar'
+          }
+        ],
+        stack_name: 'STACK-NAME',
+        template_body: '---'
+      }
+
+      cloudformation_parameters = {
         foo: 'bar'
       }
 
@@ -113,15 +125,28 @@ describe MinimalPipeline::Cloudformation do
 
       expect(client).to receive(:describe_stacks).and_raise(Aws::CloudFormation::Errors::ValidationError.new('foo', 'bar'))
       expect(client).to receive(:wait_until).with(:stack_create_complete, { stack_name: 'STACK-NAME' }, wait_options).and_return(true)
-      expect(client).to receive(:create_stack).with(stack_parameters)
+      expect(client).to receive(:create_stack).with(expected_stack_parameters)
+      expect(File).to receive(:read).with('foo.yaml').and_return('---')
       expect(Aws::CloudFormation::Client).to receive(:new).with(region: 'us-east-1').and_return(client)
 
       cloudformation = MinimalPipeline::Cloudformation.new
-      cloudformation.deploy_stack('STACK-NAME', stack_parameters)
+      cloudformation.deploy_stack('STACK-NAME', cloudformation_parameters, 'foo.yaml')
     end
 
     it 'updates a new stack if it already exists' do
-      stack_parameters = {
+      expected_stack_parameters = {
+        capabilities: ['CAPABILITY_IAM'],
+        parameters: [
+          {
+            parameter_key: :foo,
+            parameter_value: 'bar'
+          }
+        ],
+        stack_name: 'STACK-NAME',
+        template_body: '---'
+      }
+
+      cloudformation_parameters = {
         foo: 'bar'
       }
 
@@ -149,16 +174,29 @@ describe MinimalPipeline::Cloudformation do
       expect(client).to receive(:describe_stacks).with(stack_name: 'STACK-NAME').and_return(response)
       expect(response).to receive(:stacks).and_return(stacks).at_least(:once)
       expect(client).to receive(:wait_until).with(:stack_update_complete, { stack_name: 'STACK-NAME' }, wait_options).and_return(true)
-      expect(client).to receive(:update_stack).with(stack_parameters)
+      expect(client).to receive(:update_stack).with(expected_stack_parameters)
+      expect(File).to receive(:read).with('foo.yaml').and_return('---')
 
       expect(Aws::CloudFormation::Client).to receive(:new).with(region: 'us-east-1').and_return(client)
 
       cloudformation = MinimalPipeline::Cloudformation.new
-      cloudformation.deploy_stack('STACK-NAME', stack_parameters)
+      cloudformation.deploy_stack('STACK-NAME', cloudformation_parameters, 'foo.yaml')
     end
 
     it 'is idempotent if no changes are to be made' do
-      stack_parameters = {
+      expected_stack_parameters = {
+        capabilities: ['CAPABILITY_IAM'],
+        parameters: [
+          {
+            parameter_key: :foo,
+            parameter_value: 'bar'
+          }
+        ],
+        stack_name: 'STACK-NAME',
+        template_body: '---'
+      }
+
+      cloudformation_parameters = {
         foo: 'bar'
       }
 
@@ -181,16 +219,17 @@ describe MinimalPipeline::Cloudformation do
       expect(client).to receive(:describe_stacks).with(stack_name: 'STACK-NAME').and_return(response)
       expect(response).to receive(:stacks).and_return(stacks).at_least(:once)
       expect(client).to_not receive(:wait_until).with(:stack_update_complete, stack_name: 'STACK-NAME')
-      expect(client).to receive(:update_stack).with(stack_parameters).and_raise(Aws::CloudFormation::Errors::ValidationError.new('foo', 'No updates are to be performed.'))
+      expect(client).to receive(:update_stack).with(expected_stack_parameters).and_raise(Aws::CloudFormation::Errors::ValidationError.new('foo', 'No updates are to be performed.'))
+      expect(File).to receive(:read).with('foo.yaml').and_return('---')
 
       expect(Aws::CloudFormation::Client).to receive(:new).with(region: 'us-east-1').and_return(client)
 
       cloudformation = MinimalPipeline::Cloudformation.new
-      cloudformation.deploy_stack('STACK-NAME', stack_parameters)
+      cloudformation.deploy_stack('STACK-NAME', cloudformation_parameters, 'foo.yaml')
     end
 
     it 'allows template errors to bubble up as a real error' do
-      stack_parameters = {
+      parameters = {
         foo: 'bar'
       }
 
@@ -199,11 +238,12 @@ describe MinimalPipeline::Cloudformation do
 
       expect(client).to receive(:describe_stacks).and_raise(error)
       expect(Aws::CloudFormation::Client).to receive(:new).with(region: 'us-east-1').and_return(client)
+      expect(File).to receive(:read).with('foo.yaml')
 
       cloudformation = MinimalPipeline::Cloudformation.new
 
       expect do
-        cloudformation.deploy_stack('STACK-NAME', stack_parameters)
+        cloudformation.deploy_stack('STACK-NAME', parameters, 'foo.yaml')
       end.to raise_error(error)
     end
 
