@@ -8,21 +8,14 @@ class MinimalPipeline
   # ```
   # cloudformation = MinimalPipeline::Cloudformation.new
   #
-  # cloudformation_parameters = {
+  # parameters = {
   #   'Vpc' => 'vpc-123456',
   #   'AsgSubnets' => %w[sg-one sg-two sg-three],
   #   'ElbSecurityGroup' => 'sg-123456',
   #   'CertName' => 'example'
   # }
   #
-  # stack_parameters = {
-  #   stack_name: stack_name,
-  #   template_body: File.read('provisioning/elb.json'),
-  #   capabilities: ['CAPABILITY_IAM'],
-  #   parameters: cloudformation.params(cloudformation_parameters)
-  # }
-  #
-  # cloudformation.deploy_stack('EXAMPLE_ELB', stack_parameters)
+  # cloudformation.deploy_stack('EXAMPLE_ELB', parameters, 'stack.yaml')
   # name = cloudformation.stack_output(stack_name, 'LoadBalancerName')
   # ```
   #
@@ -101,10 +94,18 @@ class MinimalPipeline
 
     # @param stack_name [String] The name of the CloudFormation stack
     # @param stack_parameters [Hash] Parameters to be passed into the stack
-    def deploy_stack(stack_name, stack_parameters)
+    def deploy_stack(stack_name, parameters, template,
+                     capabilities = ['CAPABILITY_IAM'])
       wait_options = {
         max_attempts: @wait_max_attempts,
         delay: @wait_delay
+      }
+
+      stack_parameters = {
+        stack_name: stack_name,
+        template_body: File.read(template),
+        capabilities: capabilities,
+        parameters: params(parameters)
       }
 
       unless @client.describe_stacks(stack_name: stack_name).stacks.empty?
