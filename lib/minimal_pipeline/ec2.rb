@@ -17,15 +17,10 @@ class MinimalPipeline
   class Ec2
     # Initializes a `Ec2` client
     # Requires environment variables `AWS_REGION` or `region` to be set.
-    # Also requires `keystore_table` and `keystore_kms_id`
     def initialize
       raise 'You must set env variable AWS_REGION or region.' \
         if ENV['AWS_REGION'].nil? && ENV['region'].nil?
-      raise 'You must set env variable keystore_kms_id.' \
-        if ENV['inventory_store_key'].nil? && ENV['keystore_kms_id'].nil?
-
       @region = ENV['AWS_REGION'] || ENV['region']
-      @kms_key_id = ENV['keystore_kms_id'] || ENV['inventory_store_key']
       @client = Aws::EC2::Client.new(region: 'us-east-1')
     end
 
@@ -43,15 +38,18 @@ class MinimalPipeline
     # Create a copy of an existing snapshot
     #
     # @param snapshot_id [String] The ID of the snapshot to copy
+    # @param kms_key_id [String] The ID of the KMS key. Omit to use default
     # @param encrypted [Boolean] Whether or not the volume is encrypted
     # @return [String] The ID of the newly created snapshot
-    def copy_snapshot(snapshot_id, encrypted = true)
-      new_snapshot_id = @client.copy_snapshot(
+    def copy_snapshot(snapshot_id, kms_key_id = nil, encrypted = true)
+      params = {
         encrypted: encrypted,
-        kms_key_id: @kms_key_id,
         source_region: @region,
         source_snapshot_id: snapshot_id
-      ).snapshot_id
+      }
+      params[:kms_key_id] = kms_key_id if kms_key_id
+
+      new_snapshot_id = @client.copy_snapshot(params).snapshot_id
 
       puts "new snapshot ID: #{new_snapshot_id}"
       wait_for_snapshot(new_snapshot_id)
@@ -76,8 +74,9 @@ class MinimalPipeline
     #
     # @param ami_id [String] The ID of the AMI to prepare
     # @param account_id [String] The ID of the AWS account to prepare
+    # @param kms_key_id [String] The ID of the KMS key. Omit to use default
     # @return [Array] Block device mappings discovered from the AMI
-    def prepare_snapshots_for_account(ami_id, account_id)
+    def prepare_snapshots_for_account(ami_id, account_id, kms_key_id = nil)
       images = @client.describe_images(image_ids: [ami_id])
       block_device_mappings = images.images[0].block_device_mappings
       new_mappings = []
@@ -85,7 +84,7 @@ class MinimalPipeline
       block_device_mappings.each do |mapping|
         snapshot_id = mapping.ebs.snapshot_id
         puts "old snapshot ID: #{snapshot_id}"
-        new_snapshot_id = copy_snapshot(snapshot_id)
+        new_snapshot_id = copy_snapshot(snapshot_id, kms_key_id)
         puts 'modifying new snapshot attribute'
         unlock_ami_for_account(new_snapshot_id, account_id)
         puts "new snapshot has been modified for the #{account_id} account"
@@ -102,27 +101,32 @@ class MinimalPipeline
     #
     # @params block_device_mappings [Array] Block device mappings with snapshots
     # @params ami_name [String] The name of the AMI to create
+    # @return [String] The AMI ID of the newly created AMI
     def register_ami(block_device_mappings, ami_name)
-      @client.register_image(
+      response = @client.register_image(
         architecture: 'x86_64',
         block_device_mappings: block_device_mappings,
         name: ami_name,
         root_device_name: '/dev/sda1',
         virtualization_type: 'hvm'
       )
+
+      response.image_id
     end
 
     # Copy the snapshots from the original account into the new one
     #
     # @params block_device_mappings [Array] Block device mappings with snapshots
+    # @param kms_key_id [String] The ID of the KMS key. Omit to use default
     # @return [Array] Block device mappings with updated snapshot ids
-    def copy_snapshots_in_new_account(block_device_mappings)
+    def copy_snapshots_in_new_account(block_device_mappings, kms_key_id = nil)
       new_mappings = []
 
       block_device_mappings.each do |mapping|
-        snapshot_id = mapping.ebs.snapshot_id
-        new_snapshot_id = copy_snapshot(snapshots[snapshot_id])
-        mapping.ebs.snapshot_id = new_snapshot_id
+        snapshot_id = mapping['ebs']['snapshot_id']
+        new_snapshot_id = copy_snapshot(snapshot_id, kms_key_id)
+        mapping['ebs']['snapshot_id'] = new_snapshot_id
+        mapping['ebs'].delete('encrypted')
         new_mappings << mapping
       end
 

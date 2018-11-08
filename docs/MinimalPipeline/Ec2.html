@@ -142,7 +142,7 @@ ec2.register_ami(new_mappings, &#39;ami-name&#39;)</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#copy_snapshot-instance_method" title="#copy_snapshot (instance method)">#<strong>copy_snapshot</strong>(snapshot_id, encrypted = true)  &#x21d2; String </a>
+      <a href="#copy_snapshot-instance_method" title="#copy_snapshot (instance method)">#<strong>copy_snapshot</strong>(snapshot_id, kms_key_id = nil, encrypted = true)  &#x21d2; String </a>
     
 
     
@@ -165,7 +165,7 @@ ec2.register_ami(new_mappings, &#39;ami-name&#39;)</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#copy_snapshots_in_new_account-instance_method" title="#copy_snapshots_in_new_account (instance method)">#<strong>copy_snapshots_in_new_account</strong>(block_device_mappings)  &#x21d2; Array </a>
+      <a href="#copy_snapshots_in_new_account-instance_method" title="#copy_snapshots_in_new_account (instance method)">#<strong>copy_snapshots_in_new_account</strong>(block_device_mappings, kms_key_id = nil)  &#x21d2; Array </a>
     
 
     
@@ -213,7 +213,7 @@ ec2.register_ami(new_mappings, &#39;ami-name&#39;)</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#prepare_snapshots_for_account-instance_method" title="#prepare_snapshots_for_account (instance method)">#<strong>prepare_snapshots_for_account</strong>(ami_id, account_id)  &#x21d2; Array </a>
+      <a href="#prepare_snapshots_for_account-instance_method" title="#prepare_snapshots_for_account (instance method)">#<strong>prepare_snapshots_for_account</strong>(ami_id, account_id, kms_key_id = nil)  &#x21d2; Array </a>
     
 
     
@@ -236,7 +236,7 @@ ec2.register_ami(new_mappings, &#39;ami-name&#39;)</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#register_ami-instance_method" title="#register_ami (instance method)">#<strong>register_ami</strong>(block_device_mappings, ami_name)  &#x21d2; Object </a>
+      <a href="#register_ami-instance_method" title="#register_ami (instance method)">#<strong>register_ami</strong>(block_device_mappings, ami_name)  &#x21d2; String </a>
     
 
     
@@ -320,8 +320,7 @@ ec2.register_ami(new_mappings, &#39;ami-name&#39;)</p>
 </h3><div class="docstring">
   <div class="discussion">
     <p>Initializes a <code>Ec2</code> client
-Requires environment variables <code>AWS_REGION</code> or <code>region</code> to be set.
-Also requires <code>keystore_table</code> and <code>keystore_kms_id</code></p>
+Requires environment variables <code>AWS_REGION</code> or <code>region</code> to be set.</p>
 
 
   </div>
@@ -335,28 +334,20 @@ Also requires <code>keystore_table</code> and <code>keystore_kms_id</code></p>
       <pre class="lines">
 
 
+20
 21
 22
 23
 24
-25
-26
-27
-28
-29
-30</pre>
+25</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/minimal_pipeline/ec2.rb', line 21</span>
+      <pre class="code"><span class="info file"># File 'lib/minimal_pipeline/ec2.rb', line 20</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span>
   <span class='id identifier rubyid_raise'>raise</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>You must set env variable AWS_REGION or region.</span><span class='tstring_end'>&#39;</span></span> \
     <span class='kw'>if</span> <span class='const'>ENV</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>AWS_REGION</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span> <span class='op'>&amp;&amp;</span> <span class='const'>ENV</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>region</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
-  <span class='id identifier rubyid_raise'>raise</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>You must set env variable keystore_kms_id.</span><span class='tstring_end'>&#39;</span></span> \
-    <span class='kw'>if</span> <span class='const'>ENV</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>inventory_store_key</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span> <span class='op'>&amp;&amp;</span> <span class='const'>ENV</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>keystore_kms_id</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
-
   <span class='ivar'>@region</span> <span class='op'>=</span> <span class='const'>ENV</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>AWS_REGION</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span> <span class='op'>||</span> <span class='const'>ENV</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>region</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span>
-  <span class='ivar'>@kms_key_id</span> <span class='op'>=</span> <span class='const'>ENV</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>keystore_kms_id</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span> <span class='op'>||</span> <span class='const'>ENV</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>inventory_store_key</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span>
   <span class='ivar'>@client</span> <span class='op'>=</span> <span class='const'>Aws</span><span class='op'>::</span><span class='const'>EC2</span><span class='op'>::</span><span class='const'>Client</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='label'>region:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>us-east-1</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -374,7 +365,7 @@ Also requires <code>keystore_table</code> and <code>keystore_kms_id</code></p>
       <div class="method_details first">
   <h3 class="signature first" id="copy_snapshot-instance_method">
   
-    #<strong>copy_snapshot</strong>(snapshot_id, encrypted = true)  &#x21d2; <tt>String</tt> 
+    #<strong>copy_snapshot</strong>(snapshot_id, kms_key_id = nil, encrypted = true)  &#x21d2; <tt>String</tt> 
   
 
   
@@ -402,6 +393,23 @@ Also requires <code>keystore_table</code> and <code>keystore_kms_id</code></p>
       
         &mdash;
         <div class='inline'><p>The ID of the snapshot to copy</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>kms_key_id</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>nil</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'><p>The ID of the KMS key. Omit to use default</p>
 </div>
       
     </li>
@@ -449,6 +457,10 @@ Also requires <code>keystore_table</code> and <code>keystore_kms_id</code></p>
       <pre class="lines">
 
 
+44
+45
+46
+47
 48
 49
 50
@@ -459,20 +471,20 @@ Also requires <code>keystore_table</code> and <code>keystore_kms_id</code></p>
 55
 56
 57
-58
-59
-60</pre>
+58</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/minimal_pipeline/ec2.rb', line 48</span>
+      <pre class="code"><span class="info file"># File 'lib/minimal_pipeline/ec2.rb', line 44</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_copy_snapshot'>copy_snapshot</span><span class='lparen'>(</span><span class='id identifier rubyid_snapshot_id'>snapshot_id</span><span class='comma'>,</span> <span class='id identifier rubyid_encrypted'>encrypted</span> <span class='op'>=</span> <span class='kw'>true</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_new_snapshot_id'>new_snapshot_id</span> <span class='op'>=</span> <span class='ivar'>@client</span><span class='period'>.</span><span class='id identifier rubyid_copy_snapshot'>copy_snapshot</span><span class='lparen'>(</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_copy_snapshot'>copy_snapshot</span><span class='lparen'>(</span><span class='id identifier rubyid_snapshot_id'>snapshot_id</span><span class='comma'>,</span> <span class='id identifier rubyid_kms_key_id'>kms_key_id</span> <span class='op'>=</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='id identifier rubyid_encrypted'>encrypted</span> <span class='op'>=</span> <span class='kw'>true</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_params'>params</span> <span class='op'>=</span> <span class='lbrace'>{</span>
     <span class='label'>encrypted:</span> <span class='id identifier rubyid_encrypted'>encrypted</span><span class='comma'>,</span>
-    <span class='label'>kms_key_id:</span> <span class='ivar'>@kms_key_id</span><span class='comma'>,</span>
     <span class='label'>source_region:</span> <span class='ivar'>@region</span><span class='comma'>,</span>
     <span class='label'>source_snapshot_id:</span> <span class='id identifier rubyid_snapshot_id'>snapshot_id</span>
-  <span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_snapshot_id'>snapshot_id</span>
+  <span class='rbrace'>}</span>
+  <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:kms_key_id</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_kms_key_id'>kms_key_id</span> <span class='kw'>if</span> <span class='id identifier rubyid_kms_key_id'>kms_key_id</span>
+
+  <span class='id identifier rubyid_new_snapshot_id'>new_snapshot_id</span> <span class='op'>=</span> <span class='ivar'>@client</span><span class='period'>.</span><span class='id identifier rubyid_copy_snapshot'>copy_snapshot</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_snapshot_id'>snapshot_id</span>
 
   <span class='id identifier rubyid_puts'>puts</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>new snapshot ID: </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_new_snapshot_id'>new_snapshot_id</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span>
   <span class='id identifier rubyid_wait_for_snapshot'>wait_for_snapshot</span><span class='lparen'>(</span><span class='id identifier rubyid_new_snapshot_id'>new_snapshot_id</span><span class='rparen'>)</span>
@@ -487,7 +499,7 @@ Also requires <code>keystore_table</code> and <code>keystore_kms_id</code></p>
       <div class="method_details ">
   <h3 class="signature " id="copy_snapshots_in_new_account-instance_method">
   
-    #<strong>copy_snapshots_in_new_account</strong>(block_device_mappings)  &#x21d2; <tt>Array</tt> 
+    #<strong>copy_snapshots_in_new_account</strong>(block_device_mappings, kms_key_id = nil)  &#x21d2; <tt>Array</tt> 
   
 
   
@@ -501,7 +513,28 @@ Also requires <code>keystore_table</code> and <code>keystore_kms_id</code></p>
   </div>
 </div>
 <div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
   
+    <li>
+      
+        <span class='name'>kms_key_id</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>nil</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'><p>The ID of the KMS key. Omit to use default</p>
+</div>
+      
+    </li>
+  
+</ul>
+
 <p class="tag_title">Returns:</p>
 <ul class="return">
   
@@ -526,9 +559,6 @@ Also requires <code>keystore_table</code> and <code>keystore_kms_id</code></p>
       <pre class="lines">
 
 
-119
-120
-121
 122
 123
 124
@@ -537,18 +567,23 @@ Also requires <code>keystore_table</code> and <code>keystore_kms_id</code></p>
 127
 128
 129
-130</pre>
+130
+131
+132
+133
+134</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/minimal_pipeline/ec2.rb', line 119</span>
+      <pre class="code"><span class="info file"># File 'lib/minimal_pipeline/ec2.rb', line 122</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_copy_snapshots_in_new_account'>copy_snapshots_in_new_account</span><span class='lparen'>(</span><span class='id identifier rubyid_block_device_mappings'>block_device_mappings</span><span class='rparen'>)</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_copy_snapshots_in_new_account'>copy_snapshots_in_new_account</span><span class='lparen'>(</span><span class='id identifier rubyid_block_device_mappings'>block_device_mappings</span><span class='comma'>,</span> <span class='id identifier rubyid_kms_key_id'>kms_key_id</span> <span class='op'>=</span> <span class='kw'>nil</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_new_mappings'>new_mappings</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span>
 
   <span class='id identifier rubyid_block_device_mappings'>block_device_mappings</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_mapping'>mapping</span><span class='op'>|</span>
-    <span class='id identifier rubyid_snapshot_id'>snapshot_id</span> <span class='op'>=</span> <span class='id identifier rubyid_mapping'>mapping</span><span class='period'>.</span><span class='id identifier rubyid_ebs'>ebs</span><span class='period'>.</span><span class='id identifier rubyid_snapshot_id'>snapshot_id</span>
-    <span class='id identifier rubyid_new_snapshot_id'>new_snapshot_id</span> <span class='op'>=</span> <span class='id identifier rubyid_copy_snapshot'>copy_snapshot</span><span class='lparen'>(</span><span class='id identifier rubyid_snapshots'>snapshots</span><span class='lbracket'>[</span><span class='id identifier rubyid_snapshot_id'>snapshot_id</span><span class='rbracket'>]</span><span class='rparen'>)</span>
-    <span class='id identifier rubyid_mapping'>mapping</span><span class='period'>.</span><span class='id identifier rubyid_ebs'>ebs</span><span class='period'>.</span><span class='id identifier rubyid_snapshot_id'>snapshot_id</span> <span class='op'>=</span> <span class='id identifier rubyid_new_snapshot_id'>new_snapshot_id</span>
+    <span class='id identifier rubyid_snapshot_id'>snapshot_id</span> <span class='op'>=</span> <span class='id identifier rubyid_mapping'>mapping</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>ebs</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>snapshot_id</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span>
+    <span class='id identifier rubyid_new_snapshot_id'>new_snapshot_id</span> <span class='op'>=</span> <span class='id identifier rubyid_copy_snapshot'>copy_snapshot</span><span class='lparen'>(</span><span class='id identifier rubyid_snapshot_id'>snapshot_id</span><span class='comma'>,</span> <span class='id identifier rubyid_kms_key_id'>kms_key_id</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_mapping'>mapping</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>ebs</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>snapshot_id</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_new_snapshot_id'>new_snapshot_id</span>
+    <span class='id identifier rubyid_mapping'>mapping</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>ebs</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_delete'>delete</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>encrypted</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
     <span class='id identifier rubyid_new_mappings'>new_mappings</span> <span class='op'>&lt;&lt;</span> <span class='id identifier rubyid_mapping'>mapping</span>
   <span class='kw'>end</span>
 
@@ -562,7 +597,7 @@ Also requires <code>keystore_table</code> and <code>keystore_kms_id</code></p>
       <div class="method_details ">
   <h3 class="signature " id="prepare_snapshots_for_account-instance_method">
   
-    #<strong>prepare_snapshots_for_account</strong>(ami_id, account_id)  &#x21d2; <tt>Array</tt> 
+    #<strong>prepare_snapshots_for_account</strong>(ami_id, account_id, kms_key_id = nil)  &#x21d2; <tt>Array</tt> 
   
 
   
@@ -609,6 +644,23 @@ Also requires <code>keystore_table</code> and <code>keystore_kms_id</code></p>
       
     </li>
   
+    <li>
+      
+        <span class='name'>kms_key_id</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>nil</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'><p>The ID of the KMS key. Omit to use default</p>
+</div>
+      
+    </li>
+  
 </ul>
 
 <p class="tag_title">Returns:</p>
@@ -635,6 +687,7 @@ Also requires <code>keystore_table</code> and <code>keystore_kms_id</code></p>
       <pre class="lines">
 
 
+79
 80
 81
 82
@@ -652,13 +705,12 @@ Also requires <code>keystore_table</code> and <code>keystore_kms_id</code></p>
 94
 95
 96
-97
-98</pre>
+97</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/minimal_pipeline/ec2.rb', line 80</span>
+      <pre class="code"><span class="info file"># File 'lib/minimal_pipeline/ec2.rb', line 79</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_prepare_snapshots_for_account'>prepare_snapshots_for_account</span><span class='lparen'>(</span><span class='id identifier rubyid_ami_id'>ami_id</span><span class='comma'>,</span> <span class='id identifier rubyid_account_id'>account_id</span><span class='rparen'>)</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_prepare_snapshots_for_account'>prepare_snapshots_for_account</span><span class='lparen'>(</span><span class='id identifier rubyid_ami_id'>ami_id</span><span class='comma'>,</span> <span class='id identifier rubyid_account_id'>account_id</span><span class='comma'>,</span> <span class='id identifier rubyid_kms_key_id'>kms_key_id</span> <span class='op'>=</span> <span class='kw'>nil</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_images'>images</span> <span class='op'>=</span> <span class='ivar'>@client</span><span class='period'>.</span><span class='id identifier rubyid_describe_images'>describe_images</span><span class='lparen'>(</span><span class='label'>image_ids:</span> <span class='lbracket'>[</span><span class='id identifier rubyid_ami_id'>ami_id</span><span class='rbracket'>]</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_block_device_mappings'>block_device_mappings</span> <span class='op'>=</span> <span class='id identifier rubyid_images'>images</span><span class='period'>.</span><span class='id identifier rubyid_images'>images</span><span class='lbracket'>[</span><span class='int'>0</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_block_device_mappings'>block_device_mappings</span>
   <span class='id identifier rubyid_new_mappings'>new_mappings</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span>
@@ -666,7 +718,7 @@ Also requires <code>keystore_table</code> and <code>keystore_kms_id</code></p>
   <span class='id identifier rubyid_block_device_mappings'>block_device_mappings</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_mapping'>mapping</span><span class='op'>|</span>
     <span class='id identifier rubyid_snapshot_id'>snapshot_id</span> <span class='op'>=</span> <span class='id identifier rubyid_mapping'>mapping</span><span class='period'>.</span><span class='id identifier rubyid_ebs'>ebs</span><span class='period'>.</span><span class='id identifier rubyid_snapshot_id'>snapshot_id</span>
     <span class='id identifier rubyid_puts'>puts</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>old snapshot ID: </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_snapshot_id'>snapshot_id</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span>
-    <span class='id identifier rubyid_new_snapshot_id'>new_snapshot_id</span> <span class='op'>=</span> <span class='id identifier rubyid_copy_snapshot'>copy_snapshot</span><span class='lparen'>(</span><span class='id identifier rubyid_snapshot_id'>snapshot_id</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_new_snapshot_id'>new_snapshot_id</span> <span class='op'>=</span> <span class='id identifier rubyid_copy_snapshot'>copy_snapshot</span><span class='lparen'>(</span><span class='id identifier rubyid_snapshot_id'>snapshot_id</span><span class='comma'>,</span> <span class='id identifier rubyid_kms_key_id'>kms_key_id</span><span class='rparen'>)</span>
     <span class='id identifier rubyid_puts'>puts</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>modifying new snapshot attribute</span><span class='tstring_end'>&#39;</span></span>
     <span class='id identifier rubyid_unlock_ami_for_account'>unlock_ami_for_account</span><span class='lparen'>(</span><span class='id identifier rubyid_new_snapshot_id'>new_snapshot_id</span><span class='comma'>,</span> <span class='id identifier rubyid_account_id'>account_id</span><span class='rparen'>)</span>
     <span class='id identifier rubyid_puts'>puts</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>new snapshot has been modified for the </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_account_id'>account_id</span><span class='embexpr_end'>}</span><span class='tstring_content'> account</span><span class='tstring_end'>&quot;</span></span>
@@ -685,7 +737,7 @@ Also requires <code>keystore_table</code> and <code>keystore_kms_id</code></p>
       <div class="method_details ">
   <h3 class="signature " id="register_ami-instance_method">
   
-    #<strong>register_ami</strong>(block_device_mappings, ami_name)  &#x21d2; <tt>Object</tt> 
+    #<strong>register_ami</strong>(block_device_mappings, ami_name)  &#x21d2; <tt>String</tt> 
   
 
   
@@ -701,6 +753,23 @@ Currently only supports x86_64 HVM</p>
 </div>
 <div class="tags">
   
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>The AMI ID of the newly created AMI</p>
+</div>
+      
+    </li>
+  
+</ul>
 
 </div><table class="source_code">
   <tr>
@@ -716,19 +785,23 @@ Currently only supports x86_64 HVM</p>
 110
 111
 112
-113</pre>
+113
+114
+115</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'lib/minimal_pipeline/ec2.rb', line 105</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_register_ami'>register_ami</span><span class='lparen'>(</span><span class='id identifier rubyid_block_device_mappings'>block_device_mappings</span><span class='comma'>,</span> <span class='id identifier rubyid_ami_name'>ami_name</span><span class='rparen'>)</span>
-  <span class='ivar'>@client</span><span class='period'>.</span><span class='id identifier rubyid_register_image'>register_image</span><span class='lparen'>(</span>
+  <span class='id identifier rubyid_response'>response</span> <span class='op'>=</span> <span class='ivar'>@client</span><span class='period'>.</span><span class='id identifier rubyid_register_image'>register_image</span><span class='lparen'>(</span>
     <span class='label'>architecture:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>x86_64</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span>
     <span class='label'>block_device_mappings:</span> <span class='id identifier rubyid_block_device_mappings'>block_device_mappings</span><span class='comma'>,</span>
     <span class='label'>name:</span> <span class='id identifier rubyid_ami_name'>ami_name</span><span class='comma'>,</span>
     <span class='label'>root_device_name:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/dev/sda1</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span>
     <span class='label'>virtualization_type:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>hvm</span><span class='tstring_end'>&#39;</span></span>
   <span class='rparen'>)</span>
+
+  <span class='id identifier rubyid_response'>response</span><span class='period'>.</span><span class='id identifier rubyid_image_id'>image_id</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -794,17 +867,17 @@ Currently only supports x86_64 HVM</p>
       <pre class="lines">
 
 
+64
+65
 66
 67
 68
 69
 70
-71
-72
-73</pre>
+71</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/minimal_pipeline/ec2.rb', line 66</span>
+      <pre class="code"><span class="info file"># File 'lib/minimal_pipeline/ec2.rb', line 64</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_unlock_ami_for_account'>unlock_ami_for_account</span><span class='lparen'>(</span><span class='id identifier rubyid_snapshot_id'>snapshot_id</span><span class='comma'>,</span> <span class='id identifier rubyid_account_id'>account_id</span><span class='rparen'>)</span>
   <span class='ivar'>@client</span><span class='period'>.</span><span class='id identifier rubyid_modify_snapshot_attribute'>modify_snapshot_attribute</span><span class='lparen'>(</span>
@@ -863,16 +936,16 @@ Currently only supports x86_64 HVM</p>
       <pre class="lines">
 
 
+30
+31
+32
+33
+34
 35
-36
-37
-38
-39
-40
-41</pre>
+36</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/minimal_pipeline/ec2.rb', line 35</span>
+      <pre class="code"><span class="info file"># File 'lib/minimal_pipeline/ec2.rb', line 30</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_wait_for_snapshot'>wait_for_snapshot</span><span class='lparen'>(</span><span class='id identifier rubyid_snapshot_id'>snapshot_id</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_puts'>puts</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>waiting on new snapshot </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_snapshot_id'>snapshot_id</span><span class='embexpr_end'>}</span><span class='tstring_content'> to be ready</span><span class='tstring_end'>&quot;</span></span>
@@ -891,7 +964,7 @@ Currently only supports x86_64 HVM</p>
 </div>
 
       <div id="footer">
-  Generated on Mon Nov  5 10:58:50 2018 by
+  Generated on Thu Nov  8 13:50:44 2018 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.14 (ruby-2.5.1).
 </div>
