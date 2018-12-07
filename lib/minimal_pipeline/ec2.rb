@@ -24,13 +24,13 @@ class MinimalPipeline
       @client = Aws::EC2::Client.new(region: 'us-east-1')
     end
 
-    # Block processing until snapshot until new snapshot is ready
+    # Block processing until new snapshot is ready
     #
     # @param snapshot_id [String] The ID of the new snapshot
     def wait_for_snapshot(snapshot_id)
       puts "waiting on new snapshot #{snapshot_id} to be ready"
       @client.wait_until(:snapshot_completed, snapshot_ids: [snapshot_id])
-      puts "New snapshot #{snapshot_id}is ready"
+      puts "New snapshot #{snapshot_id} is ready"
     rescue Aws::Waiters::Errors::WaiterFailed => error
       puts "failed waiting for snapshot to be ready: #{error.message}"
     end
@@ -138,20 +138,35 @@ class MinimalPipeline
     # The new image will be encrypted. You can optionally copy across regions
     #
     # @params image_id [String] The AMI ID to copy
+    # @params image_name [String] The name of the new image
     # @params kms_key_id [String] Non-default KMS key ID to use for encryption
-    # @params region [String] The destination region for the new image
     # @return [String] The newly created AMI ID
-    def copy_image(image_id, kms_key_id = nil, region = nil)
+    def copy_image(image_id, image_name, kms_key_id = nil)
       params = {
+        name: image_name,
         encrypted: true,
         source_image_id: image_id,
-        source_region: @region,
-        region: region || @region
+        source_region: @region
       }
       params['kms_key_id'] = kms_key_id if kms_key_id
 
       response = @client.copy_image(params)
-      response.image_id
+      new_image_id = response.image_id
+
+      wait_for_image(new_image_id)
+
+      new_image_id
+    end
+
+    # Block processing until new image is ready
+    #
+    # @param image_id [String] The ID of the new image
+    def wait_for_image(image_id)
+      puts "waiting on new image #{image_id} to be available"
+      @client.wait_until(:image_available, image_ids: [image_id])
+      puts "New image #{image_id} is available"
+    rescue Aws::Waiters::Errors::WaiterFailed => error
+      puts "failed waiting for image to be available: #{error.message}"
     end
   end
 end

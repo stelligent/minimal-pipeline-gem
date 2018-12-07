@@ -142,7 +142,7 @@ ec2.register_ami(new_mappings, &#39;ami-name&#39;)</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#copy_image-instance_method" title="#copy_image (instance method)">#<strong>copy_image</strong>(image_id, kms_key_id = nil, region = nil)  &#x21d2; String </a>
+      <a href="#copy_image-instance_method" title="#copy_image (instance method)">#<strong>copy_image</strong>(image_id, image_name, kms_key_id = nil)  &#x21d2; String </a>
     
 
     
@@ -305,6 +305,29 @@ ec2.register_ami(new_mappings, &#39;ami-name&#39;)</p>
         <li class="public ">
   <span class="summary_signature">
     
+      <a href="#wait_for_image-instance_method" title="#wait_for_image (instance method)">#<strong>wait_for_image</strong>(image_id)  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>Block processing until new image is ready.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
       <a href="#wait_for_snapshot-instance_method" title="#wait_for_snapshot (instance method)">#<strong>wait_for_snapshot</strong>(snapshot_id)  &#x21d2; Object </a>
     
 
@@ -319,7 +342,7 @@ ec2.register_ami(new_mappings, &#39;ami-name&#39;)</p>
   
 
   
-    <span class="summary_desc"><div class='inline'><p>Block processing until snapshot until new snapshot is ready.</p>
+    <span class="summary_desc"><div class='inline'><p>Block processing until new snapshot is ready.</p>
 </div></span>
   
 </li>
@@ -388,7 +411,7 @@ Requires environment variables <code>AWS_REGION</code> or <code>region</code> to
       <div class="method_details first">
   <h3 class="signature first" id="copy_image-instance_method">
   
-    #<strong>copy_image</strong>(image_id, kms_key_id = nil, region = nil)  &#x21d2; <tt>String</tt> 
+    #<strong>copy_image</strong>(image_id, image_name, kms_key_id = nil)  &#x21d2; <tt>String</tt> 
   
 
   
@@ -440,22 +463,30 @@ Requires environment variables <code>AWS_REGION</code> or <code>region</code> to
 152
 153
 154
-155</pre>
+155
+156
+157
+158
+159</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'lib/minimal_pipeline/ec2.rb', line 144</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_copy_image'>copy_image</span><span class='lparen'>(</span><span class='id identifier rubyid_image_id'>image_id</span><span class='comma'>,</span> <span class='id identifier rubyid_kms_key_id'>kms_key_id</span> <span class='op'>=</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='id identifier rubyid_region'>region</span> <span class='op'>=</span> <span class='kw'>nil</span><span class='rparen'>)</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_copy_image'>copy_image</span><span class='lparen'>(</span><span class='id identifier rubyid_image_id'>image_id</span><span class='comma'>,</span> <span class='id identifier rubyid_image_name'>image_name</span><span class='comma'>,</span> <span class='id identifier rubyid_kms_key_id'>kms_key_id</span> <span class='op'>=</span> <span class='kw'>nil</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_params'>params</span> <span class='op'>=</span> <span class='lbrace'>{</span>
+    <span class='label'>name:</span> <span class='id identifier rubyid_image_name'>image_name</span><span class='comma'>,</span>
     <span class='label'>encrypted:</span> <span class='kw'>true</span><span class='comma'>,</span>
     <span class='label'>source_image_id:</span> <span class='id identifier rubyid_image_id'>image_id</span><span class='comma'>,</span>
-    <span class='label'>source_region:</span> <span class='ivar'>@region</span><span class='comma'>,</span>
-    <span class='label'>region:</span> <span class='id identifier rubyid_region'>region</span> <span class='op'>||</span> <span class='ivar'>@region</span>
+    <span class='label'>source_region:</span> <span class='ivar'>@region</span>
   <span class='rbrace'>}</span>
   <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>kms_key_id</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_kms_key_id'>kms_key_id</span> <span class='kw'>if</span> <span class='id identifier rubyid_kms_key_id'>kms_key_id</span>
 
   <span class='id identifier rubyid_response'>response</span> <span class='op'>=</span> <span class='ivar'>@client</span><span class='period'>.</span><span class='id identifier rubyid_copy_image'>copy_image</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_response'>response</span><span class='period'>.</span><span class='id identifier rubyid_image_id'>image_id</span>
+  <span class='id identifier rubyid_new_image_id'>new_image_id</span> <span class='op'>=</span> <span class='id identifier rubyid_response'>response</span><span class='period'>.</span><span class='id identifier rubyid_image_id'>image_id</span>
+
+  <span class='id identifier rubyid_wait_for_image'>wait_for_image</span><span class='lparen'>(</span><span class='id identifier rubyid_new_image_id'>new_image_id</span><span class='rparen'>)</span>
+
+  <span class='id identifier rubyid_new_image_id'>new_image_id</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -993,6 +1024,73 @@ Currently only supports x86_64 HVM</p>
 </div>
     
       <div class="method_details ">
+  <h3 class="signature " id="wait_for_image-instance_method">
+  
+    #<strong>wait_for_image</strong>(image_id)  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    <p>Block processing until new image is ready</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>image_id</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>The ID of the new image</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+164
+165
+166
+167
+168
+169
+170</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/minimal_pipeline/ec2.rb', line 164</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_wait_for_image'>wait_for_image</span><span class='lparen'>(</span><span class='id identifier rubyid_image_id'>image_id</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_puts'>puts</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>waiting on new image </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_image_id'>image_id</span><span class='embexpr_end'>}</span><span class='tstring_content'> to be available</span><span class='tstring_end'>&quot;</span></span>
+  <span class='ivar'>@client</span><span class='period'>.</span><span class='id identifier rubyid_wait_until'>wait_until</span><span class='lparen'>(</span><span class='symbol'>:image_available</span><span class='comma'>,</span> <span class='label'>image_ids:</span> <span class='lbracket'>[</span><span class='id identifier rubyid_image_id'>image_id</span><span class='rbracket'>]</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_puts'>puts</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>New image </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_image_id'>image_id</span><span class='embexpr_end'>}</span><span class='tstring_content'> is available</span><span class='tstring_end'>&quot;</span></span>
+<span class='kw'>rescue</span> <span class='const'>Aws</span><span class='op'>::</span><span class='const'>Waiters</span><span class='op'>::</span><span class='const'>Errors</span><span class='op'>::</span><span class='const'>WaiterFailed</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_error'>error</span>
+  <span class='id identifier rubyid_puts'>puts</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>failed waiting for image to be available: </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_error'>error</span><span class='period'>.</span><span class='id identifier rubyid_message'>message</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
   <h3 class="signature " id="wait_for_snapshot-instance_method">
   
     #<strong>wait_for_snapshot</strong>(snapshot_id)  &#x21d2; <tt>Object</tt> 
@@ -1003,7 +1101,7 @@ Currently only supports x86_64 HVM</p>
   
 </h3><div class="docstring">
   <div class="discussion">
-    <p>Block processing until snapshot until new snapshot is ready</p>
+    <p>Block processing until new snapshot is ready</p>
 
 
   </div>
@@ -1050,7 +1148,7 @@ Currently only supports x86_64 HVM</p>
 <span class='kw'>def</span> <span class='id identifier rubyid_wait_for_snapshot'>wait_for_snapshot</span><span class='lparen'>(</span><span class='id identifier rubyid_snapshot_id'>snapshot_id</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_puts'>puts</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>waiting on new snapshot </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_snapshot_id'>snapshot_id</span><span class='embexpr_end'>}</span><span class='tstring_content'> to be ready</span><span class='tstring_end'>&quot;</span></span>
   <span class='ivar'>@client</span><span class='period'>.</span><span class='id identifier rubyid_wait_until'>wait_until</span><span class='lparen'>(</span><span class='symbol'>:snapshot_completed</span><span class='comma'>,</span> <span class='label'>snapshot_ids:</span> <span class='lbracket'>[</span><span class='id identifier rubyid_snapshot_id'>snapshot_id</span><span class='rbracket'>]</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_puts'>puts</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>New snapshot </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_snapshot_id'>snapshot_id</span><span class='embexpr_end'>}</span><span class='tstring_content'>is ready</span><span class='tstring_end'>&quot;</span></span>
+  <span class='id identifier rubyid_puts'>puts</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>New snapshot </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_snapshot_id'>snapshot_id</span><span class='embexpr_end'>}</span><span class='tstring_content'> is ready</span><span class='tstring_end'>&quot;</span></span>
 <span class='kw'>rescue</span> <span class='const'>Aws</span><span class='op'>::</span><span class='const'>Waiters</span><span class='op'>::</span><span class='const'>Errors</span><span class='op'>::</span><span class='const'>WaiterFailed</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_error'>error</span>
   <span class='id identifier rubyid_puts'>puts</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>failed waiting for snapshot to be ready: </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_error'>error</span><span class='period'>.</span><span class='id identifier rubyid_message'>message</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span>
 <span class='kw'>end</span></pre>
@@ -1064,7 +1162,7 @@ Currently only supports x86_64 HVM</p>
 </div>
 
       <div id="footer">
-  Generated on Fri Dec  7 11:18:29 2018 by
+  Generated on Fri Dec  7 11:49:48 2018 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.14 (ruby-2.5.1).
 </div>

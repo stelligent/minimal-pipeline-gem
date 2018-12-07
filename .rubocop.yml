@@ -18,3 +18,6 @@ Layout/EmptyLineAfterGuardClause:
 
 Style/UnneededPercentQ:
   Enabled: false
+
+Style/Documentation:
+  Enabled: false
