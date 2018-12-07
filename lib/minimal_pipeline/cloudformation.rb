@@ -74,7 +74,7 @@ class MinimalPipeline
     #
     # @param stack [String] The name of the CloudFormation stack
     # @return [Hash] Key value pairs of stack outputs
-    def stack_outputs(stack)
+    def stack_outputs(stack, attempt = 1)
       response = @client.describe_stacks(stack_name: stack)
       raise "#{stack.upcase} stack does not exist!" if response.stacks.empty?
 
@@ -86,6 +86,14 @@ class MinimalPipeline
       end
 
       @outputs[stack]
+    rescue Aws::CloudFormation::Errors::Throttling => error
+      raise 'Unable to get stack outputs' if attempt > 5
+
+      delay = attempt * 15
+      puts "#{error.message} - Retrying in #{delay}"
+      sleep delay
+      attempt += 1
+      stack_outputs(stack, attempt)
     end
 
     # Creates or Updates a CloudFormation stack. Checks to see if the stack
