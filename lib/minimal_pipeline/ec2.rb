@@ -132,5 +132,26 @@ class MinimalPipeline
 
       new_mappings
     end
+
+    # Copy an AMI
+    #
+    # The new image will be encrypted. You can optionally copy across regions
+    #
+    # @params image_id [String] The AMI ID to copy
+    # @params kms_key_id [String] Non-default KMS key ID to use for encryption
+    # @params region [String] The destination region for the new image
+    # @return [String] The newly created AMI ID
+    def copy_image(image_id, kms_key_id = nil, region = nil)
+      params = {
+        encrypted: true,
+        source_image_id: image_id,
+        source_region: @region,
+        region: region || @region
+      }
+      params['kms_key_id'] = kms_key_id if kms_key_id
+
+      response = @client.copy_image(params)
+      response.image_id
+    end
   end
 end

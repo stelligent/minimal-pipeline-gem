@@ -142,6 +142,29 @@ ec2.register_ami(new_mappings, &#39;ami-name&#39;)</p>
         <li class="public ">
   <span class="summary_signature">
     
+      <a href="#copy_image-instance_method" title="#copy_image (instance method)">#<strong>copy_image</strong>(image_id, kms_key_id = nil, region = nil)  &#x21d2; String </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>Copy an AMI.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
       <a href="#copy_snapshot-instance_method" title="#copy_snapshot (instance method)">#<strong>copy_snapshot</strong>(snapshot_id, kms_key_id = nil, encrypted = true)  &#x21d2; String </a>
     
 
@@ -363,7 +386,84 @@ Requires environment variables <code>AWS_REGION</code> or <code>region</code> to
 
     
       <div class="method_details first">
-  <h3 class="signature first" id="copy_snapshot-instance_method">
+  <h3 class="signature first" id="copy_image-instance_method">
+  
+    #<strong>copy_image</strong>(image_id, kms_key_id = nil, region = nil)  &#x21d2; <tt>String</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    <p>Copy an AMI</p>
+
+<p>The new image will be encrypted. You can optionally copy across regions</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>The newly created AMI ID</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/minimal_pipeline/ec2.rb', line 144</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_copy_image'>copy_image</span><span class='lparen'>(</span><span class='id identifier rubyid_image_id'>image_id</span><span class='comma'>,</span> <span class='id identifier rubyid_kms_key_id'>kms_key_id</span> <span class='op'>=</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='id identifier rubyid_region'>region</span> <span class='op'>=</span> <span class='kw'>nil</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_params'>params</span> <span class='op'>=</span> <span class='lbrace'>{</span>
+    <span class='label'>encrypted:</span> <span class='kw'>true</span><span class='comma'>,</span>
+    <span class='label'>source_image_id:</span> <span class='id identifier rubyid_image_id'>image_id</span><span class='comma'>,</span>
+    <span class='label'>source_region:</span> <span class='ivar'>@region</span><span class='comma'>,</span>
+    <span class='label'>region:</span> <span class='id identifier rubyid_region'>region</span> <span class='op'>||</span> <span class='ivar'>@region</span>
+  <span class='rbrace'>}</span>
+  <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>kms_key_id</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_kms_key_id'>kms_key_id</span> <span class='kw'>if</span> <span class='id identifier rubyid_kms_key_id'>kms_key_id</span>
+
+  <span class='id identifier rubyid_response'>response</span> <span class='op'>=</span> <span class='ivar'>@client</span><span class='period'>.</span><span class='id identifier rubyid_copy_image'>copy_image</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_response'>response</span><span class='period'>.</span><span class='id identifier rubyid_image_id'>image_id</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="copy_snapshot-instance_method">
   
     #<strong>copy_snapshot</strong>(snapshot_id, kms_key_id = nil, encrypted = true)  &#x21d2; <tt>String</tt> 
   
@@ -964,7 +1064,7 @@ Currently only supports x86_64 HVM</p>
 </div>
 
       <div id="footer">
-  Generated on Thu Nov  8 13:50:44 2018 by
+  Generated on Fri Dec  7 11:18:29 2018 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.14 (ruby-2.5.1).
 </div>
