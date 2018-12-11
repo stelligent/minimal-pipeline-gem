@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'zip'
-require 'aws-sdk'
+require 'aws-sdk-lambda'
 
 class MinimalPipeline
   # Here is an example of how to use this class to prepare zipfiles for lambda.

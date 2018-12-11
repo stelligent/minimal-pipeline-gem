@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'aws-sdk'
+require 'aws-sdk-cloudformation'
 
 class MinimalPipeline
   # Here is an example of how to use this class to deploy CloudFormation Stacks.

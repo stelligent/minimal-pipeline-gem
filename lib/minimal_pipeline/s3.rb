@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'aws-sdk'
+require 'aws-sdk-s3'
 
 class MinimalPipeline
   # Here is an example of how to use this class to interact with S3.

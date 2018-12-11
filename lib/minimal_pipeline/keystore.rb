@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 require 'keystore'
-require 'aws-sdk'
+require 'aws-sdk-dynamodb'
+require 'aws-sdk-kms'
 
 class MinimalPipeline
   # Here is an example of how to use this class to interact with the Keystore.

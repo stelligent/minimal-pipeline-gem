@@ -1,4 +1,4 @@
-require 'aws-sdk'
+require 'aws-sdk-sqs'
 
 class MinimalPipeline
   # Here is an example of how to use this class to send a message onto a queue.
