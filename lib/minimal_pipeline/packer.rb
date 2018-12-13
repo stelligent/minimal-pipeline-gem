@@ -51,8 +51,17 @@ class MinimalPipeline
       command += @config
       puts command if ENV['DEBUG']
 
-      output = `#{command}`
-      puts output if ENV['DEBUG']
+      output = ''
+      Open3.popen2e(command) do |_stdin, stdouterr, wait_thr|
+        while (command_output = stdouterr.gets)
+          output += command_output
+          puts command_output
+          $stdout.flush
+        end
+
+        raise 'Packer failed!' unless wait_thr.value.success?
+      end
+
       get_ami_id(output)
     end
   end
