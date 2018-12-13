@@ -35,7 +35,11 @@ describe MinimalPipeline::Packer do
 
   it 'displays packer output in real-time' do
     packer = MinimalPipeline::Packer.new('packer/test.json')
-    expect_any_instance_of(Process::Status).to receive(:success?).and_return(true)
+    pid = Process.fork do
+      # Mock process started!
+    end
+    expect(Open3).to receive(:spawn).and_return(pid)
+
     expect_any_instance_of(IO).to receive(:gets).once.and_return('Line of output')
     expect_any_instance_of(IO).to receive(:gets).once.and_return(nil)
     expect(STDOUT).to receive(:puts).with('Line of output')
