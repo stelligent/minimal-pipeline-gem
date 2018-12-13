@@ -276,6 +276,36 @@ describe MinimalPipeline::Cloudformation do
       response = cloudformation.stack_exists?('foo')
       expect(response).to_not be true
     end
+
+    it 'retries when throttled' do
+      client = double(Aws::CloudFormation::Client)
+      error = Aws::CloudFormation::Errors::Throttling.new('foo', 'Error Message')
+      response = double(Aws::CloudFormation::Types::DescribeStacksOutput)
+
+      outputs = [
+        Aws::CloudFormation::Types::Output.new(
+          description: 'Description',
+          export_name: 'Export Name',
+          output_key: 'OutputName',
+          output_value: 'Foo'
+        )
+      ]
+
+      stacks = [
+        Aws::CloudFormation::Types::Stack.new(outputs: outputs)
+      ]
+
+      expect(client).to receive(:describe_stacks).once.and_raise(error)
+      expect(client).to receive(:describe_stacks).once.and_return(response)
+      expect(response).to receive(:stacks).and_return(stacks).at_least(:once)
+      expect(Aws::CloudFormation::Client).to receive(:new).with(region: 'us-east-1').and_return(client)
+
+      cloudformation = MinimalPipeline::Cloudformation.new
+      expect(STDOUT).to receive(:puts).with('Error Message - Retrying in 15')
+      expect(cloudformation).to receive(:sleep).with(15)
+
+      cloudformation.stack_outputs('STACK-NAME')
+    end
   end
 end
 # rubocop:enable Metrics/BlockLength, Metrics/LineLength
