@@ -96,6 +96,42 @@ class MinimalPipeline
       stack_outputs(stack, attempt)
     end
 
+    def attempt_to_update_stack(stack_name, stack_parameters, wait_options,
+                                attempt = 1)
+      unless @client.describe_stacks(stack_name: stack_name).stacks.empty?
+        puts 'Updating the existing stack' if ENV['DEBUG']
+        @client.update_stack(stack_parameters)
+        @client.wait_until(:stack_update_complete, { stack_name: stack_name },
+                           wait_options)
+      end
+    rescue Aws::CloudFormation::Errors::Throttling => error
+      raise 'Unable to attempt stack update' if attempt > 5
+
+      delay = attempt * 15
+      puts "#{error.message} - Retrying in #{delay}"
+      sleep delay
+      attempt += 1
+      attempt_to_update_stack(stack_name, stack_parameters, wait_options,
+                              attempt)
+    end
+
+    def attempt_to_create_stack(stack_name, stack_parameters, wait_options,
+                                attempt = 1)
+      puts 'Creating a new stack' if ENV['DEBUG']
+      @client.create_stack(stack_parameters)
+      @client.wait_until(:stack_create_complete, { stack_name: stack_name },
+                         wait_options)
+    rescue Aws::CloudFormation::Errors::Throttling => error
+      raise 'Unable to attempt stack create' if attempt > 5
+
+      delay = attempt * 15
+      puts "#{error.message} - Retrying in #{delay}"
+      sleep delay
+      attempt += 1
+      attempt_to_create_stack(stack_name, stack_parameters, wait_options,
+                              attempt)
+    end
+
     # Creates or Updates a CloudFormation stack. Checks to see if the stack
     # already exists and takes the appropriate action. Pauses until a final
     # stack state is reached.
@@ -116,22 +152,14 @@ class MinimalPipeline
         parameters: params(parameters)
       }
 
-      unless @client.describe_stacks(stack_name: stack_name).stacks.empty?
-        puts 'Updating the existing stack' if ENV['DEBUG']
-        @client.update_stack(stack_parameters)
-        @client.wait_until(:stack_update_complete, { stack_name: stack_name },
-                           wait_options)
-      end
+      attempt_to_update_stack(stack_name, stack_parameters, wait_options)
     rescue Aws::CloudFormation::Errors::ValidationError => error
       if error.to_s.include? 'No updates are to be performed.'
         puts 'Nothing to do.' if ENV['DEBUG']
       elsif error.to_s.include? 'Template error'
         raise error
       else
-        puts 'Creating a new stack' if ENV['DEBUG']
-        @client.create_stack(stack_parameters)
-        @client.wait_until(:stack_create_complete, { stack_name: stack_name },
-                           wait_options)
+        attempt_to_create_stack(stack_name, stack_parameters, wait_options)
       end
     end
 

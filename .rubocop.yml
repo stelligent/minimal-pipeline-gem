@@ -21,3 +21,6 @@ Style/UnneededPercentQ:
 
 Style/Documentation:
   Enabled: false
+
+Metrics/ClassLength:
+  Enabled: false
