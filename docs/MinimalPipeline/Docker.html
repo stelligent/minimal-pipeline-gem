@@ -6,7 +6,7 @@
 <title>
   Class: MinimalPipeline::Docker
   
-    &mdash; Documentation by YARD 0.9.14
+    &mdash; Documentation by YARD 0.9.16
   
 </title>
 
@@ -137,7 +137,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#build_docker_image-instance_method" title="#build_docker_image (instance method)">#<strong>build_docker_image</strong>(image_id, dir = &#39;.&#39;, build_args: {}, timeout: 600)  &#x21d2; Object </a>
+      <a href="#build_docker_image-instance_method" title="#build_docker_image (instance method)">#<strong>build_docker_image</strong>(image_id, build_context = &#39;.&#39;, dockerfile = &#39;Dockerfile&#39;, build_args: {}, timeout: 600)  &#x21d2; Object </a>
     
 
     
@@ -326,7 +326,7 @@
       <div class="method_details first">
   <h3 class="signature first" id="build_docker_image-instance_method">
   
-    #<strong>build_docker_image</strong>(image_id, dir = &#39;.&#39;, build_args: {}, timeout: 600)  &#x21d2; <tt>Object</tt> 
+    #<strong>build_docker_image</strong>(image_id, build_context = &#39;.&#39;, dockerfile = &#39;Dockerfile&#39;, build_args: {}, timeout: 600)  &#x21d2; <tt>Object</tt> 
   
 
   
@@ -360,7 +360,7 @@
   
     <li>
       
-        <span class='name'>dir</span>
+        <span class='name'>build_context</span>
       
       
         <span class='type'>(<tt>String</tt>)</span>
@@ -370,7 +370,24 @@
       
       
         &mdash;
-        <div class='inline'><p>The path to the Dockerfile</p>
+        <div class='inline'><p>The build context for Dockerfile</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>dockerfile</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;Dockerfile&#39;</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'><p>The path to Dockerfile</p>
 </div>
       
     </li>
@@ -414,7 +431,6 @@
       <pre class="lines">
 
 
-68
 69
 70
 71
@@ -429,12 +445,22 @@
 80
 81
 82
-83</pre>
+83
+84
+85
+86
+87
+88
+89
+90</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/minimal_pipeline/docker.rb', line 68</span>
+      <pre class="code"><span class="info file"># File 'lib/minimal_pipeline/docker.rb', line 69</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_build_docker_image'>build_docker_image</span><span class='lparen'>(</span><span class='id identifier rubyid_image_id'>image_id</span><span class='comma'>,</span> <span class='id identifier rubyid_dir'>dir</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>.</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='label'>build_args:</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='comma'>,</span> <span class='label'>timeout:</span> <span class='int'>600</span><span class='rparen'>)</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_build_docker_image'>build_docker_image</span><span class='lparen'>(</span><span class='id identifier rubyid_image_id'>image_id</span><span class='comma'>,</span> <span class='id identifier rubyid_build_context'>build_context</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>.</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span>
+                       <span class='id identifier rubyid_dockerfile'>dockerfile</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Dockerfile</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span>
+                       <span class='label'>build_args:</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='comma'>,</span>
+                       <span class='label'>timeout:</span> <span class='int'>600</span><span class='rparen'>)</span>
   <span class='qwords_beg'>%w[</span><span class='tstring_content'>HTTP_PROXY</span><span class='words_sep'> </span><span class='tstring_content'>HTTPS_PROXY</span><span class='words_sep'> </span><span class='tstring_content'>NO_PROXY</span><span class='words_sep'> </span><span class='tstring_content'>http_proxy</span><span class='words_sep'> </span><span class='tstring_content'>https_proxy</span><span class='words_sep'>
      </span><span class='tstring_content'>no_proxy</span><span class='tstring_end'>]</span></span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_arg'>arg</span><span class='op'>|</span>
     <span class='id identifier rubyid_build_args'>build_args</span><span class='lbracket'>[</span><span class='id identifier rubyid_arg'>arg</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='const'>ENV</span><span class='lbracket'>[</span><span class='id identifier rubyid_arg'>arg</span><span class='rbracket'>]</span> <span class='kw'>if</span> <span class='const'>ENV</span><span class='lbracket'>[</span><span class='id identifier rubyid_arg'>arg</span><span class='rbracket'>]</span>
@@ -444,11 +470,14 @@
     <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>nocache</span><span class='tstring_end'>&#39;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>true</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span>
     <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>pull</span><span class='tstring_end'>&#39;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>true</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span>
     <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>t</span><span class='tstring_end'>&#39;</span></span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_image_id'>image_id</span><span class='comma'>,</span>
+    <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>dockerfile</span><span class='tstring_end'>&#39;</span></span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_dockerfile'>dockerfile</span><span class='comma'>,</span>
     <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>buildargs</span><span class='tstring_end'>&#39;</span></span> <span class='op'>=&gt;</span> <span class='const'>JSON</span><span class='period'>.</span><span class='id identifier rubyid_dump'>dump</span><span class='lparen'>(</span><span class='id identifier rubyid_build_args'>build_args</span><span class='rparen'>)</span>
   <span class='rbrace'>}</span>
   <span class='id identifier rubyid_puts'>puts</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Build args: </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_args'>args</span><span class='period'>.</span><span class='id identifier rubyid_inspect'>inspect</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span> <span class='kw'>if</span> <span class='const'>ENV</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>DEBUG</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span>
   <span class='op'>::</span><span class='const'>Docker</span><span class='period'>.</span><span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='symbol'>:read_timeout</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_timeout'>timeout</span>
-  <span class='op'>::</span><span class='const'>Docker</span><span class='op'>::</span><span class='const'>Image</span><span class='period'>.</span><span class='id identifier rubyid_build_from_dir'>build_from_dir</span><span class='lparen'>(</span><span class='id identifier rubyid_dir'>dir</span><span class='comma'>,</span> <span class='id identifier rubyid_args'>args</span><span class='rparen'>)</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_v'>v</span><span class='op'>|</span> <span class='id identifier rubyid_build_output'>build_output</span><span class='lparen'>(</span><span class='id identifier rubyid_v'>v</span><span class='rparen'>)</span> <span class='rbrace'>}</span>
+  <span class='op'>::</span><span class='const'>Docker</span><span class='op'>::</span><span class='const'>Image</span><span class='period'>.</span><span class='id identifier rubyid_build_from_dir'>build_from_dir</span><span class='lparen'>(</span><span class='id identifier rubyid_build_context'>build_context</span><span class='comma'>,</span> <span class='id identifier rubyid_args'>args</span><span class='rparen'>)</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_value'>value</span><span class='op'>|</span>
+    <span class='id identifier rubyid_build_output'>build_output</span><span class='lparen'>(</span><span class='id identifier rubyid_value'>value</span><span class='rparen'>)</span>
+  <span class='kw'>end</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -636,17 +665,17 @@ This handles login, the upload, and local cleanup of the container</p>
       <pre class="lines">
 
 
-89
-90
-91
-92
-93
-94
-95
-96</pre>
+96
+97
+98
+99
+100
+101
+102
+103</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/minimal_pipeline/docker.rb', line 89</span>
+      <pre class="code"><span class="info file"># File 'lib/minimal_pipeline/docker.rb', line 96</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_push_docker_image'>push_docker_image</span><span class='lparen'>(</span><span class='id identifier rubyid_image_id'>image_id</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_docker_bin'>docker_bin</span> <span class='op'>=</span> <span class='id identifier rubyid_which'>which</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>docker</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
@@ -756,9 +785,9 @@ This handles login, the upload, and local cleanup of the container</p>
 </div>
 
       <div id="footer">
-  Generated on Fri Dec  7 11:49:48 2018 by
+  Generated on Thu Dec 20 09:11:18 2018 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.9.14 (ruby-2.5.1).
+  0.9.16 (ruby-2.5.1).
 </div>
 
     </div>

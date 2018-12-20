@@ -62,11 +62,11 @@ class MinimalPipeline
     # Builds a docker image from a Dockerfile
     #
     # @param image_id [String] The name of the docker image
-    # @param dir [String] The build context for Dockerfile
+    # @param build_context [String] The build context for Dockerfile
     # @param dockerfile [String] The path to Dockerfile
     # @param build_args [Hash] Additional build args to pass to Docker
     # @param timeout [Integer] The Docker build timeout
-    def build_docker_image(image_id, dir = '.',
+    def build_docker_image(image_id, build_context = '.',
                            dockerfile = 'Dockerfile',
                            build_args: {},
                            timeout: 600)
@@ -84,7 +84,9 @@ class MinimalPipeline
       }
       puts "Build args: #{args.inspect}" if ENV['DEBUG']
       ::Docker.options[:read_timeout] = timeout
-      ::Docker::Image.build_from_dir(dir, args) { |v| build_output(v) }
+      ::Docker::Image.build_from_dir(build_context, args) do |value|
+        build_output(value)
+      end
     end
 
     # Pushes a docker image from local to AWS ECR.
