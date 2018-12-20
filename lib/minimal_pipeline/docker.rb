@@ -62,10 +62,14 @@ class MinimalPipeline
     # Builds a docker image from a Dockerfile
     #
     # @param image_id [String] The name of the docker image
-    # @param dir [String] The path to the Dockerfile
+    # @param dir [String] The build context for Dockerfile
+    # @param dockerfile [String] The path to Dockerfile
     # @param build_args [Hash] Additional build args to pass to Docker
     # @param timeout [Integer] The Docker build timeout
-    def build_docker_image(image_id, dir = '.', build_args: {}, timeout: 600)
+    def build_docker_image(image_id, dir = '.',
+                           dockerfile = 'Dockerfile',
+                           build_args: {},
+                           timeout: 600)
       %w[HTTP_PROXY HTTPS_PROXY NO_PROXY http_proxy https_proxy
          no_proxy].each do |arg|
         build_args[arg] = ENV[arg] if ENV[arg]
@@ -75,6 +79,7 @@ class MinimalPipeline
         'nocache' => 'true',
         'pull' => 'true',
         't' => image_id,
+        'dockerfile' => dockerfile,
         'buildargs' => JSON.dump(build_args)
       }
       puts "Build args: #{args.inspect}" if ENV['DEBUG']
