@@ -102,6 +102,7 @@ describe MinimalPipeline::Cloudformation do
     it 'creates a new stack if one does not already exist' do
       expected_stack_parameters = {
         capabilities: ['CAPABILITY_IAM'],
+        disable_rollback: false,
         parameters: [
           {
             parameter_key: :foo,
@@ -136,6 +137,7 @@ describe MinimalPipeline::Cloudformation do
     it 'updates a new stack if it already exists' do
       expected_stack_parameters = {
         capabilities: ['CAPABILITY_IAM'],
+        disable_rollback: false,
         parameters: [
           {
             parameter_key: :foo,
@@ -186,6 +188,7 @@ describe MinimalPipeline::Cloudformation do
     it 'is idempotent if no changes are to be made' do
       expected_stack_parameters = {
         capabilities: ['CAPABILITY_IAM'],
+        disable_rollback: false,
         parameters: [
           {
             parameter_key: :foo,
@@ -305,6 +308,41 @@ describe MinimalPipeline::Cloudformation do
       expect(cloudformation).to receive(:sleep).with(15)
 
       cloudformation.stack_outputs('STACK-NAME')
+    end
+
+    it 'allows the disabling of rollback' do
+      expected_stack_parameters = {
+        capabilities: ['CAPABILITY_IAM'],
+        disable_rollback: true,
+        parameters: [
+          {
+            parameter_key: :foo,
+            parameter_value: 'bar'
+          }
+        ],
+        stack_name: 'STACK-NAME',
+        template_body: '---'
+      }
+
+      cloudformation_parameters = {
+        foo: 'bar'
+      }
+
+      wait_options = {
+        delay: 30,
+        max_attempts: 120
+      }
+
+      client = double(Aws::CloudFormation::Client)
+
+      expect(client).to receive(:describe_stacks).and_raise(Aws::CloudFormation::Errors::ValidationError.new('foo', 'bar'))
+      expect(client).to receive(:wait_until).with(:stack_create_complete, { stack_name: 'STACK-NAME' }, wait_options).and_return(true)
+      expect(client).to receive(:create_stack).with(expected_stack_parameters)
+      expect(File).to receive(:read).with('foo.yaml').and_return('---')
+      expect(Aws::CloudFormation::Client).to receive(:new).with(region: 'us-east-1').and_return(client)
+
+      cloudformation = MinimalPipeline::Cloudformation.new
+      cloudformation.deploy_stack('STACK-NAME', cloudformation_parameters, 'foo.yaml', disable_rollback: true)
     end
   end
 end

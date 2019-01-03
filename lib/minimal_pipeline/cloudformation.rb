@@ -139,7 +139,7 @@ class MinimalPipeline
     # @param stack_name [String] The name of the CloudFormation stack
     # @param stack_parameters [Hash] Parameters to be passed into the stack
     def deploy_stack(stack_name, parameters, template,
-                     capabilities = ['CAPABILITY_IAM'])
+                     capabilities = ['CAPABILITY_IAM'], disable_rollback: false)
       wait_options = {
         max_attempts: @wait_max_attempts,
         delay: @wait_delay
@@ -148,6 +148,7 @@ class MinimalPipeline
       stack_parameters = {
         stack_name: stack_name,
         template_body: File.read(template),
+        disable_rollback: disable_rollback,
         capabilities: capabilities,
         parameters: params(parameters)
       }
