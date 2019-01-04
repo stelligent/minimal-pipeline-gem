@@ -137,7 +137,6 @@ describe MinimalPipeline::Cloudformation do
     it 'updates a new stack if it already exists' do
       expected_stack_parameters = {
         capabilities: ['CAPABILITY_IAM'],
-        disable_rollback: false,
         parameters: [
           {
             parameter_key: :foo,
@@ -188,7 +187,6 @@ describe MinimalPipeline::Cloudformation do
     it 'is idempotent if no changes are to be made' do
       expected_stack_parameters = {
         capabilities: ['CAPABILITY_IAM'],
-        disable_rollback: false,
         parameters: [
           {
             parameter_key: :foo,
