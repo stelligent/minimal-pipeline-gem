@@ -148,7 +148,6 @@ class MinimalPipeline
       stack_parameters = {
         stack_name: stack_name,
         template_body: File.read(template),
-        disable_rollback: disable_rollback,
         capabilities: capabilities,
         parameters: params(parameters)
       }
@@ -162,6 +161,7 @@ class MinimalPipeline
       elsif error.to_s.include? 'Template error'
         raise error
       else
+        stack_parameters[:disable_rollback] = disable_rollback
         attempt_to_create_stack(stack_name, stack_parameters, wait_options)
       end
     end
