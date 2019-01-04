@@ -153,6 +153,8 @@ class MinimalPipeline
         parameters: params(parameters)
       }
 
+      puts stack_parameters.inspect
+
       attempt_to_update_stack(stack_name, stack_parameters, wait_options)
     rescue Aws::CloudFormation::Errors::ValidationError => error
       if error.to_s.include? 'No updates are to be performed.'
