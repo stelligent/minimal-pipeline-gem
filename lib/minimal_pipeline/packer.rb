@@ -18,12 +18,15 @@ class MinimalPipeline
   # ```
   class Packer
     attr_accessor :config
+    attr_accessor :debug
 
     # Instaniate a Packer object
     #
     # @param packer_config [String] Path to the JSON packer config file
-    def initialize(packer_config)
+    # @param debug [Boolean] Debug mode enabled for packer build (-debug flag)
+    def initialize(packer_config, debug = false)
       @config = packer_config
+      @debug = debug
     end
 
     # Parse the newly built AMI from a given packer command output
@@ -47,6 +50,7 @@ class MinimalPipeline
       end
 
       command = 'packer -machine-readable build '
+      command += '-debug ' if @debug
       command += variable_string unless variable_string.empty?
       command += @config
       puts command if ENV['DEBUG']
