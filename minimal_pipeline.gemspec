@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.authors       = ['Mayowa Aladeojebi', 'Jesse Adams']
   spec.email         = ['mayowa.aladeojebi@stelligent.com',
                         'jesse.adams@stelligent.com']
-  spec.version       = '0.2.8'
+  spec.version       = '0.2.9'
   spec.summary       = 'Helper gem to manage pipeline tasks'
   spec.description   = 'Helper gem to orchestrate pipeline tasks'
   spec.homepage      = 'https://github.com/stelligent/minimal-pipeline-gem'

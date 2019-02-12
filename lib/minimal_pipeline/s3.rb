@@ -46,10 +46,13 @@ class MinimalPipeline
     # @param file [String] The path to the file on disk to be uploaded
     # @param key [String] The name of the key to store the file as in the bucket
     # This defaults to the file param
+    # @return [String] The Version ID of the latest object
     def upload(bucket_name, file, key = nil)
       key ||= File.basename(file)
       object = @s3.bucket(bucket_name).object(key)
       object.upload_file(file)
+      object.load
+      object.version_id
     end
   end
 end
