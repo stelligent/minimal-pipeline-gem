@@ -20,7 +20,7 @@ class MinimalPipeline
     # Zips up lambda code in preparation for upload
     #
     # @param input [String] The path to a file or directory to zip up
-    # @param zipefile_name [String] The path to the resulting zip file
+    # @param zipfile_name [String] The path to the resulting zip file
     def prepare_zipfile(input, zipfile_name)
       Zip::File.open(zipfile_name, Zip::File::CREATE) do |zipfile|
         if File.directory?(input)

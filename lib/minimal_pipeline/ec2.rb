@@ -99,8 +99,8 @@ class MinimalPipeline
     # Register a new AMI based on block device mappings
     # Currently only supports x86_64 HVM
     #
-    # @params block_device_mappings [Array] Block device mappings with snapshots
-    # @params ami_name [String] The name of the AMI to create
+    # @param block_device_mappings [Array] Block device mappings with snapshots
+    # @param ami_name [String] The name of the AMI to create
     # @return [String] The AMI ID of the newly created AMI
     def register_ami(block_device_mappings, ami_name)
       response = @client.register_image(
@@ -116,7 +116,7 @@ class MinimalPipeline
 
     # Copy the snapshots from the original account into the new one
     #
-    # @params block_device_mappings [Array] Block device mappings with snapshots
+    # @param block_device_mappings [Array] Block device mappings with snapshots
     # @param kms_key_id [String] The ID of the KMS key. Omit to use default
     # @return [Array] Block device mappings with updated snapshot ids
     def copy_snapshots_in_new_account(block_device_mappings, kms_key_id = nil)
@@ -137,9 +137,9 @@ class MinimalPipeline
     #
     # The new image will be encrypted. You can optionally copy across regions
     #
-    # @params image_id [String] The AMI ID to copy
-    # @params image_name [String] The name of the new image
-    # @params kms_key_id [String] Non-default KMS key ID to use for encryption
+    # @param image_id [String] The AMI ID to copy
+    # @param image_name [String] The name of the new image
+    # @param kms_key_id [String] Non-default KMS key ID to use for encryption
     # @return [String] The newly created AMI ID
     def copy_image(image_id, image_name, kms_key_id = nil)
       params = {

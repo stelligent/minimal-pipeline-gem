@@ -153,6 +153,32 @@
 </li>
 
     
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#debug-instance_method" title="#debug (instance method)">#<strong>debug</strong>  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>Returns the value of attribute debug.</p>
+</div></span>
+  
+</li>
+
+    
   </ul>
 
 
@@ -215,7 +241,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#initialize-instance_method" title="#initialize (instance method)">#<strong>initialize</strong>(packer_config)  &#x21d2; Packer </a>
+      <a href="#initialize-instance_method" title="#initialize (instance method)">#<strong>initialize</strong>(packer_config, debug = false)  &#x21d2; Packer </a>
     
 
     
@@ -246,7 +272,7 @@
     <div class="method_details first">
   <h3 class="signature first" id="initialize-instance_method">
   
-    #<strong>initialize</strong>(packer_config)  &#x21d2; <tt><span class='object_link'><a href="" title="MinimalPipeline::Packer (class)">Packer</a></span></tt> 
+    #<strong>initialize</strong>(packer_config, debug = false)  &#x21d2; <tt><span class='object_link'><a href="" title="MinimalPipeline::Packer (class)">Packer</a></span></tt> 
   
 
   
@@ -278,6 +304,23 @@
       
     </li>
   
+    <li>
+      
+        <span class='name'>debug</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>false</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'><p>Debug mode enabled for packer build (-debug flag)</p>
+</div>
+      
+    </li>
+  
 </ul>
 
 
@@ -287,15 +330,17 @@
       <pre class="lines">
 
 
-25
-26
-27</pre>
+27
+28
+29
+30</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/minimal_pipeline/packer.rb', line 25</span>
+      <pre class="code"><span class="info file"># File 'lib/minimal_pipeline/packer.rb', line 27</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_packer_config'>packer_config</span><span class='rparen'>)</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_packer_config'>packer_config</span><span class='comma'>,</span> <span class='id identifier rubyid_debug'>debug</span> <span class='op'>=</span> <span class='kw'>false</span><span class='rparen'>)</span>
   <span class='ivar'>@config</span> <span class='op'>=</span> <span class='id identifier rubyid_packer_config'>packer_config</span>
+  <span class='ivar'>@debug</span> <span class='op'>=</span> <span class='id identifier rubyid_debug'>debug</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -343,6 +388,48 @@
 
 <span class='kw'>def</span> <span class='id identifier rubyid_config'>config</span>
   <span class='ivar'>@config</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      
+      <span id="debug=-instance_method"></span>
+      <div class="method_details ">
+  <h3 class="signature " id="debug-instance_method">
+  
+    #<strong>debug</strong>  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    <p>Returns the value of attribute debug</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+21
+22
+23</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/minimal_pipeline/packer.rb', line 21</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_debug'>debug</span>
+  <span class='ivar'>@debug</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -415,9 +502,6 @@
       <pre class="lines">
 
 
-42
-43
-44
 45
 46
 47
@@ -439,10 +523,14 @@
 63
 64
 65
-66</pre>
+66
+67
+68
+69
+70</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/minimal_pipeline/packer.rb', line 42</span>
+      <pre class="code"><span class="info file"># File 'lib/minimal_pipeline/packer.rb', line 45</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_build_ami'>build_ami</span><span class='lparen'>(</span><span class='id identifier rubyid_variables'>variables</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_variable_string'>variable_string</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_end'>&#39;</span></span>
@@ -452,6 +540,7 @@
   <span class='kw'>end</span>
 
   <span class='id identifier rubyid_command'>command</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>packer -machine-readable build </span><span class='tstring_end'>&#39;</span></span>
+  <span class='id identifier rubyid_command'>command</span> <span class='op'>+=</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>-debug </span><span class='tstring_end'>&#39;</span></span> <span class='kw'>if</span> <span class='ivar'>@debug</span>
   <span class='id identifier rubyid_command'>command</span> <span class='op'>+=</span> <span class='id identifier rubyid_variable_string'>variable_string</span> <span class='kw'>unless</span> <span class='id identifier rubyid_variable_string'>variable_string</span><span class='period'>.</span><span class='id identifier rubyid_empty?'>empty?</span>
   <span class='id identifier rubyid_command'>command</span> <span class='op'>+=</span> <span class='ivar'>@config</span>
   <span class='id identifier rubyid_puts'>puts</span> <span class='id identifier rubyid_command'>command</span> <span class='kw'>if</span> <span class='const'>ENV</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>DEBUG</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span>
@@ -531,13 +620,13 @@
       <pre class="lines">
 
 
-33
-34
-35
-36</pre>
+36
+37
+38
+39</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/minimal_pipeline/packer.rb', line 33</span>
+      <pre class="code"><span class="info file"># File 'lib/minimal_pipeline/packer.rb', line 36</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_get_ami_id'>get_ami_id</span><span class='lparen'>(</span><span class='id identifier rubyid_output'>output</span><span class='rparen'>)</span>
   <span class='kw'>return</span> <span class='kw'>if</span> <span class='id identifier rubyid_output'>output</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span> <span class='op'>||</span> <span class='id identifier rubyid_output'>output</span><span class='period'>.</span><span class='id identifier rubyid_empty?'>empty?</span>
@@ -553,7 +642,7 @@
 </div>
 
       <div id="footer">
-  Generated on Thu Dec 20 09:11:18 2018 by
+  Generated on Tue Feb 12 11:33:24 2019 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.16 (ruby-2.5.1).
 </div>

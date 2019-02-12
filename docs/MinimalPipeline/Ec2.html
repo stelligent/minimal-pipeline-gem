@@ -427,7 +427,58 @@ Requires environment variables <code>AWS_REGION</code> or <code>region</code> to
   </div>
 </div>
 <div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
   
+    <li>
+      
+        <span class='name'>image_id</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>The AMI ID to copy</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>image_name</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>The name of the new image</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>kms_key_id</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>nil</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'><p>Non-default KMS key ID to use for encryption</p>
+</div>
+      
+    </li>
+  
+</ul>
+
 <p class="tag_title">Returns:</p>
 <ul class="return">
   
@@ -646,6 +697,21 @@ Requires environment variables <code>AWS_REGION</code> or <code>region</code> to
 <div class="tags">
   <p class="tag_title">Parameters:</p>
 <ul class="param">
+  
+    <li>
+      
+        <span class='name'>block_device_mappings</span>
+      
+      
+        <span class='type'>(<tt>Array</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>Block device mappings with snapshots</p>
+</div>
+      
+    </li>
   
     <li>
       
@@ -883,7 +949,41 @@ Currently only supports x86_64 HVM</p>
   </div>
 </div>
 <div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
   
+    <li>
+      
+        <span class='name'>block_device_mappings</span>
+      
+      
+        <span class='type'>(<tt>Array</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>Block device mappings with snapshots</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>ami_name</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>The name of the AMI to create</p>
+</div>
+      
+    </li>
+  
+</ul>
+
 <p class="tag_title">Returns:</p>
 <ul class="return">
   
@@ -1162,7 +1262,7 @@ Currently only supports x86_64 HVM</p>
 </div>
 
       <div id="footer">
-  Generated on Thu Dec 20 09:11:18 2018 by
+  Generated on Tue Feb 12 11:33:24 2019 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.16 (ruby-2.5.1).
 </div>

@@ -137,7 +137,7 @@ class MinimalPipeline
     # stack state is reached.
 
     # @param stack_name [String] The name of the CloudFormation stack
-    # @param stack_parameters [Hash] Parameters to be passed into the stack
+    # @param parameters [Hash] Parameters to be passed into the stack
     def deploy_stack(stack_name, parameters, template,
                      capabilities = ['CAPABILITY_IAM'], disable_rollback: false)
       wait_options = {
