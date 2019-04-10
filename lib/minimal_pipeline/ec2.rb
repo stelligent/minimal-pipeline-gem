@@ -102,10 +102,11 @@ class MinimalPipeline
     # @param block_device_mappings [Array] Block device mappings with snapshots
     # @param ami_name [String] The name of the AMI to create
     # @return [String] The AMI ID of the newly created AMI
-    def register_ami(block_device_mappings, ami_name)
+    def register_ami(block_device_mappings, ami_name, ena_support: false)
       response = @client.register_image(
         architecture: 'x86_64',
         block_device_mappings: block_device_mappings,
+        ena_support: ena_support,
         name: ami_name,
         root_device_name: '/dev/sda1',
         virtualization_type: 'hvm'

@@ -3,13 +3,12 @@
 lib = File.expand_path('./lib', __dir__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
-# rubocop:disable Metrics/BlockLength
 Gem::Specification.new do |spec|
   spec.name          = 'minimal_pipeline'
   spec.authors       = ['Mayowa Aladeojebi', 'Jesse Adams']
   spec.email         = ['mayowa.aladeojebi@stelligent.com',
                         'jesse.adams@stelligent.com']
-  spec.version       = '0.2.9'
+  spec.version       = '0.3.0'
   spec.summary       = 'Helper gem to manage pipeline tasks'
   spec.description   = 'Helper gem to orchestrate pipeline tasks'
   spec.homepage      = 'https://github.com/stelligent/minimal-pipeline-gem'
@@ -37,4 +36,3 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency('packer-config', '1.6.3')
   spec.add_runtime_dependency('rubyzip', '1.2.2')
 end
-# rubocop:enable Metrics/BlockLength

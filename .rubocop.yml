@@ -24,3 +24,6 @@ Style/Documentation:
 
 Metrics/ClassLength:
   Enabled: false
+
+Naming/RescuedExceptionsVariableName:
+  Enabled: false
