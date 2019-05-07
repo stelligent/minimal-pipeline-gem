@@ -66,8 +66,8 @@ class MinimalPipeline
     # @param dockerfile [String] The path to Dockerfile
     # @param build_args [Hash] Additional build args to pass to Docker
     # @param timeout [Integer] The Docker build timeout
-    def build_docker_image(image_id, build_context = '.',
-                           dockerfile = 'Dockerfile',
+    def build_docker_image(image_id, build_context: '.',
+                           dockerfile: 'Dockerfile',
                            build_args: {},
                            timeout: 600)
       %w[HTTP_PROXY HTTPS_PROXY NO_PROXY http_proxy https_proxy
