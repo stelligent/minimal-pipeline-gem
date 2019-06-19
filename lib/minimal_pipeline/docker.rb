@@ -66,26 +66,24 @@ class MinimalPipeline
     # @param dockerfile [String] The path to Dockerfile
     # @param build_args [Hash] Additional build args to pass to Docker
     # @param timeout [Integer] The Docker build timeout
+    # @param options Additional options to pass to docker API
+    #
+    # For a full list of options, see https://docs.docker.com/engine/api/v1.37/#operation/ImageBuild
+    #
+    # rubocop:disable Metrics/ParameterLists
     def build_docker_image(image_id, build_context: '.',
-                           dockerfile: 'Dockerfile',
-                           build_args: {},
-                           timeout: 600)
-      %w[HTTP_PROXY HTTPS_PROXY NO_PROXY http_proxy https_proxy
-         no_proxy].each do |arg|
-        build_args[arg] = ENV[arg] if ENV[arg]
-      end
+                           dockerfile: 'Dockerfile', build_args: {},
+                           timeout: 600, **options)
 
-      args = populate_args_hash(image_id, dockerfile, build_args)
+      build_args_json = generate_build_args_json(build_args)
+
+      args = populate_args_hash(image_id, build_args_json, dockerfile)
+      options.each { |key, value| args[key] = value }
+
       puts "Build args: #{args.inspect}" if ENV['DEBUG']
-      ::Docker.options = {
-        timeout: timeout,
-        read_timeout: timeout,
-        write_timeout: timeout
-      }
-      ::Docker::Image.build_from_dir(build_context, args) do |value|
-        build_output(value)
-      end
+      build_image(build_context, args, timeout)
     end
+    # rubocop:enable Metrics/ParameterLists
 
     # Pushes a docker image from local to AWS ECR.
     # This handles login, the upload, and local cleanup of the container
@@ -102,14 +100,34 @@ class MinimalPipeline
 
     private
 
-    def populate_args_hash(image_id, dockerfile, build_args)
+    def generate_build_args_json(build_args)
+      %w[HTTP_PROXY HTTPS_PROXY NO_PROXY http_proxy https_proxy
+         no_proxy].each do |arg|
+        build_args[arg] = ENV[arg] if ENV[arg]
+      end
+
+      JSON.dump(build_args)
+    end
+
+    def populate_args_hash(image_id, build_args_json, dockerfile)
       {
         'nocache' => 'true',
         'pull' => 'true',
         't' => image_id,
         'dockerfile' => dockerfile,
-        'buildargs' => JSON.dump(build_args)
+        'buildargs' => build_args_json
       }
+    end
+
+    def build_image(build_context, args, timeout)
+      ::Docker.options = {
+        timeout: timeout,
+        read_timeout: timeout,
+        write_timeout: timeout
+      }
+      ::Docker::Image.build_from_dir(build_context, args) do |value|
+        build_output(value)
+      end
     end
   end
 end
