@@ -6,7 +6,7 @@
 <title>
   Class: MinimalPipeline::Ec2
   
-    &mdash; Documentation by YARD 0.9.16
+    &mdash; Documentation by YARD 0.9.19
   
 </title>
 
@@ -101,21 +101,21 @@
 
 <h2>Overview</h2><div class="docstring">
   <div class="discussion">
-    <h1>For Account 1:</h1>
+    
+<h1 id="label-For+Account+1-3A">For Account 1:</h1>
 
-<p>ec2 = MinimalPipeline::Ec2.new
-block_device_mappings = ec2.prepare_snapshots_for_account(&#39;ami-id&#39;,
-                                                          &#39;account-id&#39;)</p>
+<p>ec2 = MinimalPipeline::Ec2.new block_device_mappings =
+ec2.prepare_snapshots_for_account(&#39;ami-id&#39;,  &#39;account-id&#39;)</p>
 
-<h1>Promote AMI via SQS</h1>
+<h1 id="label-Promote+AMI+via+SQS">Promote AMI via SQS</h1>
 
-<p>sqs = MinimalPipeline::Sqs.new
-sqs.send_message(&#39;queue-name&#39;, block_device_mappings.to_json)</p>
+<p>sqs = MinimalPipeline::Sqs.new sqs.send_message(&#39;queue-name&#39;,
+block_device_mappings.to_json)</p>
 
-<h1>For Account 2, after getting block_device_mappings</h1>
+<h1 id="label-For+Account+2-2C+after+getting+block_device_mappings">For Account 2, after getting block_device_mappings</h1>
 
-<p>ec2 = MinimalPipeline::Ec2.new
-new_mappings = ec2.copy_snapshots_in_new_account(block_device_mappings)
+<p>ec2 = MinimalPipeline::Ec2.new new_mappings =
+ec2.copy_snapshots_in_new_account(block_device_mappings)
 ec2.register_ami(new_mappings, &#39;ami-name&#39;)</p>
 
 
@@ -156,7 +156,8 @@ ec2.register_ami(new_mappings, &#39;ami-name&#39;)</p>
   
 
   
-    <span class="summary_desc"><div class='inline'><p>Copy an AMI.</p>
+    <span class="summary_desc"><div class='inline'>
+<p>Copy an AMI.</p>
 </div></span>
   
 </li>
@@ -179,7 +180,8 @@ ec2.register_ami(new_mappings, &#39;ami-name&#39;)</p>
   
 
   
-    <span class="summary_desc"><div class='inline'><p>Create a copy of an existing snapshot.</p>
+    <span class="summary_desc"><div class='inline'>
+<p>Create a copy of an existing snapshot.</p>
 </div></span>
   
 </li>
@@ -202,7 +204,8 @@ ec2.register_ami(new_mappings, &#39;ami-name&#39;)</p>
   
 
   
-    <span class="summary_desc"><div class='inline'><p>Copy the snapshots from the original account into the new one.</p>
+    <span class="summary_desc"><div class='inline'>
+<p>Copy the snapshots from the original account into the new one.</p>
 </div></span>
   
 </li>
@@ -227,7 +230,9 @@ ec2.register_ami(new_mappings, &#39;ami-name&#39;)</p>
   
 
   
-    <span class="summary_desc"><div class='inline'><p>Initializes a <code>Ec2</code> client Requires environment variables <code>AWS_REGION</code> or <code>region</code> to be set.</p>
+    <span class="summary_desc"><div class='inline'>
+<p>Initializes a <code>Ec2</code> client Requires environment variables
+<code>AWS_REGION</code> or <code>region</code> to be set.</p>
 </div></span>
   
 </li>
@@ -250,7 +255,8 @@ ec2.register_ami(new_mappings, &#39;ami-name&#39;)</p>
   
 
   
-    <span class="summary_desc"><div class='inline'><p>Prepare volume snapshots of an AMI for a new account.</p>
+    <span class="summary_desc"><div class='inline'>
+<p>Prepare volume snapshots of an AMI for a new account.</p>
 </div></span>
   
 </li>
@@ -259,7 +265,7 @@ ec2.register_ami(new_mappings, &#39;ami-name&#39;)</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#register_ami-instance_method" title="#register_ami (instance method)">#<strong>register_ami</strong>(block_device_mappings, ami_name)  &#x21d2; String </a>
+      <a href="#register_ami-instance_method" title="#register_ami (instance method)">#<strong>register_ami</strong>(block_device_mappings, ami_name, ena_support: false)  &#x21d2; String </a>
     
 
     
@@ -273,7 +279,9 @@ ec2.register_ami(new_mappings, &#39;ami-name&#39;)</p>
   
 
   
-    <span class="summary_desc"><div class='inline'><p>Register a new AMI based on block device mappings Currently only supports x86_64 HVM.</p>
+    <span class="summary_desc"><div class='inline'>
+<p>Register a new AMI based on block device mappings Currently only supports
+x86_64 HVM.</p>
 </div></span>
   
 </li>
@@ -296,7 +304,8 @@ ec2.register_ami(new_mappings, &#39;ami-name&#39;)</p>
   
 
   
-    <span class="summary_desc"><div class='inline'><p>Update permissions to grant access to an AMI on another account.</p>
+    <span class="summary_desc"><div class='inline'>
+<p>Update permissions to grant access to an AMI on another account.</p>
 </div></span>
   
 </li>
@@ -319,7 +328,8 @@ ec2.register_ami(new_mappings, &#39;ami-name&#39;)</p>
   
 
   
-    <span class="summary_desc"><div class='inline'><p>Block processing until new image is ready.</p>
+    <span class="summary_desc"><div class='inline'>
+<p>Block processing until new image is ready.</p>
 </div></span>
   
 </li>
@@ -342,7 +352,8 @@ ec2.register_ami(new_mappings, &#39;ami-name&#39;)</p>
   
 
   
-    <span class="summary_desc"><div class='inline'><p>Block processing until new snapshot is ready.</p>
+    <span class="summary_desc"><div class='inline'>
+<p>Block processing until new snapshot is ready.</p>
 </div></span>
   
 </li>
@@ -365,8 +376,9 @@ ec2.register_ami(new_mappings, &#39;ami-name&#39;)</p>
   
 </h3><div class="docstring">
   <div class="discussion">
-    <p>Initializes a <code>Ec2</code> client
-Requires environment variables <code>AWS_REGION</code> or <code>region</code> to be set.</p>
+    
+<p>Initializes a <code>Ec2</code> client Requires environment variables
+<code>AWS_REGION</code> or <code>region</code> to be set.</p>
 
 
   </div>
@@ -419,7 +431,8 @@ Requires environment variables <code>AWS_REGION</code> or <code>region</code> to
   
 </h3><div class="docstring">
   <div class="discussion">
-    <p>Copy an AMI</p>
+    
+<p>Copy an AMI</p>
 
 <p>The new image will be encrypted. You can optionally copy across regions</p>
 
@@ -440,7 +453,8 @@ Requires environment variables <code>AWS_REGION</code> or <code>region</code> to
       
       
         &mdash;
-        <div class='inline'><p>The AMI ID to copy</p>
+        <div class='inline'>
+<p>The AMI ID to copy</p>
 </div>
       
     </li>
@@ -455,7 +469,8 @@ Requires environment variables <code>AWS_REGION</code> or <code>region</code> to
       
       
         &mdash;
-        <div class='inline'><p>The name of the new image</p>
+        <div class='inline'>
+<p>The name of the new image</p>
 </div>
       
     </li>
@@ -472,7 +487,8 @@ Requires environment variables <code>AWS_REGION</code> or <code>region</code> to
       
       
         &mdash;
-        <div class='inline'><p>Non-default KMS key ID to use for encryption</p>
+        <div class='inline'>
+<p>Non-default KMS key ID to use for encryption</p>
 </div>
       
     </li>
@@ -490,7 +506,8 @@ Requires environment variables <code>AWS_REGION</code> or <code>region</code> to
       
       
         &mdash;
-        <div class='inline'><p>The newly created AMI ID</p>
+        <div class='inline'>
+<p>The newly created AMI ID</p>
 </div>
       
     </li>
@@ -503,7 +520,6 @@ Requires environment variables <code>AWS_REGION</code> or <code>region</code> to
       <pre class="lines">
 
 
-144
 145
 146
 147
@@ -518,10 +534,11 @@ Requires environment variables <code>AWS_REGION</code> or <code>region</code> to
 156
 157
 158
-159</pre>
+159
+160</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/minimal_pipeline/ec2.rb', line 144</span>
+      <pre class="code"><span class="info file"># File 'lib/minimal_pipeline/ec2.rb', line 145</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_copy_image'>copy_image</span><span class='lparen'>(</span><span class='id identifier rubyid_image_id'>image_id</span><span class='comma'>,</span> <span class='id identifier rubyid_image_name'>image_name</span><span class='comma'>,</span> <span class='id identifier rubyid_kms_key_id'>kms_key_id</span> <span class='op'>=</span> <span class='kw'>nil</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_params'>params</span> <span class='op'>=</span> <span class='lbrace'>{</span>
@@ -555,7 +572,8 @@ Requires environment variables <code>AWS_REGION</code> or <code>region</code> to
   
 </h3><div class="docstring">
   <div class="discussion">
-    <p>Create a copy of an existing snapshot</p>
+    
+<p>Create a copy of an existing snapshot</p>
 
 
   </div>
@@ -574,7 +592,8 @@ Requires environment variables <code>AWS_REGION</code> or <code>region</code> to
       
       
         &mdash;
-        <div class='inline'><p>The ID of the snapshot to copy</p>
+        <div class='inline'>
+<p>The ID of the snapshot to copy</p>
 </div>
       
     </li>
@@ -591,7 +610,8 @@ Requires environment variables <code>AWS_REGION</code> or <code>region</code> to
       
       
         &mdash;
-        <div class='inline'><p>The ID of the KMS key. Omit to use default</p>
+        <div class='inline'>
+<p>The ID of the KMS key. Omit to use default</p>
 </div>
       
     </li>
@@ -608,7 +628,8 @@ Requires environment variables <code>AWS_REGION</code> or <code>region</code> to
       
       
         &mdash;
-        <div class='inline'><p>Whether or not the volume is encrypted</p>
+        <div class='inline'>
+<p>Whether or not the volume is encrypted</p>
 </div>
       
     </li>
@@ -626,7 +647,8 @@ Requires environment variables <code>AWS_REGION</code> or <code>region</code> to
       
       
         &mdash;
-        <div class='inline'><p>The ID of the newly created snapshot</p>
+        <div class='inline'>
+<p>The ID of the newly created snapshot</p>
 </div>
       
     </li>
@@ -689,7 +711,8 @@ Requires environment variables <code>AWS_REGION</code> or <code>region</code> to
   
 </h3><div class="docstring">
   <div class="discussion">
-    <p>Copy the snapshots from the original account into the new one</p>
+    
+<p>Copy the snapshots from the original account into the new one</p>
 
 
   </div>
@@ -708,7 +731,8 @@ Requires environment variables <code>AWS_REGION</code> or <code>region</code> to
       
       
         &mdash;
-        <div class='inline'><p>Block device mappings with snapshots</p>
+        <div class='inline'>
+<p>Block device mappings with snapshots</p>
 </div>
       
     </li>
@@ -725,7 +749,8 @@ Requires environment variables <code>AWS_REGION</code> or <code>region</code> to
       
       
         &mdash;
-        <div class='inline'><p>The ID of the KMS key. Omit to use default</p>
+        <div class='inline'>
+<p>The ID of the KMS key. Omit to use default</p>
 </div>
       
     </li>
@@ -743,7 +768,8 @@ Requires environment variables <code>AWS_REGION</code> or <code>region</code> to
       
       
         &mdash;
-        <div class='inline'><p>Block device mappings with updated snapshot ids</p>
+        <div class='inline'>
+<p>Block device mappings with updated snapshot ids</p>
 </div>
       
     </li>
@@ -756,7 +782,6 @@ Requires environment variables <code>AWS_REGION</code> or <code>region</code> to
       <pre class="lines">
 
 
-122
 123
 124
 125
@@ -768,10 +793,11 @@ Requires environment variables <code>AWS_REGION</code> or <code>region</code> to
 131
 132
 133
-134</pre>
+134
+135</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/minimal_pipeline/ec2.rb', line 122</span>
+      <pre class="code"><span class="info file"># File 'lib/minimal_pipeline/ec2.rb', line 123</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_copy_snapshots_in_new_account'>copy_snapshots_in_new_account</span><span class='lparen'>(</span><span class='id identifier rubyid_block_device_mappings'>block_device_mappings</span><span class='comma'>,</span> <span class='id identifier rubyid_kms_key_id'>kms_key_id</span> <span class='op'>=</span> <span class='kw'>nil</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_new_mappings'>new_mappings</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span>
@@ -802,7 +828,8 @@ Requires environment variables <code>AWS_REGION</code> or <code>region</code> to
   
 </h3><div class="docstring">
   <div class="discussion">
-    <p>Prepare volume snapshots of an AMI for a new account</p>
+    
+<p>Prepare volume snapshots of an AMI for a new account</p>
 
 
   </div>
@@ -821,7 +848,8 @@ Requires environment variables <code>AWS_REGION</code> or <code>region</code> to
       
       
         &mdash;
-        <div class='inline'><p>The ID of the AMI to prepare</p>
+        <div class='inline'>
+<p>The ID of the AMI to prepare</p>
 </div>
       
     </li>
@@ -836,7 +864,8 @@ Requires environment variables <code>AWS_REGION</code> or <code>region</code> to
       
       
         &mdash;
-        <div class='inline'><p>The ID of the AWS account to prepare</p>
+        <div class='inline'>
+<p>The ID of the AWS account to prepare</p>
 </div>
       
     </li>
@@ -853,7 +882,8 @@ Requires environment variables <code>AWS_REGION</code> or <code>region</code> to
       
       
         &mdash;
-        <div class='inline'><p>The ID of the KMS key. Omit to use default</p>
+        <div class='inline'>
+<p>The ID of the KMS key. Omit to use default</p>
 </div>
       
     </li>
@@ -871,7 +901,8 @@ Requires environment variables <code>AWS_REGION</code> or <code>region</code> to
       
       
         &mdash;
-        <div class='inline'><p>Block device mappings discovered from the AMI</p>
+        <div class='inline'>
+<p>Block device mappings discovered from the AMI</p>
 </div>
       
     </li>
@@ -934,7 +965,7 @@ Requires environment variables <code>AWS_REGION</code> or <code>region</code> to
       <div class="method_details ">
   <h3 class="signature " id="register_ami-instance_method">
   
-    #<strong>register_ami</strong>(block_device_mappings, ami_name)  &#x21d2; <tt>String</tt> 
+    #<strong>register_ami</strong>(block_device_mappings, ami_name, ena_support: false)  &#x21d2; <tt>String</tt> 
   
 
   
@@ -942,8 +973,9 @@ Requires environment variables <code>AWS_REGION</code> or <code>region</code> to
   
 </h3><div class="docstring">
   <div class="discussion">
-    <p>Register a new AMI based on block device mappings
-Currently only supports x86_64 HVM</p>
+    
+<p>Register a new AMI based on block device mappings Currently only supports
+x86_64 HVM</p>
 
 
   </div>
@@ -962,7 +994,8 @@ Currently only supports x86_64 HVM</p>
       
       
         &mdash;
-        <div class='inline'><p>Block device mappings with snapshots</p>
+        <div class='inline'>
+<p>Block device mappings with snapshots</p>
 </div>
       
     </li>
@@ -977,7 +1010,8 @@ Currently only supports x86_64 HVM</p>
       
       
         &mdash;
-        <div class='inline'><p>The name of the AMI to create</p>
+        <div class='inline'>
+<p>The name of the AMI to create</p>
 </div>
       
     </li>
@@ -995,7 +1029,8 @@ Currently only supports x86_64 HVM</p>
       
       
         &mdash;
-        <div class='inline'><p>The AMI ID of the newly created AMI</p>
+        <div class='inline'>
+<p>The AMI ID of the newly created AMI</p>
 </div>
       
     </li>
@@ -1018,15 +1053,17 @@ Currently only supports x86_64 HVM</p>
 112
 113
 114
-115</pre>
+115
+116</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'lib/minimal_pipeline/ec2.rb', line 105</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_register_ami'>register_ami</span><span class='lparen'>(</span><span class='id identifier rubyid_block_device_mappings'>block_device_mappings</span><span class='comma'>,</span> <span class='id identifier rubyid_ami_name'>ami_name</span><span class='rparen'>)</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_register_ami'>register_ami</span><span class='lparen'>(</span><span class='id identifier rubyid_block_device_mappings'>block_device_mappings</span><span class='comma'>,</span> <span class='id identifier rubyid_ami_name'>ami_name</span><span class='comma'>,</span> <span class='label'>ena_support:</span> <span class='kw'>false</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_response'>response</span> <span class='op'>=</span> <span class='ivar'>@client</span><span class='period'>.</span><span class='id identifier rubyid_register_image'>register_image</span><span class='lparen'>(</span>
     <span class='label'>architecture:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>x86_64</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span>
     <span class='label'>block_device_mappings:</span> <span class='id identifier rubyid_block_device_mappings'>block_device_mappings</span><span class='comma'>,</span>
+    <span class='label'>ena_support:</span> <span class='id identifier rubyid_ena_support'>ena_support</span><span class='comma'>,</span>
     <span class='label'>name:</span> <span class='id identifier rubyid_ami_name'>ami_name</span><span class='comma'>,</span>
     <span class='label'>root_device_name:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/dev/sda1</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span>
     <span class='label'>virtualization_type:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>hvm</span><span class='tstring_end'>&#39;</span></span>
@@ -1050,7 +1087,8 @@ Currently only supports x86_64 HVM</p>
   
 </h3><div class="docstring">
   <div class="discussion">
-    <p>Update permissions to grant access to an AMI on another account</p>
+    
+<p>Update permissions to grant access to an AMI on another account</p>
 
 
   </div>
@@ -1069,7 +1107,8 @@ Currently only supports x86_64 HVM</p>
       
       
         &mdash;
-        <div class='inline'><p>The ID of the snapshot to adjust</p>
+        <div class='inline'>
+<p>The ID of the snapshot to adjust</p>
 </div>
       
     </li>
@@ -1084,7 +1123,8 @@ Currently only supports x86_64 HVM</p>
       
       
         &mdash;
-        <div class='inline'><p>The AWS account to grant access to</p>
+        <div class='inline'>
+<p>The AWS account to grant access to</p>
 </div>
       
     </li>
@@ -1134,7 +1174,8 @@ Currently only supports x86_64 HVM</p>
   
 </h3><div class="docstring">
   <div class="discussion">
-    <p>Block processing until new image is ready</p>
+    
+<p>Block processing until new image is ready</p>
 
 
   </div>
@@ -1153,7 +1194,8 @@ Currently only supports x86_64 HVM</p>
       
       
         &mdash;
-        <div class='inline'><p>The ID of the new image</p>
+        <div class='inline'>
+<p>The ID of the new image</p>
 </div>
       
     </li>
@@ -1167,16 +1209,16 @@ Currently only supports x86_64 HVM</p>
       <pre class="lines">
 
 
-164
 165
 166
 167
 168
 169
-170</pre>
+170
+171</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/minimal_pipeline/ec2.rb', line 164</span>
+      <pre class="code"><span class="info file"># File 'lib/minimal_pipeline/ec2.rb', line 165</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_wait_for_image'>wait_for_image</span><span class='lparen'>(</span><span class='id identifier rubyid_image_id'>image_id</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_puts'>puts</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>waiting on new image </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_image_id'>image_id</span><span class='embexpr_end'>}</span><span class='tstring_content'> to be available</span><span class='tstring_end'>&quot;</span></span>
@@ -1201,7 +1243,8 @@ Currently only supports x86_64 HVM</p>
   
 </h3><div class="docstring">
   <div class="discussion">
-    <p>Block processing until new snapshot is ready</p>
+    
+<p>Block processing until new snapshot is ready</p>
 
 
   </div>
@@ -1220,7 +1263,8 @@ Currently only supports x86_64 HVM</p>
       
       
         &mdash;
-        <div class='inline'><p>The ID of the new snapshot</p>
+        <div class='inline'>
+<p>The ID of the new snapshot</p>
 </div>
       
     </li>
@@ -1262,9 +1306,9 @@ Currently only supports x86_64 HVM</p>
 </div>
 
       <div id="footer">
-  Generated on Tue Feb 12 11:33:24 2019 by
+  Generated on Wed Jun 19 11:38:44 2019 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.9.16 (ruby-2.5.1).
+  0.9.19 (ruby-2.5.5).
 </div>
 
     </div>

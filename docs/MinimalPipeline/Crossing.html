@@ -6,7 +6,7 @@
 <title>
   Class: MinimalPipeline::Crossing
   
-    &mdash; Documentation by YARD 0.9.16
+    &mdash; Documentation by YARD 0.9.19
   
 </title>
 
@@ -101,7 +101,8 @@
 
 <h2>Overview</h2><div class="docstring">
   <div class="discussion">
-    <p>Here is an example of how to use this class to interact with Crossing.</p>
+    
+<p>Here is an example of how to use this class to interact with Crossing.</p>
 
 <pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_crossing'>crossing</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="../MinimalPipeline.html" title="MinimalPipeline (class)">MinimalPipeline</a></span></span><span class='op'>::</span><span class='const'>Crossing</span><span class='period'>.</span><span class='id identifier rubyid_new'><span class='object_link'><a href="#initialize-instance_method" title="MinimalPipeline::Crossing#initialize (method)">new</a></span></span>
 
@@ -113,14 +114,12 @@
 <span class='id identifier rubyid_puts'>puts</span> <span class='id identifier rubyid_content'>content</span> <span class='comment'># Outputs &#39;foo&#39;
 </span></code></pre>
 
-<p>You will need the following environment variables to be present:</p>
+<p>You will need the following environment variables to be present: *
+<code>AWS_REGION</code> or <code>region</code> *
+<code>keystore_kms_id</code></p>
 
-<ul>
-<li><code>AWS_REGION</code> or <code>region</code></li>
-<li><code>keystore_kms_id</code></li>
-</ul>
-
-<p>For more information on Crossing see <a href="https://github.com/stelligent/crossing">https://github.com/stelligent/crossing</a></p>
+<p>For more information on Crossing see <a
+href="https://github.com/stelligent/crossing">github.com/stelligent/crossing</a></p>
 
 
   </div>
@@ -160,7 +159,8 @@
   
 
   
-    <span class="summary_desc"><div class='inline'><p>Securely downloads a file from an S3 bucket.</p>
+    <span class="summary_desc"><div class='inline'>
+<p>Securely downloads a file from an S3 bucket.</p>
 </div></span>
   
 </li>
@@ -185,7 +185,8 @@
   
 
   
-    <span class="summary_desc"><div class='inline'><p>A new instance of Crossing.</p>
+    <span class="summary_desc"><div class='inline'>
+<p>A new instance of Crossing.</p>
 </div></span>
   
 </li>
@@ -208,7 +209,8 @@
   
 
   
-    <span class="summary_desc"><div class='inline'><p>Securely uploads a file to an S3 bucket.</p>
+    <span class="summary_desc"><div class='inline'>
+<p>Securely uploads a file to an S3 bucket.</p>
 </div></span>
   
 </li>
@@ -231,7 +233,8 @@
   
 </h3><div class="docstring">
   <div class="discussion">
-    <p>Returns a new instance of Crossing</p>
+    
+<p>Returns a new instance of Crossing</p>
 
 
   </div>
@@ -300,7 +303,8 @@
   
 </h3><div class="docstring">
   <div class="discussion">
-    <p>Securely downloads a file from an S3 bucket</p>
+    
+<p>Securely downloads a file from an S3 bucket</p>
 
 
   </div>
@@ -319,7 +323,8 @@
       
       
         &mdash;
-        <div class='inline'><p>The name of the S3 bucket</p>
+        <div class='inline'>
+<p>The name of the S3 bucket</p>
 </div>
       
     </li>
@@ -334,8 +339,8 @@
       
       
         &mdash;
-        <div class='inline'><p>The name of the file that contains the desired
-content</p>
+        <div class='inline'>
+<p>The name of the file that contains the desired content</p>
 </div>
       
     </li>
@@ -353,7 +358,8 @@ content</p>
       
       
         &mdash;
-        <div class='inline'><p>The content that was stored in the file</p>
+        <div class='inline'>
+<p>The content that was stored in the file</p>
 </div>
       
     </li>
@@ -392,7 +398,8 @@ content</p>
   
 </h3><div class="docstring">
   <div class="discussion">
-    <p>Securely uploads a file to an S3 bucket</p>
+    
+<p>Securely uploads a file to an S3 bucket</p>
 
 
   </div>
@@ -411,7 +418,8 @@ content</p>
       
       
         &mdash;
-        <div class='inline'><p>The name of the S3 bucket</p>
+        <div class='inline'>
+<p>The name of the S3 bucket</p>
 </div>
       
     </li>
@@ -426,8 +434,8 @@ content</p>
       
       
         &mdash;
-        <div class='inline'><p>The name of the file to save content to in the
-bucket</p>
+        <div class='inline'>
+<p>The name of the file to save content to in the bucket</p>
 </div>
       
     </li>
@@ -442,7 +450,8 @@ bucket</p>
       
       
         &mdash;
-        <div class='inline'><p>The content to store in the file</p>
+        <div class='inline'>
+<p>The content to store in the file</p>
 </div>
       
     </li>
@@ -476,9 +485,9 @@ bucket</p>
 </div>
 
       <div id="footer">
-  Generated on Tue Feb 12 11:33:24 2019 by
+  Generated on Wed Jun 19 11:38:44 2019 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.9.16 (ruby-2.5.1).
+  0.9.19 (ruby-2.5.5).
 </div>
 
     </div>

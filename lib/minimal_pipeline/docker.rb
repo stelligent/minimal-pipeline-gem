@@ -15,7 +15,7 @@ class MinimalPipeline
   # deploy_env = ENV['DEPLOY_ENV']
   # docker_repo = keystore.retrieve("#{deploy_env}_EXAMPLE_ECR_REPO")
   # docker_image = "#{docker_repo}/example:latest"
-  # docker.build_docker_image(docker_image, 'containers/example')
+  # docker.build_docker_image(docker_image, build_context: 'containers/example')
   # docker.push_docker_image(docker_image)
   # ```
   class Docker

@@ -6,7 +6,7 @@
 <title>
   Class: MinimalPipeline::Cloudformation
   
-    &mdash; Documentation by YARD 0.9.16
+    &mdash; Documentation by YARD 0.9.19
   
 </title>
 
@@ -101,7 +101,9 @@
 
 <h2>Overview</h2><div class="docstring">
   <div class="discussion">
-    <p>Here is an example of how to use this class to deploy CloudFormation Stacks.</p>
+    
+<p>Here is an example of how to use this class to deploy CloudFormation
+Stacks.</p>
 
 <pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_cloudformation'>cloudformation</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="../MinimalPipeline.html" title="MinimalPipeline (class)">MinimalPipeline</a></span></span><span class='op'>::</span><span class='const'>Cloudformation</span><span class='period'>.</span><span class='id identifier rubyid_new'><span class='object_link'><a href="#initialize-instance_method" title="MinimalPipeline::Cloudformation#initialize (method)">new</a></span></span>
 
@@ -116,11 +118,8 @@
 <span class='id identifier rubyid_name'>name</span> <span class='op'>=</span> <span class='id identifier rubyid_cloudformation'>cloudformation</span><span class='period'>.</span><span class='id identifier rubyid_stack_output'>stack_output</span><span class='lparen'>(</span><span class='id identifier rubyid_stack_name'>stack_name</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>LoadBalancerName</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
 </code></pre>
 
-<p>You will need the following environment variables to be present:</p>
-
-<ul>
-<li><code>AWS_REGION</code> or <code>region</code></li>
-</ul>
+<p>You will need the following environment variables to be present: *
+<code>AWS_REGION</code> or <code>region</code></p>
 
 
   </div>
@@ -157,7 +156,8 @@
   
 
   
-    <span class="summary_desc"><div class='inline'><p>Instance of <code>Aws::CloudFormation::Client</code>.</p>
+    <span class="summary_desc"><div class='inline'>
+<p>Instance of <code>Aws::CloudFormation::Client</code>.</p>
 </div></span>
   
 </li>
@@ -183,7 +183,8 @@
   
 
   
-    <span class="summary_desc"><div class='inline'><p>Returns the value of attribute wait_delay.</p>
+    <span class="summary_desc"><div class='inline'>
+<p>Returns the value of attribute wait_delay.</p>
 </div></span>
   
 </li>
@@ -209,7 +210,8 @@
   
 
   
-    <span class="summary_desc"><div class='inline'><p>Returns the value of attribute wait_max_attempts.</p>
+    <span class="summary_desc"><div class='inline'>
+<p>Returns the value of attribute wait_max_attempts.</p>
 </div></span>
   
 </li>
@@ -313,7 +315,9 @@
   
 
   
-    <span class="summary_desc"><div class='inline'><p>Sets up <code>Aws::CloudFormation::Client</code> Requires environment variable <code>AWS_REGION</code> or <code>region</code> to be set.</p>
+    <span class="summary_desc"><div class='inline'>
+<p>Sets up <code>Aws::CloudFormation::Client</code> Requires environment
+variable <code>AWS_REGION</code> or <code>region</code> to be set.</p>
 </div></span>
   
 </li>
@@ -336,7 +340,8 @@
   
 
   
-    <span class="summary_desc"><div class='inline'><p>Converts a parameter Hash into a CloudFormation friendly structure.</p>
+    <span class="summary_desc"><div class='inline'>
+<p>Converts a parameter Hash into a CloudFormation friendly structure.</p>
 </div></span>
   
 </li>
@@ -359,7 +364,8 @@
   
 
   
-    <span class="summary_desc"><div class='inline'><p>Checks to see if a stack exists.</p>
+    <span class="summary_desc"><div class='inline'>
+<p>Checks to see if a stack exists.</p>
 </div></span>
   
 </li>
@@ -382,7 +388,8 @@
   
 
   
-    <span class="summary_desc"><div class='inline'><p>Retrieves the CloudFormation stack output of a single value.</p>
+    <span class="summary_desc"><div class='inline'>
+<p>Retrieves the CloudFormation stack output of a single value.</p>
 </div></span>
   
 </li>
@@ -405,7 +412,8 @@
   
 
   
-    <span class="summary_desc"><div class='inline'><p>Retrieves all CloudFormation stack outputs.</p>
+    <span class="summary_desc"><div class='inline'>
+<p>Retrieves all CloudFormation stack outputs.</p>
 </div></span>
   
 </li>
@@ -428,11 +436,11 @@
   
 </h3><div class="docstring">
   <div class="discussion">
-    <p>Sets up <code>Aws::CloudFormation::Client</code>
-Requires environment variable <code>AWS_REGION</code> or <code>region</code> to be set.</p>
+    
+<p>Sets up <code>Aws::CloudFormation::Client</code> Requires environment
+variable <code>AWS_REGION</code> or <code>region</code> to be set.</p>
 
-<p>stack create or update is complete.
-a stack&#39;s status</p>
+<p>stack create or update is complete. a stack&#39;s status</p>
 
 
   </div>
@@ -453,7 +461,8 @@ a stack&#39;s status</p>
       
       
         &mdash;
-        <div class='inline'><p>Number of attempts to wait until all</p>
+        <div class='inline'>
+<p>Number of attempts to wait until all</p>
 </div>
       
     </li>
@@ -470,7 +479,8 @@ a stack&#39;s status</p>
       
       
         &mdash;
-        <div class='inline'><p>The sleep interval for checking the status of</p>
+        <div class='inline'>
+<p>The sleep interval for checking the status of</p>
 </div>
       
     </li>
@@ -531,7 +541,8 @@ a stack&#39;s status</p>
   
 </h3><div class="docstring">
   <div class="discussion">
-    <p>Instance of <code>Aws::CloudFormation::Client</code></p>
+    
+<p>Instance of <code>Aws::CloudFormation::Client</code></p>
 
 
   </div>
@@ -573,7 +584,8 @@ a stack&#39;s status</p>
   
 </h3><div class="docstring">
   <div class="discussion">
-    <p>Returns the value of attribute wait_delay</p>
+    
+<p>Returns the value of attribute wait_delay</p>
 
 
   </div>
@@ -615,7 +627,8 @@ a stack&#39;s status</p>
   
 </h3><div class="docstring">
   <div class="discussion">
-    <p>Returns the value of attribute wait_max_attempts</p>
+    
+<p>Returns the value of attribute wait_max_attempts</p>
 
 
   </div>
@@ -796,7 +809,8 @@ a stack&#39;s status</p>
       
       
         &mdash;
-        <div class='inline'><p>The name of the CloudFormation stack</p>
+        <div class='inline'>
+<p>The name of the CloudFormation stack</p>
 </div>
       
     </li>
@@ -811,7 +825,8 @@ a stack&#39;s status</p>
       
       
         &mdash;
-        <div class='inline'><p>Parameters to be passed into the stack</p>
+        <div class='inline'>
+<p>Parameters to be passed into the stack</p>
 </div>
       
     </li>
@@ -895,7 +910,8 @@ a stack&#39;s status</p>
   
 </h3><div class="docstring">
   <div class="discussion">
-    <p>Converts a parameter Hash into a CloudFormation friendly structure</p>
+    
+<p>Converts a parameter Hash into a CloudFormation friendly structure</p>
 
 
   </div>
@@ -914,7 +930,8 @@ a stack&#39;s status</p>
       
       
         &mdash;
-        <div class='inline'><p>Key value pair of parameters for a CFN stack.</p>
+        <div class='inline'>
+<p>Key value pair of parameters for a CFN stack.</p>
 </div>
       
     </li>
@@ -932,7 +949,8 @@ a stack&#39;s status</p>
       
       
         &mdash;
-        <div class='inline'><p>CloudFormation friendly data structure of parameter</p>
+        <div class='inline'>
+<p>CloudFormation friendly data structure of parameter</p>
 </div>
       
     </li>
@@ -979,7 +997,8 @@ a stack&#39;s status</p>
   
 </h3><div class="docstring">
   <div class="discussion">
-    <p>Checks to see if a stack exists</p>
+    
+<p>Checks to see if a stack exists</p>
 
 
   </div>
@@ -998,7 +1017,8 @@ a stack&#39;s status</p>
       
       
         &mdash;
-        <div class='inline'><p>The name of the CloudFormation stack</p>
+        <div class='inline'>
+<p>The name of the CloudFormation stack</p>
 </div>
       
     </li>
@@ -1016,7 +1036,8 @@ a stack&#39;s status</p>
       
       
         &mdash;
-        <div class='inline'><p>true/false depending on whether or not the stack exists</p>
+        <div class='inline'>
+<p>true/false depending on whether or not the stack exists</p>
 </div>
       
     </li>
@@ -1061,7 +1082,8 @@ a stack&#39;s status</p>
   
 </h3><div class="docstring">
   <div class="discussion">
-    <p>Retrieves the CloudFormation stack output of a single value</p>
+    
+<p>Retrieves the CloudFormation stack output of a single value</p>
 
 
   </div>
@@ -1080,7 +1102,8 @@ a stack&#39;s status</p>
       
       
         &mdash;
-        <div class='inline'><p>The name of the CloudFormation stack</p>
+        <div class='inline'>
+<p>The name of the CloudFormation stack</p>
 </div>
       
     </li>
@@ -1095,7 +1118,8 @@ a stack&#39;s status</p>
       
       
         &mdash;
-        <div class='inline'><p>The name of the output to fetch the value of</p>
+        <div class='inline'>
+<p>The name of the output to fetch the value of</p>
 </div>
       
     </li>
@@ -1113,7 +1137,8 @@ a stack&#39;s status</p>
       
       
         &mdash;
-        <div class='inline'><p>The value of the output for the CloudFormation stack</p>
+        <div class='inline'>
+<p>The value of the output for the CloudFormation stack</p>
 </div>
       
     </li>
@@ -1160,7 +1185,8 @@ a stack&#39;s status</p>
   
 </h3><div class="docstring">
   <div class="discussion">
-    <p>Retrieves all CloudFormation stack outputs</p>
+    
+<p>Retrieves all CloudFormation stack outputs</p>
 
 
   </div>
@@ -1179,7 +1205,8 @@ a stack&#39;s status</p>
       
       
         &mdash;
-        <div class='inline'><p>The name of the CloudFormation stack</p>
+        <div class='inline'>
+<p>The name of the CloudFormation stack</p>
 </div>
       
     </li>
@@ -1197,7 +1224,8 @@ a stack&#39;s status</p>
       
       
         &mdash;
-        <div class='inline'><p>Key value pairs of stack outputs</p>
+        <div class='inline'>
+<p>Key value pairs of stack outputs</p>
 </div>
       
     </li>
@@ -1266,9 +1294,9 @@ a stack&#39;s status</p>
 </div>
 
       <div id="footer">
-  Generated on Tue Feb 12 11:33:24 2019 by
+  Generated on Wed Jun 19 11:38:45 2019 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.9.16 (ruby-2.5.1).
+  0.9.19 (ruby-2.5.5).
 </div>
 
     </div>

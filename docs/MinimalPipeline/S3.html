@@ -6,7 +6,7 @@
 <title>
   Class: MinimalPipeline::S3
   
-    &mdash; Documentation by YARD 0.9.16
+    &mdash; Documentation by YARD 0.9.19
   
 </title>
 
@@ -101,7 +101,8 @@
 
 <h2>Overview</h2><div class="docstring">
   <div class="discussion">
-    <p>Here is an example of how to use this class to interact with S3.</p>
+    
+<p>Here is an example of how to use this class to interact with S3.</p>
 
 <pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_s3'>s3</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="../MinimalPipeline.html" title="MinimalPipeline (class)">MinimalPipeline</a></span></span><span class='op'>::</span><span class='const'>S3</span><span class='period'>.</span><span class='id identifier rubyid_new'><span class='object_link'><a href="#initialize-instance_method" title="MinimalPipeline::S3#initialize (method)">new</a></span></span>
 
@@ -112,11 +113,8 @@
 </span><span class='id identifier rubyid_s3'>s3</span><span class='period'>.</span><span class='id identifier rubyid_download'>download</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>bucket_name</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>foo.txt</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
 </code></pre>
 
-<p>You will need the following environment variables to be present:</p>
-
-<ul>
-<li><code>AWS_REGION</code> or <code>region</code></li>
-</ul>
+<p>You will need the following environment variables to be present: *
+<code>AWS_REGION</code> or <code>region</code></p>
 
 
   </div>
@@ -156,7 +154,8 @@
   
 
   
-    <span class="summary_desc"><div class='inline'><p>Downloads a file from S3 to local disk.</p>
+    <span class="summary_desc"><div class='inline'>
+<p>Downloads a file from S3 to local disk.</p>
 </div></span>
   
 </li>
@@ -181,7 +180,9 @@
   
 
   
-    <span class="summary_desc"><div class='inline'><p>Initializes a <code>S3</code> client Requires environment variables <code>AWS_REGION</code> or <code>region</code> to be set.</p>
+    <span class="summary_desc"><div class='inline'>
+<p>Initializes a <code>S3</code> client Requires environment variables
+<code>AWS_REGION</code> or <code>region</code> to be set.</p>
 </div></span>
   
 </li>
@@ -204,7 +205,8 @@
   
 
   
-    <span class="summary_desc"><div class='inline'><p>Uploads a file from local disk to S3.</p>
+    <span class="summary_desc"><div class='inline'>
+<p>Uploads a file from local disk to S3.</p>
 </div></span>
   
 </li>
@@ -227,8 +229,9 @@
   
 </h3><div class="docstring">
   <div class="discussion">
-    <p>Initializes a <code>S3</code> client
-Requires environment variables <code>AWS_REGION</code> or <code>region</code> to be set.</p>
+    
+<p>Initializes a <code>S3</code> client Requires environment variables
+<code>AWS_REGION</code> or <code>region</code> to be set.</p>
 
 
   </div>
@@ -283,7 +286,8 @@ Requires environment variables <code>AWS_REGION</code> or <code>region</code> to
   
 </h3><div class="docstring">
   <div class="discussion">
-    <p>Downloads a file from S3 to local disk</p>
+    
+<p>Downloads a file from S3 to local disk</p>
 
 <p>This defaults to the file param</p>
 
@@ -304,7 +308,8 @@ Requires environment variables <code>AWS_REGION</code> or <code>region</code> to
       
       
         &mdash;
-        <div class='inline'><p>The name of S3 bucket to download from</p>
+        <div class='inline'>
+<p>The name of S3 bucket to download from</p>
 </div>
       
     </li>
@@ -319,7 +324,8 @@ Requires environment variables <code>AWS_REGION</code> or <code>region</code> to
       
       
         &mdash;
-        <div class='inline'><p>The path to the file on disk to download to</p>
+        <div class='inline'>
+<p>The path to the file on disk to download to</p>
 </div>
       
     </li>
@@ -336,7 +342,8 @@ Requires environment variables <code>AWS_REGION</code> or <code>region</code> to
       
       
         &mdash;
-        <div class='inline'><p>The name of the key of the object in S3</p>
+        <div class='inline'>
+<p>The name of the key of the object in S3</p>
 </div>
       
     </li>
@@ -380,7 +387,8 @@ Requires environment variables <code>AWS_REGION</code> or <code>region</code> to
   
 </h3><div class="docstring">
   <div class="discussion">
-    <p>Uploads a file from local disk to S3</p>
+    
+<p>Uploads a file from local disk to S3</p>
 
 <p>This defaults to the file param</p>
 
@@ -401,7 +409,8 @@ Requires environment variables <code>AWS_REGION</code> or <code>region</code> to
       
       
         &mdash;
-        <div class='inline'><p>The name of S3 bucket to upload to</p>
+        <div class='inline'>
+<p>The name of S3 bucket to upload to</p>
 </div>
       
     </li>
@@ -416,7 +425,8 @@ Requires environment variables <code>AWS_REGION</code> or <code>region</code> to
       
       
         &mdash;
-        <div class='inline'><p>The path to the file on disk to be uploaded</p>
+        <div class='inline'>
+<p>The path to the file on disk to be uploaded</p>
 </div>
       
     </li>
@@ -433,7 +443,8 @@ Requires environment variables <code>AWS_REGION</code> or <code>region</code> to
       
       
         &mdash;
-        <div class='inline'><p>The name of the key to store the file as in the bucket</p>
+        <div class='inline'>
+<p>The name of the key to store the file as in the bucket</p>
 </div>
       
     </li>
@@ -451,7 +462,8 @@ Requires environment variables <code>AWS_REGION</code> or <code>region</code> to
       
       
         &mdash;
-        <div class='inline'><p>The Version ID of the latest object</p>
+        <div class='inline'>
+<p>The Version ID of the latest object</p>
 </div>
       
     </li>
@@ -492,9 +504,9 @@ Requires environment variables <code>AWS_REGION</code> or <code>region</code> to
 </div>
 
       <div id="footer">
-  Generated on Tue Feb 12 11:33:24 2019 by
+  Generated on Wed Jun 19 11:38:44 2019 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.9.16 (ruby-2.5.1).
+  0.9.19 (ruby-2.5.5).
 </div>
 
     </div>
