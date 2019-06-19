@@ -75,15 +75,13 @@ class MinimalPipeline
         build_args[arg] = ENV[arg] if ENV[arg]
       end
 
-      args = {
-        'nocache' => 'true',
-        'pull' => 'true',
-        't' => image_id,
-        'dockerfile' => dockerfile,
-        'buildargs' => JSON.dump(build_args)
-      }
+      args = populate_args_hash(image_id, dockerfile, build_args)
       puts "Build args: #{args.inspect}" if ENV['DEBUG']
-      ::Docker.options[:read_timeout] = timeout
+      ::Docker.options = {
+        timeout: timeout,
+        read_timeout: timeout,
+        write_timeout: timeout
+      }
       ::Docker::Image.build_from_dir(build_context, args) do |value|
         build_output(value)
       end
@@ -100,6 +98,18 @@ class MinimalPipeline
       raise "stdout: #{stdout}\nstderr: #{stderr}\nstatus: #{status}" \
         unless status.exitstatus.zero?
       clean_up_image(image_id)
+    end
+
+    private
+
+    def populate_args_hash(image_id, dockerfile, build_args)
+      {
+        'nocache' => 'true',
+        'pull' => 'true',
+        't' => image_id,
+        'dockerfile' => dockerfile,
+        'buildargs' => JSON.dump(build_args)
+      }
     end
   end
 end
