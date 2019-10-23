@@ -8,7 +8,7 @@ Gem::Specification.new do |spec|
   spec.authors       = ['Mayowa Aladeojebi', 'Jesse Adams']
   spec.email         = ['mayowa.aladeojebi@stelligent.com',
                         'jesse.adams@stelligent.com']
-  spec.version       = '0.3.3'
+  spec.version       = '0.3.4'
   spec.summary       = 'Helper gem to manage pipeline tasks'
   spec.description   = 'Helper gem to orchestrate pipeline tasks'
   spec.homepage      = 'https://github.com/stelligent/minimal-pipeline-gem'
@@ -34,5 +34,5 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency('docker-api', '1.34.2')
   spec.add_runtime_dependency('keystore', '~> 0.2')
   spec.add_runtime_dependency('packer-config', '1.6.3')
-  spec.add_runtime_dependency('rubyzip', '1.2.2')
+  spec.add_runtime_dependency('rubyzip', '~> 2.0')
 end
