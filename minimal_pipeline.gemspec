@@ -34,5 +34,5 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency('docker-api', '1.34.2')
   spec.add_runtime_dependency('keystore', '~> 0.2')
   spec.add_runtime_dependency('packer-config', '1.6.3')
-  spec.add_runtime_dependency('rubyzip', '1.2.2')
+  spec.add_runtime_dependency('rubyzip', '~> 1.3.0')
 end
